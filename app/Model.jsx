@@ -1,0 +1,232 @@
+"use client";
+
+import * as THREE from "three";
+import React, { useLayoutEffect, useRef, useMemo } from "react";
+import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+
+export default function Model() {
+
+    const { size, viewport } = useThree();
+
+    const modelScale = useMemo(() => {
+        const pxToWorld = viewport.width / size.width;
+
+        const MAX_PX = 1024;
+        const usedPx = Math.min(size.width, MAX_PX);
+
+        const worldWidth = usedPx * pxToWorld;
+
+        return worldWidth * 0.2;
+    }, [size.width, viewport.width]);
+
+    const pivot = useRef();
+    const offset = useRef();
+
+    const introDone = useRef(false);
+    const t = useRef(0);
+
+    const isTouchLayout = size.width < 1024;
+
+    const drag = useRef({
+        active: false,
+        lastX: 0,
+        lastY: 0,
+        velX: 0,
+        velY: 0,
+    });
+
+    const onPointerDown = (e) => {
+        if (!isTouchLayout) return;
+        e.stopPropagation();
+
+        drag.current.active = true;
+        drag.current.lastX = e.clientX;
+        drag.current.lastY = e.clientY;
+        drag.current.velX = 0;
+        drag.current.velY = 0;
+
+        e.target.setPointerCapture?.(e.pointerId);
+    };
+
+    const onPointerMove = (e) => {
+        if (!isTouchLayout || !drag.current.active || !pivot.current) return;
+        e.stopPropagation();
+
+        const dx = e.clientX - drag.current.lastX;
+        const dy = e.clientY - drag.current.lastY;
+
+        drag.current.lastX = e.clientX;
+        drag.current.lastY = e.clientY;
+
+        const ROT_SPEED = 0.005;
+
+        pivot.current.rotation.y += dx * ROT_SPEED;
+        pivot.current.rotation.x += dy * ROT_SPEED;
+
+        drag.current.velX = dx * ROT_SPEED;
+        drag.current.velY = dy * ROT_SPEED;
+    };
+
+    const endDrag = (e) => {
+        if (!isTouchLayout) return;
+        e.stopPropagation();
+        drag.current.active = false;
+    };
+
+    const materialRef = useRef();
+
+
+    const { nodes } = useGLTF("/hldkv.glb");
+
+    const GLASS = {
+        transmission: 1.0,
+        roughness: 0.02,
+        thickness: 0.5,
+        ior: 1.45,
+
+        chromaticAberration: 0.06,
+        distortion: 0.12,
+        distortionScale: 0.25,
+        temporalDistortion: 0.15,
+
+        attenuationDistance: 100,
+        attenuationColor: "#ffffff",
+
+        samples: 16,
+        resolution: 1024,
+
+        backside: true,
+        backsideThickness: 1.5,
+
+        depthWrite: false,
+    };
+
+    useLayoutEffect(() => {
+        if (!offset.current || !nodes?.Curve?.geometry) return;
+
+        const geom = nodes.Curve.geometry;
+        geom.computeVertexNormals();
+        geom.computeBoundingBox();
+
+        const center = new THREE.Vector3();
+        geom.boundingBox.getCenter(center);
+
+        offset.current.position.copy(center).multiplyScalar(-1);
+    }, [nodes]);
+
+    useFrame((state, delta) => {
+        if (!pivot.current) return;
+
+        if (!introDone.current) {
+            const DURATION = 2.5;
+            const TURNS = 1;
+            const FINAL_FACE = 0;
+
+            t.current += delta;
+            const p = Math.min(1, t.current / DURATION);
+
+            const easeInOutSine = 0.5 - 0.5 * Math.cos(Math.PI * p);
+
+            const spin = TURNS * 2 * Math.PI;
+            pivot.current.rotation.y = FINAL_FACE + spin * easeInOutSine;
+
+            const fade = Math.min(1, p / 0.35);
+            const fadeSmooth = fade * fade * (3 - 2 * fade);
+            pivot.current.visible = true;
+            pivot.current.traverse?.(() => {});
+
+            if (materialRef.current) {
+                materialRef.current.opacity = fadeSmooth;
+            }
+
+            if (p >= 1) {
+                pivot.current.rotation.y = FINAL_FACE;
+                introDone.current = true;
+
+                if (materialRef.current) materialRef.current.opacity = 1;
+            }
+            return;
+        }
+
+
+        if (isTouchLayout) {
+            if (!drag.current.active && pivot.current) {
+                drag.current.velX *= 0.92;
+                drag.current.velY *= 0.92;
+
+                pivot.current.rotation.y += drag.current.velX;
+                pivot.current.rotation.x += drag.current.velY;
+            }
+
+            pivot.current.rotation.x = THREE.MathUtils.clamp(
+                pivot.current.rotation.x,
+                -0.8,
+                0.8
+            );
+            return;
+        }
+
+        const x = state.pointer.x;
+        const y = state.pointer.y;
+        const smooth = 1 - Math.pow(0.001, delta);
+
+        pivot.current.rotation.y = THREE.MathUtils.lerp(
+            pivot.current.rotation.y,
+            x * 0.8,
+            smooth
+        );
+        pivot.current.rotation.x = THREE.MathUtils.lerp(
+            pivot.current.rotation.x,
+            -y * 0.4,
+            smooth
+        );
+
+    });
+
+
+
+
+    return (
+        <group
+            ref={pivot}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onPointerLeave={endDrag}
+        >
+        <group rotation={[1.57, 0, 0]} scale={modelScale}>
+                <group ref={offset}>
+                    <mesh geometry={nodes?.Curve?.geometry}>
+                        <MeshTransmissionMaterial
+                            ref={materialRef}
+                            transparent
+                            transmission={GLASS.transmission}
+                            roughness={GLASS.roughness}
+                            thickness={GLASS.thickness}
+                            ior={GLASS.ior}
+                            chromaticAberration={GLASS.chromaticAberration}
+                            distortion={GLASS.distortion}
+                            distortionScale={GLASS.distortionScale}
+                            temporalDistortion={GLASS.temporalDistortion}
+                            attenuationDistance={GLASS.attenuationDistance}
+                            attenuationColor={GLASS.attenuationColor}
+                            samples={GLASS.samples}
+                            resolution={GLASS.resolution}
+                            transparent
+                            opacity={1}
+                            toneMapped={false}
+                            depthWrite={GLASS.depthWrite}
+                            side={THREE.DoubleSide}
+                            backside={GLASS.backside}
+                            backsideThickness={GLASS.backsideThickness}
+                        />
+                    </mesh>
+                </group>
+            </group>
+        </group>
+    );
+}
+
+useGLTF.preload("/hldkv.glb");
