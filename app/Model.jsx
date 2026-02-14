@@ -1,13 +1,17 @@
 "use client";
 
 import * as THREE from "three";
-import React, { useLayoutEffect, useRef, useMemo } from "react";
+import React, { useLayoutEffect, useRef, useMemo, useEffect } from "react";
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 
 export default function Model() {
 
-    const { size, viewport } = useThree();
+    const { size, viewport, gl } = useThree();
+
+    useLayoutEffect(() => {
+        gl.domElement.style.touchAction = "pan-y";
+    }, [gl]);
 
     const modelScale = useMemo(() => {
         const pxToWorld = viewport.width / size.width;
@@ -30,27 +34,33 @@ export default function Model() {
 
     const drag = useRef({
         active: false,
+        started: false,
+        startX: 0,
+        startY: 0,
         lastX: 0,
         lastY: 0,
         velX: 0,
         velY: 0,
     });
 
+    const THRESHOLD = 10;
+
     const onPointerDown = (e) => {
         if (!isTouchLayout) return;
         e.stopPropagation();
 
-        drag.current.active = true;
+        drag.current.active = false;
+        drag.current.started = false;
+        drag.current.startX = e.clientX;
+        drag.current.startY = e.clientY;
         drag.current.lastX = e.clientX;
         drag.current.lastY = e.clientY;
         drag.current.velX = 0;
         drag.current.velY = 0;
-
-        e.target.setPointerCapture?.(e.pointerId);
     };
 
     const onPointerMove = (e) => {
-        if (!isTouchLayout || !drag.current.active || !pivot.current) return;
+        if (!isTouchLayout || !pivot.current) return;
         e.stopPropagation();
 
         const dx = e.clientX - drag.current.lastX;
@@ -58,6 +68,39 @@ export default function Model() {
 
         drag.current.lastX = e.clientX;
         drag.current.lastY = e.clientY;
+
+        if (!drag.current.started) {
+            const totalDx = e.clientX - drag.current.startX;
+            const totalDy = e.clientY - drag.current.startY;
+            const dist = Math.sqrt(totalDx * totalDx + totalDy * totalDy);
+
+            if (dist <= THRESHOLD) {
+                return;
+            }
+
+            drag.current.started = true;
+
+            if (Math.abs(totalDy) > Math.abs(totalDx)) {
+                // Likely vertical scroll intent, ignore and let browser handle
+                return;
+            }
+
+            // Capture for rotation
+            e.target.setPointerCapture(e.pointerId);
+            drag.current.active = true;
+
+            const ROT_SPEED = 0.005;
+
+            pivot.current.rotation.y += totalDx * ROT_SPEED;
+            pivot.current.rotation.x += totalDy * ROT_SPEED;
+
+            drag.current.velX = dx * ROT_SPEED;
+            drag.current.velY = dy * ROT_SPEED;
+
+            return;
+        }
+
+        if (!drag.current.active) return;
 
         const ROT_SPEED = 0.005;
 
@@ -72,10 +115,10 @@ export default function Model() {
         if (!isTouchLayout) return;
         e.stopPropagation();
         drag.current.active = false;
+        drag.current.started = false;
     };
 
     const materialRef = useRef();
-
 
     const { nodes } = useGLTF("/hldkv.glb");
 
@@ -149,7 +192,6 @@ export default function Model() {
             return;
         }
 
-
         if (isTouchLayout) {
             if (!drag.current.active && pivot.current) {
                 drag.current.velX *= 0.92;
@@ -184,9 +226,6 @@ export default function Model() {
 
     });
 
-
-
-
     return (
         <group
             ref={pivot}
@@ -196,7 +235,7 @@ export default function Model() {
             onPointerCancel={endDrag}
             onPointerLeave={endDrag}
         >
-        <group rotation={[1.57, 0, 0]} scale={modelScale}>
+            <group rotation={[1.57, 0, 0]} scale={modelScale}>
                 <group ref={offset}>
                     <mesh geometry={nodes?.Curve?.geometry}>
                         <MeshTransmissionMaterial
@@ -214,7 +253,6 @@ export default function Model() {
                             attenuationColor={GLASS.attenuationColor}
                             samples={GLASS.samples}
                             resolution={GLASS.resolution}
-                            transparent
                             opacity={1}
                             toneMapped={false}
                             depthWrite={GLASS.depthWrite}
