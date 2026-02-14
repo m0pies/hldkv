@@ -1,30 +1,51 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
-import { Suspense } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { Environment, Suspense } from "@react-three/drei";
+import { useLayoutEffect } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
 export default function Hero3d() {
-    return (
-        <section id="hero" className="relative h-screen w-full">
-            <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-                <color attach="background" args={["#0D0D0C"]} />
+  const { gl } = useThree();
 
-                <Suspense fallback={null}>
-                    <Environment preset="studio" />
-                </Suspense>
+  useLayoutEffect(() => {
+    gl.domElement.style.touchAction = "pan-y pinch-zoom !important";
 
-                <BgText />
+    const preventDefault = (e) => {
+      if (e.touches.length === 1) {
+      }
+    };
 
-                <ambientLight intensity={0.25} />
-                <directionalLight position={[5, 10, 5]} intensity={3.5} />
+    gl.domElement.addEventListener("touchstart", preventDefault, { passive: false });
+    gl.domElement.addEventListener("touchmove", preventDefault, { passive: false });
 
-                <Model />
+    return () => {
+      gl.domElement.removeEventListener("touchstart", preventDefault);
+      gl.domElement.removeEventListener("touchmove", preventDefault);
+    };
+  }, [gl]);
 
-                <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} />
-            </Canvas>
-        </section>
-    );
+  return (
+    <section id="hero" className="relative h-screen w-full overflow-hidden">
+      <Canvas
+        camera={{ position: [0, 0, 5], fov: 50 }}
+        gl={{ touchAction: "pan-y pinch-zoom" }}
+        style={{ touchAction: "pan-y pinch-zoom" }}
+      >
+        <color attach="background" args={["#0D0D0C"]} />
+
+        <Suspense fallback={null}>
+          <Environment preset="studio" />
+        </Suspense>
+
+        <BgText />
+
+        <ambientLight intensity={0.25} />
+        <directionalLight position={[5, 10, 5]} intensity={3.5} />
+
+        <Model />
+      </Canvas>
+    </section>
+  );
 }
