@@ -274,7 +274,7 @@ function Scene({ progress }) {
             const target = activeMeasureRef.current || activeWrap.current;
 
             let fit = 1.1;
-            if (winW < 768) fit = 0.5;
+            if (winW < 768) fit = 0.95;
             else if (winW < 1024) fit = 1.0;
 
             fitCameraToObject(camera, target, fit);
