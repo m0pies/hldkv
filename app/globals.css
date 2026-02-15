@@ -22,3 +22,7 @@
 html {
     scroll-behavior: smooth;
 }
+
+canvas {
+  touch-action: pan-y !important;
+}
