@@ -8,11 +8,6 @@ import { useFrame, useThree } from "@react-three/fiber";
 export default function Model() {
   const { size, viewport, gl } = useThree();
 
-  // Важно для мобильного скролла
-  useLayoutEffect(() => {
-    gl.domElement.style.touchAction = "pan-y pinch-zoom";
-  }, [gl]);
-
   const modelScale = useMemo(() => {
     const pxToWorld = viewport.width / size.width;
     const MAX_PX = 1024;
@@ -40,7 +35,7 @@ export default function Model() {
     velY: 0,
   });
 
-  const THRESHOLD = 10; // пиксели, после которых решаем — вращение или скролл
+  const THRESHOLD = 10;
 
   const onPointerDown = (e) => {
     if (!isTouchLayout) return;
@@ -54,7 +49,6 @@ export default function Model() {
     drag.current.lastY = e.clientY;
     drag.current.velX = 0;
     drag.current.velY = 0;
-    // capture НЕ ставим сразу — только если поймём, что это горизонтальный жест
   };
 
   const onPointerMove = (e) => {
@@ -70,13 +64,11 @@ export default function Model() {
 
       drag.current.started = true;
 
-      // Если вертикальное движение явно сильнее — не мешаем скроллу
       if (Math.abs(totalDy) > Math.abs(totalDx) * 1.3) {
         drag.current.started = false;
         return;
       }
 
-      // Горизонталь → захватываем и начинаем вращение
       e.target.setPointerCapture(e.pointerId);
       drag.current.active = true;
 
@@ -198,7 +190,6 @@ export default function Model() {
       return;
     }
 
-    // Десктоп — следование за курсором
     const x = state.pointer.x;
     const y = state.pointer.y;
     const smooth = 1 - Math.pow(0.001, delta);
