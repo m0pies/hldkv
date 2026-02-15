@@ -131,7 +131,6 @@ function GltfIcon({ url, rot = [0, 0, 0] }) {
             side: THREE.FrontSide,
         });
 
-        // reduce z-fighting on thin extrusions
         m.polygonOffset = true;
         m.polygonOffsetFactor = 1;
         m.polygonOffsetUnits = 1;
@@ -145,13 +144,11 @@ function GltfIcon({ url, rot = [0, 0, 0] }) {
     useLayoutEffect(() => {
         if (!offset.current) return;
 
-        // reset transforms (StrictMode-safe)
         offset.current.position.set(0, 0, 0);
         model.position.set(0, 0, 0);
         model.rotation.set(0, 0, 0);
         model.scale.set(1, 1, 1);
 
-        // compute per-mesh bbox
         model.traverse((obj) => {
             if (obj.isMesh && obj.geometry) obj.geometry.computeBoundingBox();
         });
@@ -277,7 +274,7 @@ function Scene({ progress }) {
             const target = activeMeasureRef.current || activeWrap.current;
 
             let fit = 1.1;
-            if (winW < 768) fit = 0.75;
+            if (winW < 768) fit = 0.5;
             else if (winW < 1024) fit = 1.0;
 
             fitCameraToObject(camera, target, fit);
