@@ -8,7 +8,7 @@ import BgText from "../BgText";
 
 export default function Hero3d() {
     return (
-        <section id="hero" className="relative h-screen w-full">
+        <section id="hero" className="relative h-screen w-full pointer-events-none">
             <Canvas 
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 style={{
