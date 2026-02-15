@@ -2,33 +2,35 @@
 
 import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useRef, useEffect, useState } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
 export default function Hero3d() {
     const containerRef = useRef(null);
-    const [isDragging, setIsDragging] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+    useEffect(() => {
+        const hasTouch =
+         "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0;
+        setIsTouchDevice(hasTouch);
+    }, []);
 
     return (
-        <section ref={containerRef} id="hero" className="relative h-screen w-full">
+        <section 
+            ref={containerRef} 
+            id="hero"
+            className="relative h-screen w-full"
+        >
             <Canvas 
-                eventSource={containerRef}
-                eventPrefix="client"
                 camera={{ position: [0, 0, 5], fov: 50 }}
+                {...(!isTouchDevice && {
+                    eventSource: containerRef,
+                    eventPrefix: "client",
+                })}
                 style={{
-                    touchAction: isDragging ? "none" : "pan-y pinch-zoom",
-                }}
-                onPointerDown={(e) => {
-                    if (e.pointerType === "touch") {
-                        setIsDragging(true);
-                    }
-                }}
-                onPointerUp={() => {
-                    setIsDragging(false);
-                }}
-                onPointerCancel={() => {
-                    setIsDragging(false);
+                    touchAction: "pan-y pinch-zoom",
                 }}
             >
                 <color attach="background" args={["#0D0D0C"]} />
