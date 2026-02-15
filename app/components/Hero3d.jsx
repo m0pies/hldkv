@@ -2,12 +2,13 @@
 
 import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
 export default function Hero3d() {
     const containerRef = useRef(null);
+    const [isDragging, setIsDragging] = useState(false);
 
     return (
         <section ref={containerRef} id="hero" className="relative h-screen w-full">
@@ -16,20 +17,20 @@ export default function Hero3d() {
                 eventPrefix="client"
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 style={{
-                    touchAction: 'pan-y pinch-zoom',
-                    overscrollBehaviorY: 'auto',
-                    overscrollBehavior: 'contain',                   
+                    touchAction: isDragging ? "none" : "pan-y pinch-zoom",
                 }}
                 onPointerDown={(e) => {
                     if (e.pointerType === "touch") {
-                    document.body.style.overflow = "hidden";
+                        setIsDragging(true);
                     }
                 }}
-                onPointerUp={(e) => {
-                    if (e.pointerType === "touch") {
-                    document.body.style.overflow = "";
-                    }
-                }}>
+                onPointerUp={() => {
+                    setIsDragging(false);
+                }}
+                onPointerCancel={() => {
+                    setIsDragging(false);
+                }}
+            >
                 <color attach="background" args={["#0D0D0C"]} />
 
                 <Suspense fallback={null}>
