@@ -1,4 +1,8 @@
-import Hero from "./components/Hero3d";
+import dynamic from "next/dynamic";
+const Hero = dynamic(() => import("./components/Hero3d"), {
+  ssr: false,
+});
+
 import Work from "./components/Work";
 import Services from "./components/Services";
 import About from "./components/About";
