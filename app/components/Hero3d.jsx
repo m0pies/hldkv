@@ -2,46 +2,33 @@
 
 import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
-function WheelPassthrough() {
-  const { gl } = useThree();
+const customEvents = (state) => ({
+  ...events(state),
+  compute: (event, state) => {
+    if (event.type === 'wheel') return;
 
-  useEffect(() => {
-    const canvas = gl.domElement;
-
-    const handleWheel = (event) => {
-      // Самое важное — НЕ вызываем event.preventDefault()
-      // + passive: true позволяет браузеру скроллить нативно и быстро
-    };
-
-    // Добавляем listener с passive: true → браузер НЕ блокирует скролл
-    canvas.addEventListener('wheel', handleWheel, { passive: true });
-
-    // Опционально: можно добавить флаг, чтобы не мешать, если вдруг нужен зум в будущем
-    // canvas.addEventListener('wheel', (e) => {
-    //   if (e.ctrlKey) return; // если Ctrl+wheel — позволяем зум страницы
-    // }, { passive: true });
-
-    return () => {
-      canvas.removeEventListener('wheel', handleWheel);
-    };
-  }, [gl]);
-
-  return null;
-}
+    state.pointer.set(
+      (event.offsetX / state.size.width) * 2 - 1,
+      -(event.offsetY / state.size.height) * 2 + 1
+    );
+    state.raycaster.setFromCamera(state.pointer, state.camera);
+  },
+});
 
 export default function Hero3d() {
     return (
         <section id="hero" className="relative h-screen w-full pointer-events-none">
             <Canvas 
+                events={customEvents}
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 style={{
                     touchAction: 'pan-y pinch-zoom',
                     overscrollBehaviorY: 'auto',
-                    overscrollBehavior: 'contain',
+                    overscrollBehavior: 'contain',                    
                 }}>
                 <color attach="background" args={["#0D0D0C"]} />
 
@@ -55,7 +42,6 @@ export default function Hero3d() {
                 <directionalLight position={[5, 10, 5]} intensity={3.5} />
 
                 <Model />
-                <WheelPassthrough />
 
                 {/* <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} pointerEvents={false} /> */}
             </Canvas>
