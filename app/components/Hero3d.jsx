@@ -14,7 +14,8 @@ export default function Hero3d() {
                 style={{
                     touchAction: 'pan-y pinch-zoom',
                     overscrollBehaviorY: 'auto',
-                    overscrollBehavior: 'contain',                    
+                    overscrollBehavior: 'contain',
+                    pointerEvents: "none",                    
                 }}>
                 <color attach="background" args={["#0D0D0C"]} />
 
