@@ -6,24 +6,10 @@ import { Suspense } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
-const customEvents = (state) => ({
-  ...events(state),
-  compute: (event, state) => {
-    if (event.type === 'wheel') return;
-
-    state.pointer.set(
-      (event.offsetX / state.size.width) * 2 - 1,
-      -(event.offsetY / state.size.height) * 2 + 1
-    );
-    state.raycaster.setFromCamera(state.pointer, state.camera);
-  },
-});
-
 export default function Hero3d() {
     return (
         <section id="hero" className="relative h-screen w-full pointer-events-none">
             <Canvas 
-                events={customEvents}
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 style={{
                     touchAction: 'pan-y pinch-zoom',
