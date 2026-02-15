@@ -21,7 +21,6 @@
 
 html, body {
     scroll-behavior: smooth;
-    overflow-y: auto;
 }
 
 canvas {
