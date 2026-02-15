@@ -118,14 +118,14 @@ export default function ServicesSection() {
             style={{ height: `${services.length * 100}vh` }}
         >
             <div className="sticky top-0 h-screen">
-                <div className="relative mx-auto h-full w-full max-w-[1400px] px-6 pt-10 pb-24">
+                <div className="relative mx-auto h-full w-full max-w-[1400px] px-8 pt-8 pb-32">
                     <div className="flex justify-center">
                         <h2 className="text-sm tracking-[0.2em] text-white/50">SERVICES</h2>
                     </div>
 
-                    <div className="mt-10 grid h-[calc(100%-2.5rem)] grid-cols-1 items-center gap-10 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="mt-8 grid h-[calc(100%-2.5rem)] grid-cols-1 items-center gap-12 md:grid-cols-2 lg:grid-cols-3">
                         <div className="hidden lg:block">
-                            <div className="relative max-w-[28ch]">
+                            <div className="relative max-w-xl">
                                 <div style={{ opacity: aOpacity }} className="absolute inset-0">
                                     <div className="text-4xl font-semibold">
                                         {a.title}
@@ -145,7 +145,7 @@ export default function ServicesSection() {
 
                         <div className="hidden md:block lg:hidden">
                             <div className="max-w-xl">
-                                <div className="relative max-w-[28ch]">
+                                <div className="relative max-w-xl">
                                     <div style={{ opacity: aOpacity }} className="absolute inset-0">
                                         <div className="text-4xl font-semibold">
                                             {a.title}
@@ -199,7 +199,7 @@ export default function ServicesSection() {
                         </div>
 
                         <div className="order-2 md:hidden">
-                            <div className="relative max-w-[28ch]">
+                            <div className="relative max-w-xl">
                                 <div style={{ opacity: aOpacity }} className="absolute inset-0">
                                     <div className="text-4xl font-semibold ">{a.title}</div>
                                 </div>
@@ -223,10 +223,8 @@ export default function ServicesSection() {
                         </div>
                     </div>
 
-                    <div className="pointer-events-none absolute left-1/2 bottom-24 -translate-x-1/2 text-center">
-                        <div className="text-xs tracking-[0.25em] text-white/40">
-                            SCROLL TO EXPLORE
-                        </div>
+                    <div className="mt-4 flex justify-center">
+                        <span className="text-xs tracking-[0.25em] text-white/40">SCROLL TO EXPLORE</span>
                     </div>
                 </div>
             </div>

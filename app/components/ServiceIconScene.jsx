@@ -275,6 +275,7 @@ function Scene({ progress }) {
 
             let fit = 1.1;
             if (winW < 768) fit = 0.95;
+            if (winW < 400) fit = 1.25;
             else if (winW < 1024) fit = 1.0;
 
             fitCameraToObject(camera, target, fit);
