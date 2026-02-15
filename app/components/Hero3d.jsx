@@ -29,7 +29,7 @@ export default function Hero3d() {
 
                 <Model />
 
-                <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} pointerEvents={false} />
+                {/* <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} pointerEvents={false} /> */}
             </Canvas>
         </section>
     );
