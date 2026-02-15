@@ -2,14 +2,18 @@
 
 import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
 export default function Hero3d() {
+    const containerRef = useRef(null);
+
     return (
-        <section id="hero" className="relative h-screen w-full">
+        <section ref={containerRef} id="hero" className="relative h-screen w-full">
             <Canvas 
+                eventSource={containerRef}
+                eventPrefix="client"
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 style={{
                     touchAction: 'pan-y pinch-zoom',
