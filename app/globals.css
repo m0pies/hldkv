@@ -19,12 +19,11 @@
   }
 }
 
-html, body {
+html {
     scroll-behavior: smooth;
     overflow-y: auto;
 }
 
 canvas {
   touch-action: pan-y !important;
-  pointer-events: auto;
 }
