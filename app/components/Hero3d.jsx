@@ -19,6 +19,16 @@ export default function Hero3d() {
                     touchAction: 'pan-y pinch-zoom',
                     overscrollBehaviorY: 'auto',
                     overscrollBehavior: 'contain',                   
+                }}
+                onPointerDown={(e) => {
+                    if (e.pointerType === "touch") {
+                    document.body.style.overflow = "hidden";
+                    }
+                }}
+                onPointerUp={(e) => {
+                    if (e.pointerType === "touch") {
+                    document.body.style.overflow = "";
+                    }
                 }}>
                 <color attach="background" args={["#0D0D0C"]} />
 
