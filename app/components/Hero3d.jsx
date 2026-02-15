@@ -11,7 +11,11 @@ export default function Hero3d() {
         <section id="hero" className="relative h-screen w-full">
             <Canvas 
                 camera={{ position: [0, 0, 5], fov: 50 }}
-                style={{ touchAction: 'pan-y pinch-zoom' }}>
+                style={{
+                    touchAction: 'pan-y pinch-zoom',
+                    overscrollBehaviorY: 'auto',
+                    overscrollBehavior: 'contain',
+                }}>
                 <color attach="background" args={["#0D0D0C"]} />
 
                 <Suspense fallback={null}>
@@ -25,7 +29,7 @@ export default function Hero3d() {
 
                 <Model />
 
-                <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} />
+                {/* <OrbitControls enableRotate={false} enableZoom={false} enablePan={false} /> */}
             </Canvas>
         </section>
     );
