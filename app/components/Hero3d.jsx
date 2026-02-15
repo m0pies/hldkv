@@ -7,23 +7,6 @@ import Model from "../Model";
 import BgText from "../BgText";
 
 export default function Hero3d() {
-    const { gl } = useThree();
-    useLayoutEffect(() => {
-        gl.domElement.style.touchAction = "pan-y pinch-zoom !important";
-
-        const preventDefault = (e) => {
-        if (e.touches.length === 1) {
-        }
-        };
-
-        gl.domElement.addEventListener("touchstart", preventDefault, { passive: false });
-        gl.domElement.addEventListener("touchmove", preventDefault, { passive: false });
-
-        return () => {
-        gl.domElement.removeEventListener("touchstart", preventDefault);
-        gl.domElement.removeEventListener("touchmove", preventDefault);
-        };
-    }, [gl]);
     return (
         <section id="hero" className="relative h-screen w-full">
             <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
