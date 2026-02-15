@@ -8,7 +8,7 @@ import BgText from "../BgText";
 
 export default function Hero3d() {
     return (
-        <section id="hero" className="relative h-screen w-full pointer-events-none">
+        <section id="hero" className="relative h-screen w-full">
             <Canvas 
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 eventPrefix="client"
@@ -16,9 +16,6 @@ export default function Hero3d() {
                     touchAction: 'pan-y pinch-zoom',
                     overscrollBehaviorY: 'auto',
                     overscrollBehavior: 'contain',                   
-                }}
-                onWheel={(e) => {
-                    e.stopPropagation();
                 }}>
                 <color attach="background" args={["#0D0D0C"]} />
 
