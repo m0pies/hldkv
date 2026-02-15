@@ -11,7 +11,6 @@ export default function Hero3d() {
         <section id="hero" className="relative h-screen w-full pointer-events-none">
             <Canvas 
                 camera={{ position: [0, 0, 5], fov: 50 }}
-                eventSource={document.body}
                 eventPrefix="client"
                 style={{
                     touchAction: 'pan-y pinch-zoom',
