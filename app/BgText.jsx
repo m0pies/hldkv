@@ -11,6 +11,9 @@ export default function BgText() {
     const groupRef = useRef();
     const leftRef = useRef();
     const rightRef = useRef();
+    const leftSubRef  = useRef();
+    const rightSubRef = useRef();
+    const layoutReady = useRef(false);
 
     const leftReady = useRef(false);
     const rightReady = useRef(false);
@@ -26,19 +29,50 @@ export default function BgText() {
         startRightX: 0,
     });
 
-    const { fontSize, z, gap, targetOpacity, offscreenX } = useMemo(() => {
-        const pxToWorld = viewport.width / size.width;
+    const widths = useRef({
+        leftW: 0,
+        rightW: 0,
+    });
 
+    const { fontSize, subtitleFontSize, z, gap, targetOpacity, offscreenX, subYMain, subYThat } = useMemo(() => {
+        const pxToWorld = viewport.width / size.width;
         const MAX_PX = 1024;
         const usedPx = Math.min(size.width, MAX_PX);
         const worldWidth = usedPx * pxToWorld;
 
+        let mainCoef = 0.20;
+        if (size.width >= 1200) {
+            mainCoef = 0.25;
+        } else if (size.width >= 768) {
+            mainCoef = 0.205;
+        }
+
+        let subCoef = 0.045;
+        if (size.width >= 1200) {
+            subCoef = 0.03;
+        } else if (size.width >= 768) {
+            subCoef = 0.035;
+        }
+
+        const calculatedFontSize = worldWidth * mainCoef;
+
+        let subYMainVal = -calculatedFontSize * 0.5;
+        let subYThatVal = -calculatedFontSize * 0.5;
+
+        if (size.width < 768) {
+            subYMainVal = calculatedFontSize * 0.9;
+            subYThatVal = -calculatedFontSize * 0.6;
+        }
+
         return {
-            fontSize: worldWidth * 0.19,
+            fontSize: calculatedFontSize,
+            subtitleFontSize: worldWidth * subCoef,
             z: -3,
             gap: worldWidth * 0.05,
             targetOpacity: 1,
             offscreenX: viewport.width / 2 + worldWidth * 0.6,
+            subYMain: subYMainVal,
+            subYThat: subYThatVal,
         };
     }, [size.width, viewport.width]);
 
@@ -66,6 +100,18 @@ export default function BgText() {
 
         layout.current.startLeftX = finalLeftX - offscreenX;
         layout.current.startRightX = finalRightX + offscreenX;
+
+        widths.current.leftW = leftW;
+        widths.current.rightW = rightW;
+
+        layoutReady.current = true;
+
+        if (leftSubRef.current) {
+            leftSubRef.current.position.x = finalLeftX;
+        }
+        if (rightSubRef.current) {
+            rightSubRef.current.position.x = finalRightX + rightW;
+        }
 
         if (groupRef.current) groupRef.current.position.set(0, 0, z);
 
@@ -130,6 +176,38 @@ export default function BgText() {
         }
     });
 
+    useFrame((_, delta) => {
+        if (!layoutReady.current) {
+            if (leftSubRef.current)  leftSubRef.current.material.opacity = 0;
+            if (rightSubRef.current) rightSubRef.current.material.opacity = 0;
+            return;
+        }
+
+        if (!hasPlayed.current) {
+            if (leftSubRef.current)  leftSubRef.current.material.opacity = 0;
+            if (rightSubRef.current) rightSubRef.current.material.opacity = 0;
+            return;
+        }
+
+        const target = 0.78;
+        const speed = 2;
+
+        if (leftSubRef.current) {
+            leftSubRef.current.material.opacity = THREE.MathUtils.lerp(
+                leftSubRef.current.material.opacity,
+                target,
+                speed * delta
+            );
+        }
+        if (rightSubRef.current) {
+            rightSubRef.current.material.opacity = THREE.MathUtils.lerp(
+                rightSubRef.current.material.opacity,
+                target,
+                speed * delta
+            );
+        }
+    });    
+
     return (
         <group ref={groupRef} position={[0, 0, z]}>
             <Text
@@ -158,6 +236,36 @@ export default function BgText() {
                 opacity={0}
             >
                 DESIGN
+            </Text>
+
+            <Text
+                ref={leftSubRef}
+                font="./ppneuemontreal-book.otf"
+                fontSize={subtitleFontSize}
+                color="#F3F3F2"
+                anchorX="left"
+                anchorY="top"
+                transparent
+                opacity={0}
+                position-x={0}
+                position-y={subYMain}
+            >
+                Solving real problems
+            </Text>
+
+            <Text
+                ref={rightSubRef}
+                font="./ppneuemontreal-book.otf"
+                fontSize={subtitleFontSize}
+                color="#F3F3F2"
+                anchorX="right"
+                anchorY="top"
+                transparent
+                opacity={0}
+                position-x={0}
+                position-y={subYThat}
+            >
+                through thoughtful design
             </Text>
         </group>
     );
