@@ -41,7 +41,7 @@ export default function ContactSection() {
             <div className="mx-auto max-w-[1200px] px-8 pt-8 pb-8 md:pt-48 md:pb-24">
                 <div className="flex flex-col gap-8">
                     <header className="flex flex-col gap-2">
-                        <h2 className="text-5xl font-semibold md:text-3xl lg:text-4xl">
+                        <h2 className="text-4xl font-semibold">
                             Let’s build something <span className="text-white/60">clean & bold.</span>
                         </h2>
                         <p className="max-w-2xl text-lg text-balance text-[#7d7d7d]">
