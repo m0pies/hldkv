@@ -23,7 +23,7 @@ export default function Hero3d() {
             id="hero"
             className="relative h-screen w-full"
         >
-            <Canvas 
+            <Canvas
                 dpr={[1,1.5]}
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 {...(!isTouchDevice && {
@@ -37,7 +37,7 @@ export default function Hero3d() {
                 <color attach="background" args={["#0D0D0C"]} />
 
                 <Suspense fallback={null}>
-                    {/* <Environment preset="studio" /> */}
+                    <Environment preset="studio" />
                 </Suspense>
 
                 <BgText />
