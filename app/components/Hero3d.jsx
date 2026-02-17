@@ -36,6 +36,7 @@ export default function Hero3d() {
             >
                 <color attach="background" args={["#0D0D0C"]} />
 
+
                 <Suspense fallback={null}>
                     <Environment preset="studio" />
                 </Suspense>
