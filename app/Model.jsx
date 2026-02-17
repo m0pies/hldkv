@@ -122,7 +122,7 @@ export default function Model() {
     attenuationDistance: 100,
     attenuationColor: "#ffffff",
     samples: 6,
-    resolution: 1024,
+    resolution: 256,
     backside: true,
     backsideThickness: 1.5,
     depthWrite: false,
