@@ -1,3 +1,6 @@
+"use client";
+import { motion } from "framer-motion";
+
 export default function Work() {
     const works = [
         {
@@ -20,17 +23,19 @@ export default function Work() {
 
     return (
         <section id="works" className="bg-[#0D0D0C] text-white">
-            <div className="mx-auto w-full max-w-[1400px] px-6 py-24">
-                <div className="flex flex-col justify-between gap-2">
-                    <h2 className="text-3xl md:text-4xl font-semibold tracking-tight">
+            <div className="flex flex-col gap-8 mx-auto w-full max-w-[1200px] px-8 pt-8 pb-24">
+                <div className="flex flex-col justify-between">
+                    <motion.h2
+                        initial={{ opacity: 0, y: 0 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.5 }}
+                        transition={{ duration: 5.0, ease: [0.16, 1, 0.3, 1] }}
+                        className="text-lg text-[#7d7d7d]">
                         Selected works
-                    </h2>
-                    <p className="text-white/60 max-w-lg">
-                        A few projects I’m proud of — visual identity, web, and 3D explorations
-                    </p>
+                    </motion.h2>
                 </div>
 
-                <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {works.map((w, i) => (
                         <article
                         key={i}

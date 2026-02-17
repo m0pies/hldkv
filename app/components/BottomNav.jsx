@@ -31,7 +31,7 @@ export default function BottomNav() {
             },
             {
                 threshold: 0.01,
-                rootMargin: "0px 0px -35% 0px",
+                rootMargin: "0px 0px -20% 0px",
             }
         );
 
@@ -75,10 +75,10 @@ export default function BottomNav() {
                             ease: [0.22, 1, 0.36, 1],
                         },
                     }}
-                    className="fixed bottom-4 left-0 right-0 z-[999] pointer-events-none"
+                    className="fixed bottom-8 left-0 right-0 z-[999]"
                 >
-                    <div className="mx-auto w-fit max-w-[1400px] px-6 pointer-events-auto">
-                        <div className="flex gap-6 rounded-full border border-white/15 bg-black/40 px-5 py-3 backdrop-blur">
+                    <div className="mx-auto w-fit max-w-[1200px] px-6 pointer-events-auto">
+                        <div className="flex gap-6 rounded-full border border-white/5 bg-black/40 px-5 py-3 backdrop-blur">
                             <Link href="/#hero" onClick={go("#hero")} className="text-white/80 hover:text-white">
                                 Home
                             </Link>

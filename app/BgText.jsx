@@ -213,9 +213,9 @@ export default function BgText() {
             <Text
                 ref={leftRef}
                 onSync={onLeftSync}
-                font="./ppneuemontreal-bold.otf"
+                font="./geist-bold.otf"
                 fontSize={fontSize}
-                color="#F3F3F2"
+                color="#fff"
                 anchorX="left"
                 anchorY="middle"
                 transparent
@@ -227,9 +227,9 @@ export default function BgText() {
             <Text
                 ref={rightRef}
                 onSync={onRightSync}
-                font="./ppneuemontreal-bold.otf"
+                font="./geist-bold.otf"
                 fontSize={fontSize}
-                color="#F3F3F2"
+                color="#fff"
                 anchorX="left"
                 anchorY="middle"
                 transparent
@@ -240,9 +240,9 @@ export default function BgText() {
 
             <Text
                 ref={leftSubRef}
-                font="./ppneuemontreal-book.otf"
+                font="./geist-light.otf"
                 fontSize={subtitleFontSize}
-                color="#F3F3F2"
+                color="#7d7d7d"
                 anchorX="left"
                 anchorY="top"
                 transparent
@@ -255,9 +255,9 @@ export default function BgText() {
 
             <Text
                 ref={rightSubRef}
-                font="./ppneuemontreal-book.otf"
+                font="./geist-light.otf"
                 fontSize={subtitleFontSize}
-                color="#F3F3F2"
+                color="#7d7d7d"
                 anchorX="right"
                 anchorY="top"
                 transparent

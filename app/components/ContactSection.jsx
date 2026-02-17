@@ -4,10 +4,11 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const socials = [
-    { name: "Instagram", href: "https://instagram.com/", bg: "from-zinc-900 to-zinc-900", icon: InstagramIcon },
-    { name: "LinkedIn", href: "https://linkedin.com/in/", bg: "from-zinc-900 to-zinc-900", icon: LinkedInIcon },
-    { name: "X / Twitter", href: "https://x.com/", bg: "from-zinc-900 to-zinc-900", icon: XIcon },
-    { name: "Email", href: "mailto:hello@yourmail.com", bg: "from-zinc-900 to-zinc-900", icon: MailIcon },
+    { id: "instagram", name: "Instagram", href: "https://instagram.com/", icon: InstagramIcon },
+    { id: "linkedin", name: "LinkedIn", href: "https://linkedin.com/in/", icon: LinkedInIcon },
+    { id: "twitter", name: "Twitter", href: "https://x.com/", icon: XIcon },
+    { id:"email", name: "Email", href: "mailto:hello@yourmail.com", icon: MailIcon },
+    { id: "threads", name: "Threads", href: "https://threads.com/", icon: ThreadsIcon},
 ];
 
 const SOFT_EASE = [0.16, 1, 0.3, 1];
@@ -37,26 +38,25 @@ const cardVariants = {
 export default function ContactSection() {
     return (
         <section id="contact" className="relative bg-[#0D0D0C] text-white">
-            <div className="mx-auto max-w-[1400px] px-6 pb-24 pt-20">
-                <div className="flex flex-col gap-10">
-                    <header className="flex flex-col gap-4">
-                        <p className="text-sm text-white/50">CONTACT</p>
-                        <h2 className="text-4xl md:text-6xl font-semibold">
+            <div className="mx-auto max-w-[1200px] px-8 pt-8 pb-8 md:pt-48 md:pb-24">
+                <div className="flex flex-col gap-8">
+                    <header className="flex flex-col gap-2">
+                        <h2 className="text-5xl font-semibold md:text-3xl lg:text-4xl">
                             Let’s build something <span className="text-white/60">clean & bold.</span>
                         </h2>
-                        <p className="max-w-2xl text-white/70 text-base md:text-lg leading-relaxed">
+                        <p className="max-w-2xl text-lg text-balance text-[#7d7d7d]">
                             Reach out for collaborations, projects, or just to say hi.
                         </p>
                     </header>
 
                     <motion.div
-                        className="grid grid-cols-2 gap-4 sm:grid-cols-4"
+                        className="grid grid-cols-5 gap-4"
                         initial="hidden"
                         whileInView="show"
                         viewport={{
                             once: true,
                             amount: 0.6,
-                            margin: "0px 0px -10% 0px",
+                            margin: "0px 0px -5% 0px",
                         }}
                     >
                         {socials.map((s, i) => {
@@ -64,7 +64,7 @@ export default function ContactSection() {
 
                             return (
                                 <motion.a
-                                    key={s.name}
+                                    key={s.id}
                                     href={s.href}
                                     target="_blank"
                                     rel="noreferrer"
@@ -85,41 +85,10 @@ export default function ContactSection() {
                                     }}
                                     style={{ willChange: "transform, opacity" }}
                                 >
-                                    <div
-                                        className={[
-                                            "relative aspect-square w-full rounded-[24px]",
-                                            "bg-gradient-to-br",
-                                            s.bg,
-                                            "shadow-[0_20px_60px_rgba(0,0,0,0.55)]",
-                                            "overflow-hidden",
-                                            "ring-2 ring-white/10 group-hover:ring-white/25",
-                                            "transition-[box-shadow,ring-color] duration-[1000ms] ease-out",
-                                        ].join(" ")}
-                                    >
-                                        <div className="pointer-events-none absolute inset-0 rounded-[24px] ring-1 ring-white/15" />
-
-                                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                                            <div
-                                                className={[
-                                                    "h-28 w-28 md:h-32 md:w-32 rounded-full",
-                                                    "bg-white/[0.010] blur-2xl",
-                                                    "shadow-[0_0_0_rgba(0,0,0,0)]",
-                                                    "transition-all duration-[1000ms] ease-out",
-                                                    "group-hover:bg-white/[0.028]",
-                                                ].join(" ")}
-                                            />
-                                        </div>
-
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <Icon className="h-14 w-14 md:h-16 md:w-16 text-white drop-shadow-[0_12px_30px_rgba(0,0,0,0.45)]" />
-                                        </div>
-
-                                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                                            <span className="text-sm font-medium text-white/90">{s.name}</span>
-                                            <span className="text-white/70 transition-transform duration-[1000ms] ease-out group-hover:translate-x-0.5">
-              ↗
-            </span>
-                                        </div>
+                                    <div className="flex flex-col items-center justify-center relative aspect-square w-full rounded-lg sm:rounded-xl overflow-hidden bg-black/10 ring-1 ring-white/10 group-hover:ring-white/20 group-hover:text-white transition-all duration-500 ease-out">
+                                        <div className="pointer-events-none absolute inset-0  ring-1 ring-white/15" />
+                                        <Icon className="h-7 w-7 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-16 md:w-16 text-[#7d7d7d] group-hover:text-white duration-500 ease-out" />
+                                        <span className="hidden md:block absolute bottom-3 lg:bottom-4 left-4 right-4 text-s mlg:text-base text-center font-regular text-[#7d7d7d] group-hover:text-white duration-500 ease-out">{s.name}</span>
                                     </div>
                                 </motion.a>
                             );
@@ -128,6 +97,7 @@ export default function ContactSection() {
 
                 </div>
             </div>
+            
         </section>
     );
 }
@@ -158,8 +128,17 @@ function XIcon({ className = "" }) {
 
 function MailIcon({ className = "" }) {
     return (
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
+            <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+        </svg>
+    );
+}
+
+function ThreadsIcon({ className = "" }) {
+    return (
         <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="currentColor" className={className} viewBox="0 0 16 16">
-            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z" />
+            <path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/>
         </svg>
     );
 }

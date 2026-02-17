@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import ServiceIconScene from "./ServiceIconScene";
 import * as THREE from "three";
 import { services } from "../data/services";
+import { motion } from "framer-motion";
 
 function clamp01(x) {
     return Math.min(1, Math.max(0, x));
@@ -100,8 +101,8 @@ export default function ServicesSection() {
     if (!a || !b) {
         return (
             <section id="services" className="bg-[#0D0D0C] text-white h-screen">
-                <div className="mx-auto max-w-[1400px] px-6 py-20">
-                    <div className="text-white/60">Loading services…</div>
+                <div className="mx-auto max-w-[1400px] px-8 py-24">
+                    <div className="text-[#7d7d7d]">Loading services…</div>
                 </div>
             </section>
         );
@@ -118,21 +119,28 @@ export default function ServicesSection() {
             style={{ height: `${services.length * 100}vh` }}
         >
             <div className="sticky top-0 h-screen">
-                <div className="relative mx-auto h-full w-full max-w-[1400px] px-8 pt-8 pb-32">
+                <div className="relative mx-auto h-full w-full max-w-[1200px] px-8 pt-8 pb-32">
                     <div className="flex justify-center">
-                        <h2 className="text-sm tracking-[0.2em] text-white/50">SERVICES</h2>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 0 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, amount: 0.5 }}
+                            transition={{ duration: 5.0, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-lg text-[#7d7d7d]">
+                            Services
+                        </motion.h2>
                     </div>
 
-                    <div className="mt-8 grid h-[calc(100%-2.5rem)] grid-cols-1 items-center gap-12 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid h-[calc(100%-2.5rem)] grid-cols-1 items-center gap-12 md:grid-cols-2 lg:grid-cols-3">
                         <div className="hidden lg:block">
                             <div className="relative max-w-xl">
                                 <div style={{ opacity: aOpacity }} className="absolute inset-0">
-                                    <div className="text-4xl font-semibold">
+                                    <div className="text-4xl font-semibold text-left">
                                         {a.title}
                                     </div>
                                 </div>
                                 <div style={{ opacity: bOpacity }} className="absolute inset-0">
-                                    <div className="text-4xl font-semibold">
+                                    <div className="text-4xl text-left font-semibold">
                                         {b.title}
                                     </div>
                                 </div>
@@ -201,12 +209,12 @@ export default function ServicesSection() {
                         <div className="order-2 md:hidden">
                             <div className="relative max-w-xl">
                                 <div style={{ opacity: aOpacity }} className="absolute inset-0">
-                                    <div className="text-4xl font-semibold ">{a.title}</div>
+                                    <div className="text-2xl font-semibold ">{a.title}</div>
                                 </div>
                                 <div style={{ opacity: bOpacity }} className="absolute inset-0">
-                                    <div className="text-4xl font-semibold ">{b.title}</div>
+                                    <div className="text-2xl font-semibold ">{b.title}</div>
                                 </div>
-                                <div className="invisible text-4xl font-semibold">
+                                <div className="invisible text-2xl font-semibold">
                                     {maxTitle}
                                 </div>
                             </div>
@@ -224,7 +232,7 @@ export default function ServicesSection() {
                     </div>
 
                     <div className="mt-4 flex justify-center">
-                        <span className="text-xs tracking-[0.25em] text-white/40">SCROLL TO EXPLORE</span>
+                        <span className="text-xs tracking-[0.15em] text-white/40">SCROLL TO EXPLORE</span>
                     </div>
                 </div>
             </div>
