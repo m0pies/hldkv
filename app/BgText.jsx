@@ -213,7 +213,7 @@ export default function BgText() {
             <Text
                 ref={leftRef}
                 onSync={onLeftSync}
-                font="./geist-bold.otf"
+                font="./font/geist-bold.otf"
                 fontSize={fontSize}
                 color="#fff"
                 anchorX="left"
@@ -227,7 +227,7 @@ export default function BgText() {
             <Text
                 ref={rightRef}
                 onSync={onRightSync}
-                font="./geist-bold.otf"
+                font="./font/geist-bold.otf"
                 fontSize={fontSize}
                 color="#fff"
                 anchorX="left"
@@ -240,7 +240,7 @@ export default function BgText() {
 
             <Text
                 ref={leftSubRef}
-                font="./geist-light.otf"
+                font="./font/geist-light.otf"
                 fontSize={subtitleFontSize}
                 color="#7d7d7d"
                 anchorX="left"
@@ -255,7 +255,7 @@ export default function BgText() {
 
             <Text
                 ref={rightSubRef}
-                font="./geist-light.otf"
+                font="./font/geist-light.otf"
                 fontSize={subtitleFontSize}
                 color="#7d7d7d"
                 anchorX="right"
