@@ -250,7 +250,7 @@ export default function BgText() {
                 position-x={0}
                 position-y={subYMain}
             >
-                Solving real problems
+                Solving your problems
             </Text>
 
             <Text
