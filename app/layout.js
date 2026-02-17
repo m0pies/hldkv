@@ -1,6 +1,10 @@
-import { GeistSans } from 'geist/font/sans';
+import { Geist } from "next/font/google";
 import "./globals.css";
 import BottomNav from "./components/BottomNav";
+
+const geist = Geist({
+  subsets: ["latin"],
+});
 
 export const metadata = {
   title: "hldkv design",
@@ -11,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={GeistSans.variable}
+        className={geist.className}
         style={{ backgroundColor: '#0d0d0c' }}
       >
         <BottomNav />
