@@ -1,12 +1,14 @@
 "use client";
 
 import * as THREE from "three";
-import React, { useLayoutEffect, useRef, useMemo } from "react";
+import React, { useLayoutEffect, useRef, useMemo, useEffect } from "react";
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 
 export default function Model() {
   const { size, viewport, gl } = useThree();
+
+  const { invalidate } = useThree();
 
   const modelScale = useMemo(() => {
     const pxToWorld = viewport.width / size.width;
@@ -76,6 +78,9 @@ export default function Model() {
       pivot.current.rotation.y += totalDx * ROT_SPEED;
       pivot.current.rotation.x += totalDy * ROT_SPEED;
 
+      invalidate();
+
+
       drag.current.velX = totalDx * ROT_SPEED;
       drag.current.velY = totalDy * ROT_SPEED;
 
@@ -141,70 +146,160 @@ export default function Model() {
     offset.current.position.copy(center).multiplyScalar(-1);
   }, [nodes]);
 
-  useFrame((state, delta) => {
-    if (!pivot.current) return;
+  useEffect(() => {
+  let frame;
+  let start = null;
 
-    if (!introDone.current) {
-      const DURATION = 2.5;
-      const TURNS = 1;
-      const FINAL_FACE = 0;
+  const DURATION = 2500; // миллисекунды
+  const TURNS = 1;
+  const FINAL_FACE = 0;
 
-      t.current += delta;
-      const p = Math.min(1, t.current / DURATION);
+  const animate = (time) => {
+    if (!start) start = time;
+    const elapsed = time - start;
+    const p = Math.min(1, elapsed / DURATION);
 
+    if (pivot.current) {
       const easeInOutSine = 0.5 - 0.5 * Math.cos(Math.PI * p);
-
       const spin = TURNS * 2 * Math.PI;
       pivot.current.rotation.y = FINAL_FACE + spin * easeInOutSine;
 
-      const fade = Math.min(1, p / 0.35);
-      const fadeSmooth = fade * fade * (3 - 2 * fade);
-      pivot.current.visible = true;
-
       if (materialRef.current) {
-        materialRef.current.opacity = fadeSmooth;
+        materialRef.current.opacity = p;
       }
 
-      if (p >= 1) {
-        pivot.current.rotation.y = FINAL_FACE;
-        introDone.current = true;
-        if (materialRef.current) materialRef.current.opacity = 1;
-      }
-      return;
+      invalidate(); // 🔥 говорим r3f перерендерить
     }
 
-    if (isTouchLayout) {
-      if (!drag.current.active) {
-        drag.current.velX *= 0.92;
-        drag.current.velY *= 0.92;
-
-        pivot.current.rotation.y += drag.current.velX;
-        pivot.current.rotation.x += drag.current.velY;
-      }
-
-      pivot.current.rotation.x = THREE.MathUtils.clamp(
-        pivot.current.rotation.x,
-        -0.8,
-        0.8
-      );
-      return;
+    if (p < 1) {
+      frame = requestAnimationFrame(animate);
     }
+  };
 
+  frame = requestAnimationFrame(animate);
+
+  return () => cancelAnimationFrame(frame);
+}, []);
+
+useFrame((state, delta) => {
+  if (!pivot.current) return;
+
+  let needsRender = false;
+
+  // 👉 Pointer rotation (desktop)
+  if (!isTouchLayout) {
     const x = state.pointer.x;
     const y = state.pointer.y;
     const smooth = 1 - Math.pow(0.001, delta);
 
-    pivot.current.rotation.y = THREE.MathUtils.lerp(
+    const newY = THREE.MathUtils.lerp(
       pivot.current.rotation.y,
       x * 0.8,
       smooth
     );
-    pivot.current.rotation.x = THREE.MathUtils.lerp(
+
+    const newX = THREE.MathUtils.lerp(
       pivot.current.rotation.x,
       -y * 0.4,
       smooth
     );
-  });
+
+    if (
+      Math.abs(newY - pivot.current.rotation.y) > 0.0001 ||
+      Math.abs(newX - pivot.current.rotation.x) > 0.0001
+    ) {
+      pivot.current.rotation.y = newY;
+      pivot.current.rotation.x = newX;
+      needsRender = true;
+    }
+  }
+
+  // 👉 Touch inertia (если оставляешь)
+  if (isTouchLayout && !drag.current.active) {
+    drag.current.velX *= 0.92;
+    drag.current.velY *= 0.92;
+
+    if (
+      Math.abs(drag.current.velX) > 0.0001 ||
+      Math.abs(drag.current.velY) > 0.0001
+    ) {
+      pivot.current.rotation.y += drag.current.velX;
+      pivot.current.rotation.x += drag.current.velY;
+      needsRender = true;
+    }
+  }
+
+  if (needsRender) {
+    invalidate(); // 🔥 рендерим только когда есть движение
+  }
+});
+
+
+
+  // useFrame((state, delta) => {
+  //   if (!pivot.current) return;
+
+  //   if (!introDone.current) {
+  //     const DURATION = 2.5;
+  //     const TURNS = 1;
+  //     const FINAL_FACE = 0;
+
+  //     t.current += delta;
+  //     const p = Math.min(1, t.current / DURATION);
+
+  //     const easeInOutSine = 0.5 - 0.5 * Math.cos(Math.PI * p);
+
+  //     const spin = TURNS * 2 * Math.PI;
+  //     pivot.current.rotation.y = FINAL_FACE + spin * easeInOutSine;
+
+  //     const fade = Math.min(1, p / 0.35);
+  //     const fadeSmooth = fade * fade * (3 - 2 * fade);
+  //     pivot.current.visible = true;
+
+  //     if (materialRef.current) {
+  //       materialRef.current.opacity = fadeSmooth;
+  //     }
+
+  //     if (p >= 1) {
+  //       pivot.current.rotation.y = FINAL_FACE;
+  //       introDone.current = true;
+  //       if (materialRef.current) materialRef.current.opacity = 1;
+  //     }
+  //     return;
+  //   }
+
+  //   if (isTouchLayout) {
+  //     if (!drag.current.active) {
+  //       drag.current.velX *= 0.92;
+  //       drag.current.velY *= 0.92;
+
+  //       pivot.current.rotation.y += drag.current.velX;
+  //       pivot.current.rotation.x += drag.current.velY;
+  //     }
+
+  //     pivot.current.rotation.x = THREE.MathUtils.clamp(
+  //       pivot.current.rotation.x,
+  //       -0.8,
+  //       0.8
+  //     );
+  //     return;
+  //   }
+
+  //   const x = state.pointer.x;
+  //   const y = state.pointer.y;
+  //   const smooth = 1 - Math.pow(0.001, delta);
+
+  //   pivot.current.rotation.y = THREE.MathUtils.lerp(
+  //     pivot.current.rotation.y,
+  //     x * 0.8,
+  //     smooth
+  //   );
+  //   pivot.current.rotation.x = THREE.MathUtils.lerp(
+  //     pivot.current.rotation.x,
+  //     -y * 0.4,
+  //     smooth
+  //   );
+  // });
 
   return (
     <group ref={pivot}>

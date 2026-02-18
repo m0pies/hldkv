@@ -24,6 +24,7 @@ export default function Hero3d() {
             className="relative h-screen w-full"
         >
             <Canvas
+                frameloop="demand"
                 dpr={[1,1.5]}
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 {...(!isTouchDevice && {
