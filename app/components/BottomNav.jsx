@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function BottomNav() {
+export default function BottomNav({ heroIntroStart }) {
     const pathname = usePathname();
 
     const [hide, setHide] = useState(false);
@@ -54,29 +54,29 @@ export default function BottomNav() {
 
     return (
         <AnimatePresence>
-            {!hide && (
+            {heroIntroStart && (
                 <motion.nav
-                    initial={{ y: 80, opacity: 0 }}
-                    animate={{
-                        y: 0,
-                        opacity: 1,
-                        transition: {
-                            duration: 0.7,
-                            delay: introDelay,
-                            ease: [0.22, 1, 0.36, 1],
-                        },
-                    }}
-                    exit={{
-                        y: 80,
-                        opacity: 0,
-                        transition: {
-                            duration: 0.22,
-                            delay: 0,
-                            ease: [0.22, 1, 0.36, 1],
-                        },
-                    }}
-                    className="fixed bottom-8 left-0 right-0 z-[999]"
-                >
+                initial={{ y: 80, opacity: 0 }}
+                animate={{
+                    y: 0,
+                    opacity: 1,
+                    transition: {
+                    duration: 0.7,
+                    delay: 0, // убираем introDelay
+                    ease: [0.22, 1, 0.36, 1],
+                    },
+                }}
+                exit={{
+                    y: 80,
+                    opacity: 0,
+                    transition: {
+                    duration: 0.22,
+                    delay: 0,
+                    ease: [0.22, 1, 0.36, 1],
+                    },
+                }}
+                className="fixed bottom-8 left-0 right-0 z-[999]"
+            >
                     <div className="mx-auto w-fit max-w-[1200px] px-6 pointer-events-auto">
                         <div className="flex gap-6 rounded-full border border-white/5 bg-black/40 px-5 py-3 backdrop-blur">
                             <Link href="/#hero" onClick={go("#hero")} className="text-white/80 hover:text-white">
