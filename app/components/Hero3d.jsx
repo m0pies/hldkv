@@ -14,35 +14,33 @@ export default function Hero3d({ onIntroStart }) {
   const [hideLoader, setHideLoader] = useState(false);
   const [loaderFinished, setLoaderFinished] = useState(false);
 
-  // detect touch
   useEffect(() => {
     const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
     setIsTouchDevice(hasTouch);
   }, []);
 
-  // 🚀 fake loader: всегда от 0 → 100 по 1%
   useEffect(() => {
-    let frame;
-    const update = () => {
-      setProgress((prev) => {
-        if (prev >= 100) return 100;
-        return prev + 1;
-      });
-      frame = requestAnimationFrame(update);
-    };
-    frame = requestAnimationFrame(update);
-    return () => cancelAnimationFrame(frame);
-  }, []);
+    let progressRef = 0;
+    let timer;
 
-  useEffect(() => {
-    if (progress >= 100) {
-      setTimeout(() => {
+    const step = () => {
+        progressRef += 1;
+        setProgress(progressRef);
+
+        if (progressRef < 100) {
+        timer = setTimeout(step, 15);   
+        } else {
         setHideLoader(true);
         setLoaderFinished(true);
         onIntroStart?.();
-      }, 200);
-    }
-  }, [progress, onIntroStart]);
+        }
+    };
+
+    step();
+
+    return () => clearTimeout(timer);
+}, [onIntroStart]);
+
 
   return (
     <section ref={containerRef} id="hero" className="relative h-screen w-full">
