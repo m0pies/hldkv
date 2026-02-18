@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
+import { useProgress, Environment, OrbitControls } from "@react-three/drei";
 import { Suspense, useRef, useEffect, useState } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
@@ -9,6 +9,8 @@ import BgText from "../BgText";
 export default function Hero3d() {
     const containerRef = useRef(null);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const { progress, active } = useProgress();
+
 
     useEffect(() => {
         const hasTouch =
@@ -23,6 +25,18 @@ export default function Hero3d() {
             id="hero"
             className="relative h-screen w-full"
         >
+            
+            {active && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-[#0D0D0C]">
+                    <div className="flex flex-col items-center gap-4">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-white/20 border-t-white" />
+                    <p className="text-xs tracking-widest text-white/60">
+                        {Math.floor(progress)}%
+                    </p>
+                    </div>
+                </div>
+            )}
+
             <Canvas
                 dpr={[1,1.5]}
                 camera={{ position: [0, 0, 5], fov: 50 }}
