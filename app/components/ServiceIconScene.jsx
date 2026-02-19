@@ -16,7 +16,7 @@ function smoothstep(edge0, edge1, x) {
 
 
 const GLASS = {
-  transmission: 0.0,          // ← 0 = обычный прозрачный материал, без дорогого refraction
+  transmission: 0.0,
   roughness: 0.05,
   thickness: 0.5,
   ior: 1.45,
@@ -305,11 +305,15 @@ export default function ServiceIconScene({ progress }) {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShouldLoad(true);
-    }, 500);
+    const loadWhenIdle = () => setShouldLoad(true);
 
-    return () => clearTimeout(timer);
+    if ('requestIdleCallback' in window) {
+      const handle = requestIdleCallback(loadWhenIdle, { timeout: 2000 });
+      return () => cancelIdleCallback(handle);
+    } else {
+      const timer = setTimeout(loadWhenIdle, 800);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   return (
