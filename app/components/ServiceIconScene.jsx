@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useLayoutEffect } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useLayoutEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
@@ -293,16 +293,23 @@ function Scene({ progress }) {
             <directionalLight position={[5, 10, 5]} intensity={3.5} />
 
             <group ref={pivot}>
-                <group ref={activeWrap}>
+                <Suspense fallback={null}>
+                    <group ref={activeWrap}>
                     <group ref={activeMeasureRef}>
+                        {active && (
                         <GltfIcon key={"a-" + active.glb} url={active.glb} rot={active.rot ?? [0, 0, 0]} />
+                        )}
                     </group>
-                </group>
+                    </group>
 
-                <group ref={nextWrap}>
-                    <GltfIcon key={"b-" + next.glb} url={next.glb} rot={next.rot ?? [0, 0, 0]} />
-                </group>
+                    <group ref={nextWrap}>
+                    {next && (
+                        <GltfIcon key={"b-" + next.glb} url={next.glb} rot={next.rot ?? [0, 0, 0]} />
+                    )}
+                    </group>
+                </Suspense>
             </group>
+
         </>
     );
 }
