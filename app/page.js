@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Services from "./components/Services"
 import Work from "./components/Work";
-import Services from "./components/Services";
 import About from "./components/About";
 import Contact from "./components/ContactSection";
 import { useState, useEffect } from "react";
@@ -10,6 +10,7 @@ import { useState, useEffect } from "react";
 const Hero = dynamic(() => import("./components/Hero3d"), {
     ssr: false,
 });
+
 
 export default function Home() {
     const [showHero, setShowHero] = useState(false);
