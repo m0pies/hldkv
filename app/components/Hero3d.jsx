@@ -7,38 +7,37 @@ import Model from "../Model";
 import BgText from "../BgText";
 
 export default function Hero3d({ onIntroStart }) {
-  const containerRef = useRef(null);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const containerRef = useRef(null);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  const [progress, setProgress] = useState(0);
-  const [hideLoader, setHideLoader] = useState(false);
-  const [loaderFinished, setLoaderFinished] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [hideLoader, setHideLoader] = useState(false);
+    const [loaderFinished, setLoaderFinished] = useState(false);
 
-  useEffect(() => {
-    const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
-    setIsTouchDevice(hasTouch);
-  }, []);
+    useEffect(() => {
+        const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+        setIsTouchDevice(hasTouch);
+    }, []);
 
-  useEffect(() => {
-    let progressRef = 0;
-    let timer;
+    useEffect(() => {
+        let progressRef = 0;
+        let frame;
 
-    const step = () => {
-        progressRef += 1;
-        setProgress(progressRef);
+        const step = () => {
+            progressRef += 1;
+            setProgress(progressRef);
 
-        if (progressRef < 100) {
-        timer = setTimeout(step, 15);   
-        } else {
-        setHideLoader(true);
-        setLoaderFinished(true);
-        onIntroStart?.();
+            if (progressRef < 100) {
+            frame = requestAnimationFrame(step);
+            } else {
+            setHideLoader(true);
+            setLoaderFinished(true);
+            onIntroStart?.();
         }
     };
 
-    step();
-
-    return () => clearTimeout(timer);
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
 }, [onIntroStart]);
 
 
@@ -63,13 +62,18 @@ export default function Hero3d({ onIntroStart }) {
         style={{ touchAction: "pan-y pinch-zoom" }}
       >
         <color attach="background" args={["#0D0D0C"]} />
-        <Environment preset="studio" />
+        <Environment preset="studio" background={false} />
 
-        {loaderFinished && <BgText />}
         <ambientLight intensity={0.25} />
         <directionalLight position={[5, 10, 5]} intensity={3.5} />
 
-        {loaderFinished && <Model />}
+        {loaderFinished && (
+        <>
+            <BgText />
+            <Model />
+        </>
+        )}
+
       </Canvas>
     </section>
   );
