@@ -1,340 +1,341 @@
 "use client";
 
-import { Suspense, lazy, useLayoutEffect, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo, useLayoutEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { services } from "../data/services";
-import { useInView } from "react-intersection-observer";
 
 // ──────────────────────────────────────────────
-// Тяжёлая часть — выносим в lazy-компонент внутри файла
+// Все функции и компоненты остаются здесь без изменений
 // ──────────────────────────────────────────────
 
-const LazyHeavyScene = lazy(() => Promise.resolve({
-  default: function HeavyScene({ progress }) {
-    function clamp01(x) {
-      return Math.min(1, Math.max(0, x));
-    }
+function clamp01(x) {
+  return Math.min(1, Math.max(0, x));
+}
+function smoothstep(edge0, edge1, x) {
+  const t = clamp01((x - edge0) / (edge1 - edge0));
+  return t * t * (3 - 2 * t);
+}
 
-    function smoothstep(edge0, edge1, x) {
-      const t = clamp01((x - edge0) / (edge1 - edge0));
-      return t * t * (3 - 2 * t);
-    }
+const GLASS = {
+  transmission: 1.0,
+  roughness: 0.02,
+  thickness: 0.5,
+  ior: 1.45,
+  attenuationDistance: 0.35,
+  attenuationColor: "#9bdcff",
+  envMapIntensity: 1.5,
+};
 
-    const GLASS = {
-      transmission: 1.0,
-      roughness: 0.02,
-      thickness: 0.5,
-      ior: 1.45,
-      attenuationDistance: 0.35,
-      attenuationColor: "#9bdcff",
-      envMapIntensity: 1.5,
-    };
+const GLOBAL_UPRIGHT = [1.57, 0, 0];
 
-    const GLOBAL_UPRIGHT = [1.57, 0, 0];
+function getState(p, count) {
+  const SWAP = (3 * Math.PI) / 2;
+  const TWO_PI = Math.PI * 2;
 
-    function getState(p, count) {
-      const SWAP = (3 * Math.PI) / 2;
-      const TWO_PI = Math.PI * 2;
+  const totalAngle = count <= 1 ? SWAP : SWAP + (count - 2) * TWO_PI + SWAP;
+  const theta = clamp01(p) * totalAngle;
 
-      const totalAngle = count <= 1 ? SWAP : SWAP + (count - 2) * TWO_PI + SWAP;
-      const theta = clamp01(p) * totalAngle;
+  let activeIndex;
+  if (theta < SWAP) activeIndex = 0;
+  else activeIndex = 1 + Math.floor((theta - SWAP) / TWO_PI);
+  activeIndex = Math.min(activeIndex, count - 1);
 
-      let activeIndex;
-      if (theta < SWAP) activeIndex = 0;
-      else activeIndex = 1 + Math.floor((theta - SWAP) / TWO_PI);
-      activeIndex = Math.min(activeIndex, count - 1);
+  const nextIndex = Math.min(activeIndex + 1, count - 1);
 
-      const nextIndex = Math.min(activeIndex + 1, count - 1);
+  const phase = theta % TWO_PI;
 
-      const phase = theta % TWO_PI;
+  let mix = 0;
+  if (activeIndex < count - 1) {
+    const boundary = activeIndex === 0 ? SWAP : SWAP + activeIndex * TWO_PI;
+    const width = THREE.MathUtils.degToRad(10);
+    const dist = Math.abs(theta - boundary);
+    mix = smoothstep(width, 0, dist);
+  }
 
-      let mix = 0;
-      if (activeIndex < count - 1) {
-        const boundary = activeIndex === 0 ? SWAP : SWAP + activeIndex * TWO_PI;
-        const width = THREE.MathUtils.degToRad(10);
-        const dist = Math.abs(theta - boundary);
-        mix = smoothstep(width, 0, dist);
-      }
+  return { activeIndex, nextIndex, phase, mix };
+}
 
-      return { activeIndex, nextIndex, phase, mix };
-    }
+function fitCameraToObject(camera, object, fit = 1.2) {
+  if (!object) return;
 
-    function fitCameraToObject(camera, object, fit = 1.2) {
-      if (!object) return;
+  const box = new THREE.Box3().setFromObject(object);
+  const sphere = new THREE.Sphere();
+  box.getBoundingSphere(sphere);
+  if (!sphere.radius || !Number.isFinite(sphere.radius)) return;
 
-      const box = new THREE.Box3().setFromObject(object);
-      const sphere = new THREE.Sphere();
-      box.getBoundingSphere(sphere);
-      if (!sphere.radius || !Number.isFinite(sphere.radius)) return;
+  const vFov = THREE.MathUtils.degToRad(camera.fov);
+  const aspect = camera.aspect;
 
-      const vFov = THREE.MathUtils.degToRad(camera.fov);
-      const aspect = camera.aspect;
+  const distV = sphere.radius / Math.sin(vFov / 2);
+  const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+  const distH = sphere.radius / Math.sin(hFov / 2);
 
-      const distV = sphere.radius / Math.sin(vFov / 2);
-      const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
-      const distH = sphere.radius / Math.sin(hFov / 2);
+  const dist = Math.max(distV, distH) * fit;
 
-      const dist = Math.max(distV, distH) * fit;
+  camera.position.set(0, 0, dist);
+  camera.near = Math.max(0.01, dist / 100);
+  camera.far = dist * 100;
+  camera.updateProjectionMatrix();
+}
 
-      camera.position.set(0, 0, dist);
-      camera.near = Math.max(0.01, dist / 100);
-      camera.far = dist * 100;
-      camera.updateProjectionMatrix();
-    }
+function applyOpacity(root, value) {
+  if (!root) return;
 
-    function applyOpacity(root, value) {
-      if (!root) return;
+  const v = THREE.MathUtils.clamp(value, 0, 1);
 
-      const v = THREE.MathUtils.clamp(value, 0, 1);
+  root.traverse((obj) => {
+    if (!obj.isMesh || !obj.material) return;
+    const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
 
-      root.traverse((obj) => {
-        if (!obj.isMesh || !obj.material) return;
-        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-
-        for (const m of mats) {
-          if (v >= 0.999) {
-            m.opacity = 1;
-            m.transparent = false;
-            m.depthWrite = true;
-            m.depthTest = true;
-            m.alphaHash = false;
-          } else if (v <= 0.001) {
-            m.opacity = 0;
-            m.transparent = true;
-            m.depthWrite = false;
-            m.depthTest = true;
-            m.alphaHash = false;
-          } else {
-            m.opacity = v;
-            m.transparent = true;
-            m.alphaHash = true;
-            m.depthWrite = true;
-            m.depthTest = true;
-          }
-          m.needsUpdate = true;
-        }
-      });
-    }
-
-    function GltfIcon({ url, rot = [0, 0, 0] }) {
-      const { scene } = useGLTF(url);
-      const model = useMemo(() => scene.clone(true), [scene]);
-
-      const offset = useRef();
-
-      const baseGlass = useMemo(() => {
-        const m = new THREE.MeshPhysicalMaterial({
-          transmission: GLASS.transmission,
-          roughness: GLASS.roughness,
-          thickness: GLASS.thickness,
-          ior: GLASS.ior,
-          attenuationDistance: GLASS.attenuationDistance,
-          attenuationColor: new THREE.Color(GLASS.attenuationColor),
-          envMapIntensity: GLASS.envMapIntensity,
-          transparent: false,
-          opacity: 1,
-          side: THREE.FrontSide,
-        });
-
-        m.polygonOffset = true;
-        m.polygonOffsetFactor = 1;
-        m.polygonOffsetUnits = 1;
+    for (const m of mats) {
+      if (v >= 0.999) {
+        m.opacity = 1;
+        m.transparent = false;
         m.depthWrite = true;
         m.depthTest = true;
-
-        return m;
-      }, []);
-
-      useLayoutEffect(() => {
-        if (!offset.current) return;
-
-        offset.current.position.set(0, 0, 0);
-        model.position.set(0, 0, 0);
-        model.rotation.set(0, 0, 0);
-        model.scale.set(1, 1, 1);
-
-        model.traverse((obj) => {
-          if (obj.isMesh && obj.geometry) obj.geometry.computeBoundingBox();
-        });
-
-        model.updateWorldMatrix(true, true);
-
-        const box = new THREE.Box3();
-        let hasAny = false;
-        const invModelWorld = new THREE.Matrix4().copy(model.matrixWorld).invert();
-
-        model.traverse((obj) => {
-          if (obj.isMesh && obj.geometry && obj.geometry.boundingBox) {
-            const bb = obj.geometry.boundingBox;
-            const pts = [
-              new THREE.Vector3(bb.min.x, bb.min.y, bb.min.z),
-              new THREE.Vector3(bb.min.x, bb.min.y, bb.max.z),
-              new THREE.Vector3(bb.min.x, bb.max.y, bb.min.z),
-              new THREE.Vector3(bb.min.x, bb.max.y, bb.max.z),
-              new THREE.Vector3(bb.max.x, bb.min.y, bb.min.z),
-              new THREE.Vector3(bb.max.x, bb.min.y, bb.max.z),
-              new THREE.Vector3(bb.max.x, bb.max.y, bb.min.z),
-              new THREE.Vector3(bb.max.x, bb.max.y, bb.max.z),
-            ];
-
-            for (const p of pts) {
-              p.applyMatrix4(obj.matrixWorld);
-              p.applyMatrix4(invModelWorld);
-
-              if (!hasAny) {
-                box.set(p, p);
-                hasAny = true;
-              } else {
-                box.expandByPoint(p);
-              }
-            }
-          }
-        });
-
-        if (!hasAny) return;
-
-        const center = new THREE.Vector3();
-        box.getCenter(center);
-        offset.current.position.copy(center).multiplyScalar(-1);
-
-        model.traverse((obj) => {
-          if (obj.isMesh) {
-            obj.material = baseGlass.clone();
-            obj.material.side = THREE.FrontSide;
-          }
-        });
-      }, [model, baseGlass]);
-
-      return (
-        <group rotation={GLOBAL_UPRIGHT}>
-          <group rotation={rot}>
-            <group ref={offset}>
-              <primitive object={model} />
-            </group>
-          </group>
-        </group>
-      );
+        m.alphaHash = false;
+      } else if (v <= 0.001) {
+        m.opacity = 0;
+        m.transparent = true;
+        m.depthWrite = false;
+        m.depthTest = true;
+        m.alphaHash = false;
+      } else {
+        m.opacity = v;
+        m.transparent = true;
+        m.alphaHash = true;
+        m.depthWrite = true;
+        m.depthTest = true;
+      }
+      m.needsUpdate = true;
     }
+  });
+}
 
-    const { camera, size, invalidate } = useThree();
+function GltfIcon({ url, rot = [0, 0, 0] }) {
+  const { scene } = useGLTF(url);
+  const model = useMemo(() => scene.clone(true), [scene]);
 
-    const [winW, setWinW] = useState(
-      typeof window !== "undefined" ? window.innerWidth : 1200
-    );
+  const offset = useRef();
 
-    useEffect(() => {
-      const onResize = () => setWinW(window.innerWidth);
-      window.addEventListener("resize", onResize);
-      return () => window.removeEventListener("resize", onResize);
-    }, []);
+  const baseGlass = useMemo(() => {
+    const m = new THREE.MeshPhysicalMaterial({
+      transmission: GLASS.transmission,
+      roughness: GLASS.roughness,
+      thickness: GLASS.thickness,
+      ior: GLASS.ior,
+      attenuationDistance: GLASS.attenuationDistance,
+      attenuationColor: new THREE.Color(GLASS.attenuationColor),
+      envMapIntensity: GLASS.envMapIntensity,
+      transparent: false,
+      opacity: 1,
+      side: THREE.FrontSide,
+    });
 
-    const pivot = useRef();
-    const activeWrap = useRef();
-    const nextWrap = useRef();
-    const activeMeasureRef = useRef();
+    m.polygonOffset = true;
+    m.polygonOffsetFactor = 1;
+    m.polygonOffsetUnits = 1;
+    m.depthWrite = true;
+    m.depthTest = true;
 
-    const progressRef = useRef(progress);
+    return m;
+  }, []);
 
-    useEffect(() => {
-      progressRef.current = Number.isFinite(progress) ? progress : 0;
-      invalidate(); // вызываем invalidate только при изменении progress
-    }, [progress, invalidate]);
+  useLayoutEffect(() => {
+    if (!offset.current) return;
 
-    const items = services;
-    const count = items.length;
-    if (count === 0) return null;
+    offset.current.position.set(0, 0, 0);
+    model.position.set(0, 0, 0);
+    model.rotation.set(0, 0, 0);
+    model.scale.set(1, 1, 1);
 
-    const p0 = Number.isFinite(progress) ? progress : 0;
-    const initial = getState(p0, count);
+    model.traverse((obj) => {
+      if (obj.isMesh && obj.geometry) obj.geometry.computeBoundingBox();
+    });
 
-    const active = items[initial.activeIndex];
-    const next = items[initial.nextIndex];
+    model.updateWorldMatrix(true, true);
 
-    const lastKey = useRef({ idx: -1, w: 0, h: 0 });
+    const box = new THREE.Box3();
+    let hasAny = false;
+    const invModelWorld = new THREE.Matrix4().copy(model.matrixWorld).invert();
 
-    useFrame(() => {
-      if (!pivot.current) return;
+    model.traverse((obj) => {
+      if (obj.isMesh && obj.geometry && obj.geometry.boundingBox) {
+        const bb = obj.geometry.boundingBox;
 
-      const p = progressRef.current;
-      const state = getState(p, count);
+        const pts = [
+          new THREE.Vector3(bb.min.x, bb.min.y, bb.min.z),
+          new THREE.Vector3(bb.min.x, bb.min.y, bb.max.z),
+          new THREE.Vector3(bb.min.x, bb.max.y, bb.min.z),
+          new THREE.Vector3(bb.min.x, bb.max.y, bb.max.z),
+          new THREE.Vector3(bb.max.x, bb.min.y, bb.min.z),
+          new THREE.Vector3(bb.max.x, bb.min.y, bb.max.z),
+          new THREE.Vector3(bb.max.x, bb.max.y, bb.min.z),
+          new THREE.Vector3(bb.max.x, bb.max.y, bb.max.z),
+        ];
 
-      pivot.current.rotation.y = state.phase;
+        for (const p of pts) {
+          p.applyMatrix4(obj.matrixWorld);
+          p.applyMatrix4(invModelWorld);
 
-      applyOpacity(activeWrap.current, 1 - state.mix);
-      applyOpacity(nextWrap.current, state.mix);
-
-      const w = size.width;
-      const h = size.height;
-
-      if (
-        state.activeIndex !== lastKey.current.idx ||
-        w !== lastKey.current.w ||
-        h !== lastKey.current.h
-      ) {
-        lastKey.current = { idx: state.activeIndex, w, h };
-
-        const target = activeMeasureRef.current || activeWrap.current;
-
-        let fit = 1.1;
-        if (winW < 768) fit = 0.95;
-        if (winW < 400) fit = 1.25;
-        else if (winW < 1024) fit = 1.0;
-
-        fitCameraToObject(camera, target, fit);
+          if (!hasAny) {
+            box.set(p, p);
+            hasAny = true;
+          } else {
+            box.expandByPoint(p);
+          }
+        }
       }
     });
 
-    if (!active?.glb || !next?.glb) return null;
+    if (!hasAny) return;
 
-    return (
-      <>
-        <Environment preset="studio" />
-        <ambientLight intensity={0.25} />
-        <directionalLight position={[5, 10, 5]} intensity={3.5} />
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    offset.current.position.copy(center).multiplyScalar(-1);
 
-        <group ref={pivot}>
-          <group ref={activeWrap}>
-            <group ref={activeMeasureRef}>
-              <GltfIcon key={"a-" + active.glb} url={active.glb} rot={active.rot ?? [0, 0, 0]} />
-            </group>
-          </group>
+    model.traverse((obj) => {
+      if (obj.isMesh) {
+        obj.material = baseGlass.clone();
+        obj.material.side = THREE.FrontSide;
+      }
+    });
+  }, [model, baseGlass]);
 
-          <group ref={nextWrap}>
-            <GltfIcon key={"b-" + next.glb} url={next.glb} rot={next.rot ?? [0, 0, 0]} />
+  return (
+    <group rotation={GLOBAL_UPRIGHT}>
+      <group rotation={rot}>
+        <group ref={offset}>
+          <primitive object={model} />
+        </group>
+      </group>
+    </group>
+  );
+}
+
+function Scene({ progress }) {
+  const { camera, size, invalidate } = useThree();
+
+  const [winW, setWinW] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const onResize = () => setWinW(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const pivot = useRef();
+  const activeWrap = useRef();
+  const nextWrap = useRef();
+  const activeMeasureRef = useRef();
+
+  const progressRef = useRef(progress);
+
+  useEffect(() => {
+    progressRef.current = Number.isFinite(progress) ? progress : 0;
+    invalidate();
+  }, [progress, invalidate]);
+
+  const items = services;
+  const count = items.length;
+  if (count === 0) return null;
+
+  const p0 = Number.isFinite(progress) ? progress : 0;
+  const initial = getState(p0, count);
+
+  const active = items[initial.activeIndex];
+  const next = items[initial.nextIndex];
+
+  const lastKey = useRef({ idx: -1, w: 0, h: 0 });
+
+  useFrame(() => {
+    if (!pivot.current) return;
+
+    const p = progressRef.current;
+    const state = getState(p, count);
+
+    pivot.current.rotation.y = state.phase;
+
+    applyOpacity(activeWrap.current, 1 - state.mix);
+    applyOpacity(nextWrap.current, state.mix);
+
+    const w = size.width;
+    const h = size.height;
+
+    if (
+      state.activeIndex !== lastKey.current.idx ||
+      w !== lastKey.current.w ||
+      h !== lastKey.current.h
+    ) {
+      lastKey.current = { idx: state.activeIndex, w, h };
+
+      const target = activeMeasureRef.current || activeWrap.current;
+
+      let fit = 1.1;
+      if (winW < 768) fit = 0.95;
+      if (winW < 400) fit = 1.25;
+      else if (winW < 1024) fit = 1.0;
+
+      fitCameraToObject(camera, target, fit);
+    }
+  });
+
+  if (!active?.glb || !next?.glb) return null;
+
+  return (
+    <>
+      <Environment preset="studio" />
+      <ambientLight intensity={0.25} />
+      <directionalLight position={[5, 10, 5]} intensity={3.5} />
+
+      <group ref={pivot}>
+        <group ref={activeWrap}>
+          <group ref={activeMeasureRef}>
+            <GltfIcon key={"a-" + active.glb} url={active.glb} rot={active.rot ?? [0, 0, 0]} />
           </group>
         </group>
-      </>
-    );
-  }
-}));
+
+        <group ref={nextWrap}>
+          <GltfIcon key={"b-" + next.glb} url={next.glb} rot={next.rot ?? [0, 0, 0]} />
+        </group>
+      </group>
+    </>
+  );
+}
 
 // ──────────────────────────────────────────────
-// Основной компонент — лёгкий, ничего не грузит сразу
+// Основной компонент — лёгкий
 // ──────────────────────────────────────────────
 
 export default function ServiceIconScene({ progress }) {
-  const { ref, inView } = useInView({
-    threshold: 0.01,
-    triggerOnce: true,         // один раз загрузили — уже не выгружаем
-    rootMargin: "300px 0px",   // начинаем грузить за ~300px до появления
-  });
+  const [shouldLoad, setShouldLoad] = useState(false);
+
+  useEffect(() => {
+    // Ждём 300–500 мс после монтирования страницы
+    // (hero уже отрендерился, основной TBT прошёл)
+    const timer = setTimeout(() => {
+      setShouldLoad(true);
+    }, 500); // можно сделать 300–800 мс, подбери под себя
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div ref={ref} className="w-full h-[clamp(280px,45vw,560px)]">
-      {inView ? (
-        <Suspense fallback={<div className="w-full h-full bg-[#0D0D0C] flex items-center justify-center text-white/40">Загрузка модели...</div>}>
-          <Canvas
-            camera={{ position: [0, 0, 4.0], fov: 50, near: 0.1, far: 100 }}
-            frameloop="demand"          // ключевой момент — рендерим только по необходимости
-            dpr={[1, 1.5]}
-            gl={{ antialias: false }}
-          >
-            <color attach="background" args={["#0D0D0C"]} />
-            <LazyHeavyScene progress={progress} />
-          </Canvas>
-        </Suspense>
+    <div className="w-full h-[clamp(280px,45vw,560px)]">
+      {shouldLoad ? (
+        <Canvas
+          camera={{ position: [0, 0, 4.0], fov: 50, near: 0.1, far: 100 }}
+          frameloop="demand"
+          dpr={[1, 1.5]}
+          gl={{ antialias: false }}
+        >
+          <color attach="background" args={["#0D0D0C"]} />
+          <Scene progress={progress} />
+        </Canvas>
       ) : (
         <div className="w-full h-full bg-[#0D0D0C]" />
       )}
