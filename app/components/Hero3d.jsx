@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
-import { useRef, useEffect, useState } from "react";
+import { Suspense, useRef, useEffect, useState } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
@@ -69,8 +69,10 @@ export default function Hero3d({ onIntroStart }) {
 
         {loaderFinished && (
         <>
-            <BgText />
-            <Model />
+            <Suspense fallback={null}>
+                <Model />
+                <BgText />
+            </Suspense>
         </>
         )}
 
