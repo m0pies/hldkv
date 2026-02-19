@@ -13,24 +13,14 @@ function smoothstep(edge0, edge1, x) {
   const t = clamp01((x - edge0) / (edge1 - edge0));
   return t * t * (3 - 2 * t);
 }
+
+
 const GLASS = {
   transmission: 0.0,          // ← 0 = обычный прозрачный материал, без дорогого refraction
   roughness: 0.05,
   thickness: 0.5,
   ior: 1.45,
-  // остальные параметры оставь
 };
-
-
-// const GLASS = {
-//   transmission: 1.0,
-//   roughness: 0.02,
-//   thickness: 0.5,
-//   ior: 1.45,
-//   attenuationDistance: 0.35,
-//   attenuationColor: "#9bdcff",
-//   envMapIntensity: 1.5,
-// };
 
 const GLOBAL_UPRIGHT = [1.57, 0, 0];
 
@@ -315,11 +305,9 @@ export default function ServiceIconScene({ progress }) {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    // Ждём 300–500 мс после монтирования страницы
-    // (hero уже отрендерился, основной TBT прошёл)
     const timer = setTimeout(() => {
       setShouldLoad(true);
-    }, 500); // можно сделать 300–800 мс, подбери под себя
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
