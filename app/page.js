@@ -2,11 +2,17 @@
 
 import Hero from "./components/Hero3d";
 import Work from "./components/Work";
-import Services from "./components/Services";
+// import Services from "./components/Services";
 import About from "./components/About";
 import Contact from "./components/ContactSection";
 import BottomNav from "./components/BottomNav";
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
+
+const Services = dynamic(
+    () => import("./components/Services"),
+    { ssr: false }
+);
 
 export default function Home() {
     const [heroIntroStart, setHeroIntroStart] = useState(false);
