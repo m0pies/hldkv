@@ -6,10 +6,6 @@ import { Environment, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { services } from "../data/services";
 
-// ──────────────────────────────────────────────
-// Все функции и компоненты остаются здесь без изменений
-// ──────────────────────────────────────────────
-
 function clamp01(x) {
   return Math.min(1, Math.max(0, x));
 }
@@ -19,13 +15,10 @@ function smoothstep(edge0, edge1, x) {
 }
 
 const GLASS = {
-  transmission: 1.0,
-  roughness: 0.02,
+  transmission: 0.0,          // ← 0 = обычный прозрачный материал, без дорогого refraction
+  roughness: 0.05,
   thickness: 0.5,
   ior: 1.45,
-  attenuationDistance: 0.35,
-  attenuationColor: "#9bdcff",
-  envMapIntensity: 1.5,
 };
 
 const GLOBAL_UPRIGHT = [1.57, 0, 0];
@@ -307,19 +300,13 @@ function Scene({ progress }) {
   );
 }
 
-// ──────────────────────────────────────────────
-// Основной компонент — лёгкий
-// ──────────────────────────────────────────────
-
 export default function ServiceIconScene({ progress }) {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-    // Ждём 300–500 мс после монтирования страницы
-    // (hero уже отрендерился, основной TBT прошёл)
     const timer = setTimeout(() => {
       setShouldLoad(true);
-    }, 500); // можно сделать 300–800 мс, подбери под себя
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
