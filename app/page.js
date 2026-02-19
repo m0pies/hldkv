@@ -5,7 +5,6 @@ import Work from "./components/Work";
 import Services from "./components/Services";
 import About from "./components/About";
 import Contact from "./components/ContactSection";
-import BottomNav from "./components/BottomNav";
 import { useState, useEffect } from "react";
 
 const Hero = dynamic(() => import("./components/Hero3d"), {
@@ -49,7 +48,6 @@ export default function Home() {
             <Services />
             <About />
             <Contact />
-            <BottomNav />
 
             {!hideLoader && (
                 <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#0D0D0C] transition-opacity duration-500">
