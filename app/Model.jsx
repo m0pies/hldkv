@@ -1,12 +1,30 @@
 "use client";
 
 import * as THREE from "three";
-import React, { useLayoutEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { useGLTF, MeshTransmissionMaterial } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 
+const GLASS = {
+    transmission: 1.0,
+    roughness: 0.02,
+    thickness: 0.4,
+    ior: 1.45,
+    chromaticAberration: 0.06,
+    distortion: 0.12,
+    distortionScale: 0.25,
+    temporalDistortion: 0.05,
+    attenuationDistance: 100,
+    attenuationColor: "#ffffff",
+    samples: 4,
+    resolution: 1024,
+    backside: true,
+    backsideThickness: 1.5,
+    depthWrite: false,
+  };
+
 export default function Model() {
-  const { size, viewport, gl } = useThree();
+  const { size, viewport } = useThree();
 
   const modelScale = useMemo(() => {
     const pxToWorld = viewport.width / size.width;
@@ -22,7 +40,12 @@ export default function Model() {
   const introDone = useRef(false);
   const t = useRef(0);
 
-  const isTouchLayout = size.width < 1024;
+  const isTouchLayout = useMemo(
+    () => size.width < 1024,
+    [size.width]
+  );
+
+  
 
   const drag = useRef({
     active: false,
@@ -110,29 +133,10 @@ export default function Model() {
 
   const { nodes } = useGLTF("/hldkv.glb");
 
-  const GLASS = {
-    transmission: 1.0,
-    roughness: 0.02,
-    thickness: 0.4,
-    ior: 1.45,
-    chromaticAberration: 0.06,
-    distortion: 0.12,
-    distortionScale: 0.25,
-    temporalDistortion: 0.05,
-    attenuationDistance: 100,
-    attenuationColor: "#ffffff",
-    samples: 6,
-    resolution: 1024,
-    backside: true,
-    backsideThickness: 1.5,
-    depthWrite: false,
-  };
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!offset.current || !nodes?.Curve?.geometry) return;
 
     const geom = nodes.Curve.geometry;
-    geom.computeVertexNormals();
     geom.computeBoundingBox();
 
     const center = new THREE.Vector3();
@@ -233,7 +237,6 @@ export default function Model() {
               attenuationColor={GLASS.attenuationColor}
               samples={GLASS.samples}
               resolution={GLASS.resolution}
-              opacity={1}
               toneMapped={false}
               depthWrite={GLASS.depthWrite}
               side={THREE.DoubleSide}
