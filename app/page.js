@@ -17,6 +17,11 @@ export default function Home() {
     const [hideLoader, setHideLoader] = useState(false);
     const [progress, setProgress] = useState(0);
 
+    const [showBottomNav, setShowBottomNav] = useState(false);
+    const [contactInView, setContactInView] = useState(false);
+
+    // ---------------- Loader ----------------
+
     useEffect(() => {
         let value = 0;
         let frame;
@@ -28,10 +33,10 @@ export default function Home() {
             if (value < 100) {
                 frame = requestAnimationFrame(step);
             } else {
-                setShowHero(true); // 👉 сначала монтируем Hero
+                setShowHero(true); // 👉 монтируем Hero
 
                 setTimeout(() => {
-                    setHideLoader(true); // 👉 потом убираем loader
+                    setHideLoader(true); // 👉 скрываем loader
                 }, 400);
             }
         };
@@ -40,19 +45,47 @@ export default function Home() {
         return () => cancelAnimationFrame(frame);
     }, []);
 
+    // ---------------- Nav через 2.5 сек после появления Hero ----------------
+
+    useEffect(() => {
+        if (!showHero) return;
+
+        const t = setTimeout(() => {
+            setShowBottomNav(true);
+        }, 2500);
+
+        return () => clearTimeout(t);
+    }, [showHero]);
+
+    // ---------------- Contact observer ----------------
+
+    useEffect(() => {
+        const el = document.querySelector("#contact");
+        if (!el) return;
+
+        const io = new IntersectionObserver(
+            ([entry]) => setContactInView(entry.isIntersecting),
+            {
+                threshold: 0.01,
+                rootMargin: "0px 0px -20% 0px",
+            }
+        );
+
+        io.observe(el);
+        return () => io.disconnect();
+    }, []);
+
     return (
         <main>
-
-            {/* HERO всегда сверху */}
             {showHero && <Hero />}
 
             <Work />
             <Services />
             <About />
             <Contact />
-            <BottomNav />
 
-            {/* Loader поверх всего */}
+            <BottomNav heroIntroStart={showBottomNav && !contactInView} />
+
             {!hideLoader && (
                 <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#0D0D0C] transition-opacity duration-500">
                     <div className="text-white/50 text-sm">
