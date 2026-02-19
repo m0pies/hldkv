@@ -315,18 +315,14 @@ export default function ServiceIconScene({ progress }) {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
-  const loadWhenIdle = () => {
-    setShouldLoad(true);
-  };
+    // Ждём 300–500 мс после монтирования страницы
+    // (hero уже отрендерился, основной TBT прошёл)
+    const timer = setTimeout(() => {
+      setShouldLoad(true);
+    }, 500); // можно сделать 300–800 мс, подбери под себя
 
-  if ('requestIdleCallback' in window) {
-    const handle = requestIdleCallback(loadWhenIdle, { timeout: 1500 });
-    return () => cancelIdleCallback(handle);
-  } else {
-    const timer = setTimeout(loadWhenIdle, 800);
     return () => clearTimeout(timer);
-  }
-}, []);
+  }, []);
 
   return (
     <div className="w-full h-[clamp(280px,45vw,560px)]">
