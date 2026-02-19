@@ -30,7 +30,7 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/components/Scene.tsx", "app/components/ServiceIconScene.jsx"  ],
   "exclude": [
     "node_modules"
   ]

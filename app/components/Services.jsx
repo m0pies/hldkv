@@ -20,7 +20,7 @@ function getState(p, count) {
     const TWO_PI = Math.PI * 2;
 
     const totalAngle =
-        count <= 1 ? SWAP : SWAP + (count - 2) * TWO_PI + SWAP; // last does 270°
+        count <= 1 ? SWAP : SWAP + (count - 2) * TWO_PI + SWAP;
 
     const theta = clamp01(p) * totalAngle;
 
