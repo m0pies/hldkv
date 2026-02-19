@@ -16,10 +16,13 @@ function smoothstep(edge0, edge1, x) {
 
 
 const GLASS = {
-  transmission: 0.0,
-  roughness: 0.05,
+  transmission: 1.0,
+  roughness: 0.02,
   thickness: 0.5,
   ior: 1.45,
+  attenuationDistance: 0.35,
+  attenuationColor: "#9bdcff",
+  envMapIntensity: 1.5,
 };
 
 const GLOBAL_UPRIGHT = [1.57, 0, 0];
@@ -335,4 +338,4 @@ export default function ServiceIconScene({ progress }) {
   );
 }
 
-// services.forEach((s) => useGLTF.preload(s.glb));
+services.forEach((s) => useGLTF.preload(s.glb));
