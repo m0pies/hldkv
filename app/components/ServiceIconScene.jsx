@@ -305,35 +305,31 @@ function Scene({ progress }) {
 }
 
 export default function ServiceIconScene({ progress }) {
-  const [shouldLoad, setShouldLoad] = useState(false);
+//   const [shouldLoad, setShouldLoad] = useState(false);
 
-  useEffect(() => {
-    const loadWhenIdle = () => setShouldLoad(true);
+//   useEffect(() => {
+//     const loadWhenIdle = () => setShouldLoad(true);
 
-    if ('requestIdleCallback' in window) {
-      const handle = requestIdleCallback(loadWhenIdle, { timeout: 2000 });
-      return () => cancelIdleCallback(handle);
-    } else {
-      const timer = setTimeout(loadWhenIdle, 800);
-      return () => clearTimeout(timer);
-    }
-  }, []);
+//     if ('requestIdleCallback' in window) {
+//       const handle = requestIdleCallback(loadWhenIdle, { timeout: 2000 });
+//       return () => cancelIdleCallback(handle);
+//     } else {
+//       const timer = setTimeout(loadWhenIdle, 800);
+//       return () => clearTimeout(timer);
+//     }
+//   }, []);
 
   return (
     <div className="w-full h-[clamp(280px,45vw,560px)]">
-      {shouldLoad ? (
         <Canvas
           camera={{ position: [0, 0, 4.0], fov: 50, near: 0.1, far: 100 }}
-          frameloop="demand"
+          frameloop="always"
           dpr={[1, 1.5]}
           gl={{ antialias: false }}
         >
           <color attach="background" args={["#0D0D0C"]} />
           <Scene progress={progress} />
         </Canvas>
-      ) : (
-        <div className="w-full h-full bg-[#0D0D0C]" />
-      )}
     </div>
   );
 }
