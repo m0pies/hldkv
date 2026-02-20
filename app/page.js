@@ -2,17 +2,15 @@
 
 import dynamic from "next/dynamic";
 import Services from "./components/Services"
-import Work from "./components/Work";
-import About from "./components/About";
-import Contact from "./components/ContactSection";
 import { useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { services } from "./data/services";
-// import useLockBodyScroll from "./hooks/useLockBodyScroll";
 
-const Hero = dynamic(() => import("./components/Hero3d"), {
-    ssr: false,
-});
+const Hero = dynamic(() => import("./components/Hero3d"), { ssr: false });          
+const Work = dynamic(() => import("./components/Work"), { ssr: false });
+const About = dynamic(() => import("./components/About"), { ssr: false });
+const Contact = dynamic(() => import("./components/ContactSection"), { ssr: false });
+
 
 
 export default function Home() {
@@ -43,22 +41,21 @@ export default function Home() {
 
 
     useEffect(() => {
-        let value = 0;
         let frame;
+        let value = 0;
 
         const step = () => {
-            value += 1;
-            setProgress(value);
+        value += Math.random() * 2;
+        if (value > 100) value = 100;
 
-            if (value < 100) {
-                frame = requestAnimationFrame(step);
-            } else {
-                setShowHero(true);
+        setProgress(Math.floor(value));
 
-                setTimeout(() => {
-                    setHideLoader(true);
-                }, 400);
-            }
+        if (value < 100) {
+            frame = requestAnimationFrame(step);
+        } else {
+            setShowHero(true);
+            setTimeout(() => setHideLoader(true), 400);
+        }
         };
 
         frame = requestAnimationFrame(step);
