@@ -19,6 +19,52 @@ export default function Home() {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
+  if (!hideLoader) {
+    // 1. Сохраняем текущую позицию скролла
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    // 2. Блокируем скролл на body
+    document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+
+    // 3. Блокируем touch-скролл глобально (самое важное для мобильных)
+    const preventScroll = (e) => {
+      e.preventDefault();
+    };
+
+    // touchmove — основной скролл пальцем
+    document.addEventListener("touchmove", preventScroll, { passive: false });
+
+    // wheel — колёсико мыши
+    document.addEventListener("wheel", preventScroll, { passive: false });
+
+    // keydown — стрелки, space, page up/down
+    const preventKeys = (e) => {
+      if ([32, 33, 34, 37, 38, 39, 40].includes(e.keyCode)) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("keydown", preventKeys);
+
+    return () => {
+      // Восстанавливаем всё при скрытии прелоадера
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+
+      window.scrollTo(0, scrollY); // возвращаем на место
+
+      document.removeEventListener("touchmove", preventScroll);
+      document.removeEventListener("wheel", preventScroll);
+      document.removeEventListener("keydown", preventKeys);
+    };
+  }
+}, [hideLoader]);
+
+    useEffect(() => {
     if (!showHero) return;
 
     const loadWhenIdle = () => {
@@ -61,7 +107,6 @@ export default function Home() {
         frame = requestAnimationFrame(step);
         return () => cancelAnimationFrame(frame);
     }, []);
-
 
     return (
         <main>
