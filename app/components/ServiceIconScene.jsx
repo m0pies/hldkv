@@ -338,4 +338,4 @@ export default function ServiceIconScene({ progress }) {
   );
 }
 
-services.forEach((s) => useGLTF.preload(s.glb));
+// services.forEach((s) => useGLTF.preload(s.glb));
