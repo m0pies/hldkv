@@ -47,13 +47,12 @@ export default function Home() {
             setProgress(value);
 
             if (value < 100) {
-                frame = requestAnimationFrame(step);
+            frame = requestAnimationFrame(step);
             } else {
-                setShowHero(true);
-
-                setTimeout(() => {
-                    setHideLoader(true);
-                }, 400);
+            setShowHero(true);
+            setTimeout(() => {
+                setHideLoader(true);
+            }, 400);
             }
         };
 
