@@ -42,30 +42,28 @@ export default function Home() {
     }, [showHero]);
 
 
-    // useEffect(() => {
-    //     let value = 0;
-    //     let frame;
+    useEffect(() => {
+        let value = 0;
+        let frame;
 
-    //     const step = () => {
-    //         value += 1;
-    //         setProgress(value);
+        const step = () => {
+            value += 1;
+            setProgress(value);
 
-    //         if (value < 100) {
-    //             frame = requestAnimationFrame(step);
-    //         } else {
-    //             setShowHero(true);
+            if (value < 100) {
+                frame = requestAnimationFrame(step);
+            } else {
+                setShowHero(true);
 
-    //             setTimeout(() => {
-    //                 setHideLoader(true);
-    //             }, 400);
-    //         }
-    //     };
+                setTimeout(() => {
+                    setHideLoader(true);
+                }, 400);
+            }
+        };
 
-    //     frame = requestAnimationFrame(step);
-    //     return () => cancelAnimationFrame(frame);
-    // }, []);
-
-    // useLockBodyScroll(!hideLoader);
+        frame = requestAnimationFrame(step);
+        return () => cancelAnimationFrame(frame);
+    }, []);
 
 
     return (
