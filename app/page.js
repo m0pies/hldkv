@@ -6,6 +6,8 @@ import Work from "./components/Work";
 import About from "./components/About";
 import Contact from "./components/ContactSection";
 import { useState, useEffect } from "react";
+import { useGLTF } from "@react-three/drei";
+import { services } from "./data/services";
 
 const Hero = dynamic(() => import("./components/Hero3d"), {
     ssr: false,
@@ -16,6 +18,25 @@ export default function Home() {
     const [showHero, setShowHero] = useState(false);
     const [hideLoader, setHideLoader] = useState(false);
     const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        if (!showHero) return;
+
+        const loadWhenIdle = () => {
+            services.forEach((s) => {
+            useGLTF.preload(s.glb);
+            });
+        };
+
+        if ('requestIdleCallback' in window) {
+            const handle = requestIdleCallback(loadWhenIdle);
+            return () => cancelIdleCallback(handle);
+        } else {
+            const timer = setTimeout(loadWhenIdle, 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [showHero]);
+
 
     useEffect(() => {
         let value = 0;
