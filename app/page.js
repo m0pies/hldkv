@@ -20,21 +20,21 @@ export default function Home() {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
-        if (!showHero) return;
+    if (!showHero) return;
 
-        const loadWhenIdle = () => {
-            services.forEach((s) => {
-            useGLTF.preload(s.glb);
-            });
-        };
+    const loadWhenIdle = () => {
+        services.forEach((s) => {
+        useGLTF.preload(s.glb);
+        });
+    };
 
-        if ('requestIdleCallback' in window) {
-            const handle = requestIdleCallback(loadWhenIdle);
-            return () => cancelIdleCallback(handle);
-        } else {
-            const timer = setTimeout(loadWhenIdle, 2000);
-            return () => clearTimeout(timer);
-        }
+    if ('requestIdleCallback' in window) {
+        const handle = requestIdleCallback(loadWhenIdle);
+        return () => cancelIdleCallback(handle);
+    } else {
+        const timer = setTimeout(loadWhenIdle, 2000);
+        return () => clearTimeout(timer);
+    }
     }, [showHero]);
 
 
@@ -47,12 +47,13 @@ export default function Home() {
             setProgress(value);
 
             if (value < 100) {
-            frame = requestAnimationFrame(step);
+                frame = requestAnimationFrame(step);
             } else {
-            setShowHero(true);
-            setTimeout(() => {
-                setHideLoader(true);
-            }, 400);
+                setShowHero(true);
+
+                setTimeout(() => {
+                    setHideLoader(true);
+                }, 400);
             }
         };
 
