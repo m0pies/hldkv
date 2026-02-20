@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function BottomNav({ heroIntroStart }) {
+export default function BottomNav() {
     const pathname = usePathname();
 
     const [hide, setHide] = useState(false);
@@ -54,7 +54,6 @@ export default function BottomNav({ heroIntroStart }) {
 
     return (
         <AnimatePresence>
-            {heroIntroStart && (
                 <motion.nav
                 initial={{ y: 80, opacity: 0 }}
                 animate={{
@@ -94,7 +93,6 @@ export default function BottomNav({ heroIntroStart }) {
                         </div>
                     </div>
                 </motion.nav>
-            )}
         </AnimatePresence>
     );
 }

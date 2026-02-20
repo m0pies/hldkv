@@ -13,15 +13,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
-  const heroIntroStart = true;
-
   return (
     <html lang="en">
       <body
         className={geist.className}
         style={{ backgroundColor: '#0d0d0c' }}
       >
-        <Navbar heroIntroStart={heroIntroStart} />
+        <Navbar />
         {children}
       </body>
     </html>
