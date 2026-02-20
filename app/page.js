@@ -5,6 +5,7 @@ import Services from "./components/Services"
 import { useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { services } from "./data/services";
+import useLockBodyScroll from "./hooks/useLockBodyScroll";
 
 const Hero = dynamic(() => import("./components/Hero3d"), { ssr: false });          
 const Work = dynamic(() => import("./components/Work"), { ssr: false });
@@ -62,6 +63,7 @@ export default function Home() {
         return () => cancelAnimationFrame(frame);
     }, []);
 
+    useLockBodyScroll(!hideLoader);
 
     return (
         <main>
