@@ -5,11 +5,11 @@ import Services from "./components/Services"
 import { useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { services } from "./data/services";
+import Contact from "./components/ContactSection";
+import Work from "./components/Work";
 
 const Hero = dynamic(() => import("./components/Hero3d"), { ssr: false });          
-const Work = dynamic(() => import("./components/Work"), { ssr: false });
 const About = dynamic(() => import("./components/About"), { ssr: false });
-const Contact = dynamic(() => import("./components/ContactSection"), { ssr: false });
 
 
 
@@ -20,27 +20,21 @@ export default function Home() {
 
     useEffect(() => {
   if (!hideLoader) {
-    // 1. Сохраняем текущую позицию скролла
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
-    // 2. Блокируем скролл на body
     document.body.style.overflow = "hidden";
     document.body.style.position = "fixed";
     document.body.style.top = `-${scrollY}px`;
     document.body.style.width = "100%";
 
-    // 3. Блокируем touch-скролл глобально (самое важное для мобильных)
     const preventScroll = (e) => {
       e.preventDefault();
     };
 
-    // touchmove — основной скролл пальцем
     document.addEventListener("touchmove", preventScroll, { passive: false });
 
-    // wheel — колёсико мыши
     document.addEventListener("wheel", preventScroll, { passive: false });
 
-    // keydown — стрелки, space, page up/down
     const preventKeys = (e) => {
       if ([32, 33, 34, 37, 38, 39, 40].includes(e.keyCode)) {
         e.preventDefault();
@@ -49,13 +43,12 @@ export default function Home() {
     document.addEventListener("keydown", preventKeys);
 
     return () => {
-      // Восстанавливаем всё при скрытии прелоадера
       document.body.style.overflow = "";
       document.body.style.position = "";
       document.body.style.top = "";
       document.body.style.width = "";
 
-      window.scrollTo(0, scrollY); // возвращаем на место
+      window.scrollTo(0, scrollY);
 
       document.removeEventListener("touchmove", preventScroll);
       document.removeEventListener("wheel", preventScroll);
@@ -119,7 +112,7 @@ export default function Home() {
             <Contact />
 
             {!hideLoader && (
-                <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#0D0D0C] transition-opacity duration-500">
+                <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#0D0D0C]">
                     <div className="text-white/50 text-sm">
                         {progress}%
                     </div>

@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import ServiceIconScene from "./ServiceIconScene";
 import * as THREE from "three";
 import { services } from "../data/services";
-import { motion } from "framer-motion";
 
 function clamp01(x) {
     return Math.min(1, Math.max(0, x));
@@ -121,14 +120,9 @@ export default function ServicesSection() {
             <div className="sticky top-0 h-screen">
                 <div className="relative mx-auto h-full w-full max-w-[1200px] px-8 pt-8 pb-32">
                     <div className="flex justify-center">
-                        <motion.h2
-                            initial={{ opacity: 0, y: 0 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, amount: 0.5 }}
-                            transition={{ duration: 5.0, ease: [0.16, 1, 0.3, 1] }}
-                            className="text-lg text-[#7d7d7d]">
+                        <h2 className="text-lg text-[#7d7d7d]">
                             Services
-                        </motion.h2>
+                        </h2>
                     </div>
 
                     <div className="grid h-[calc(100%-2.5rem)] grid-cols-1 items-center gap-12 md:grid-cols-2 lg:grid-cols-3">

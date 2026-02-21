@@ -1,5 +1,6 @@
 import { Geist } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/BottomNav";  
 
 const geist = Geist({
   subsets: ["latin"],
@@ -18,6 +19,17 @@ export default function RootLayout({ children }) {
         className={geist.className}
         style={{ backgroundColor: '#0d0d0c' }}
       >
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+              }
+              window.scrollTo(0, 0);
+            `,
+          }}
+        />
+        <Navbar />
         {children}
       </body>
     </html>

@@ -7,7 +7,6 @@ const socials = [
     { id: "instagram", name: "Instagram", href: "https://instagram.com/", icon: InstagramIcon },
     { id: "linkedin", name: "LinkedIn", href: "https://linkedin.com/in/", icon: LinkedInIcon },
     { id: "twitter", name: "Twitter", href: "https://x.com/", icon: XIcon },
-    { id:"email", name: "Email", href: "mailto:hello@yourmail.com", icon: MailIcon },
     { id: "threads", name: "Threads", href: "https://threads.com/", icon: ThreadsIcon},
 ];
 
@@ -40,17 +39,12 @@ export default function ContactSection() {
         <section id="contact" className="relative bg-[#0D0D0C] text-white">
             <div className="mx-auto max-w-[1200px] px-8 pt-8 pb-8 md:pt-48 md:pb-24">
                 <div className="flex flex-col gap-8">
-                    <header className="flex flex-col gap-2">
-                        <h2 className="text-4xl font-semibold">
-                            Let’s build something <span className="text-white/60">clean & bold.</span>
-                        </h2>
-                        <p className="max-w-2xl text-lg text-balance text-[#7d7d7d]">
-                            Reach out for collaborations, projects, or just to say hi.
-                        </p>
-                    </header>
+                    <h2 className="text-lg text-balance text-[#7d7d7d]">
+                        Reach out for collaborations, projects, or just to say hi.
+                    </h2>
 
                     <motion.div
-                        className="grid grid-cols-5 gap-4"
+                        className="grid grid-cols-4 gap-4"
                         initial="hidden"
                         whileInView="show"
                         viewport={{
@@ -85,10 +79,10 @@ export default function ContactSection() {
                                     }}
                                     style={{ willChange: "transform, opacity" }}
                                 >
-                                    <div className="flex flex-col items-center justify-center relative aspect-square w-full rounded-lg sm:rounded-xl overflow-hidden bg-black/10 ring-1 ring-white/10 group-hover:ring-white/20 group-hover:text-white transition-all duration-500 ease-out">
+                                    <div className="flex flex-col items-center justify-center relative aspect-square w-full rounded-lg sm:rounded-2xl overflow-hidden bg-black/10 ring-1 ring-white/10 group-hover:ring-white/20 group-hover:text-white transition-all duration-1000 ease-out">
                                         <div className="pointer-events-none absolute inset-0  ring-1 ring-white/15" />
                                         <Icon className="h-7 w-7 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-16 md:w-16 text-[#7d7d7d] group-hover:text-white duration-500 ease-out" />
-                                        <span className="hidden md:block absolute bottom-3 lg:bottom-4 left-4 right-4 text-s mlg:text-base text-center font-regular text-[#7d7d7d] group-hover:text-white duration-500 ease-out">{s.name}</span>
+                                        <span className="hidden absolute bottom-3 lg:bottom-4 left-4 right-4 text-s mlg:text-base text-center font-regular text-[#7d7d7d] group-hover:text-white duration-1000 ease-out">{s.name}</span>
                                     </div>
                                 </motion.a>
                             );
@@ -122,15 +116,6 @@ function XIcon({ className = "" }) {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="currentColor" className={className} viewBox="0 0 16 16">
             <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
-        </svg>
-    );
-}
-
-function MailIcon({ className = "" }) {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round">
-            <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/>
-            <rect x="2" y="4" width="20" height="16" rx="2"/>
         </svg>
     );
 }
