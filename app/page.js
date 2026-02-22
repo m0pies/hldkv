@@ -18,6 +18,18 @@ export default function Home() {
     const [hideLoader, setHideLoader] = useState(false);
     const [progress, setProgress] = useState(0);
 
+    useEffect(() => {
+        if (!hideLoader) {
+            document.documentElement.style.overflow = "hidden";
+        } else {
+            document.documentElement.style.overflow = "";
+        }
+
+        return () => {
+            document.documentElement.style.overflow = "";
+        };
+    }, [hideLoader]);
+
 
     useEffect(() => {
         if (!showHero) return;
