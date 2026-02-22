@@ -1,9 +1,15 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import ServiceIconScene from "./ServiceIconScene";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { services } from "../data/services";
+import dynamic from 'next/dynamic';
+
+const ServiceIconScene = dynamic(
+  () => import("./ServiceIconScene"),
+  { ssr: false }
+);
 
 function clamp01(x) {
     return Math.min(1, Math.max(0, x));
@@ -45,8 +51,15 @@ function getState(p, count) {
 
 
 export default function ServicesSection() {
+    
     const ref = useRef(null);
     const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        services.forEach((s) => {
+        if (s.glb) useGLTF.preload(s.glb);
+        });
+    }, []);
 
     const { maxTitle, maxDesc } = useMemo(() => {
         const titles = services.map((s) => s.title ?? "");
@@ -80,6 +93,7 @@ export default function ServicesSection() {
             raf = requestAnimationFrame(update);
         };
 
+        update(); // Force initial calculation immediately
         raf = requestAnimationFrame(update);
         return () => cancelAnimationFrame(raf);
     }, []);
