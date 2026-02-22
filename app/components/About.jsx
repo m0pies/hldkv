@@ -36,7 +36,7 @@ export default function About() {
     return (
         <section id="about" className="bg-[#0D0D0C] text-white">
             <div ref={targetRef} className="relative z-0 h-[240vh] md:h-[220vh]">
-                <div className="sticky top-0 mx-auto flex h-screen max-w-[1200px] items-center px-8">
+                <div className="sticky top-0 mx-auto flex h-screen max-w-[1200px] items-center px-4 md:px-8">
                     <p className="flex flex-wrap text-3xl leading-[1.2] font-semibold text-[#7d7d7d] md:text-4xl lg:text-5xl">
                         {words.map((word, i) => {
                             const start = i / words.length;

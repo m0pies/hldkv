@@ -80,25 +80,22 @@ export default function Home() {
 
 
     useEffect(() => {
-        let frame;
         let value = 0;
 
-        const step = () => {
-        value += Math.random() * 2;
-        if (value > 100) value = 100;
+        const interval = setInterval(() => {
+            value += 2;
 
-        setProgress(Math.floor(value));
-
-        if (value < 100) {
-            frame = requestAnimationFrame(step);
-        } else {
+            if (value >= 100) {
+            value = 100;
+            clearInterval(interval);
             setShowHero(true);
             setTimeout(() => setHideLoader(true), 400);
-        }
-        };
+            }
 
-        frame = requestAnimationFrame(step);
-        return () => cancelAnimationFrame(frame);
+            setProgress(value);
+        }, 25);
+
+        return () => clearInterval(interval);
     }, []);
 
     return (

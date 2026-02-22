@@ -100,7 +100,7 @@ export default function ServicesSection() {
     if (!a || !b) {
         return (
             <section id="services" className="bg-[#0D0D0C] text-white h-screen">
-                <div className="mx-auto max-w-[1400px] px-8 py-24">
+                <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24">
                     <div className="text-[#7d7d7d]">Loading services…</div>
                 </div>
             </section>
@@ -118,9 +118,9 @@ export default function ServicesSection() {
             style={{ height: `${services.length * 100}vh` }}
         >
             <div className="sticky top-0 h-screen">
-                <div className="relative mx-auto h-full w-full max-w-[1200px] px-8 pt-8 pb-32">
+                <div className="relative mx-auto h-full w-full max-w-[1200px] px-4 md:px-8 pt-16 md:pt-24 pb-32">
                     <div className="flex justify-center">
-                        <h2 className="text-lg text-[#7d7d7d]">
+                        <h2 className="text-2xl font-medium text-[#7d7d7d]">
                             Services
                         </h2>
                     </div>
