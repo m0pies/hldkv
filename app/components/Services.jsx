@@ -72,43 +72,43 @@ export default function ServicesSection() {
     }, []);
 
     useEffect(() => {
-        let raf = 0;
-        let lastCall = 0;
-        const throttleMs = window.innerWidth < 768 ? 100 : 32;
+        const el = ref.current;
+        if (!el) return;
 
-        const update = () => {
-            const now = performance.now();
-            if (now - lastCall < throttleMs) {
-            raf = requestAnimationFrame(update);
-            return;
-            }
-            lastCall = now;
+        let ticking = false;
+        let lastProgress = 0;
 
-            const el = ref.current;
-            if (!el) return;
+        const updateProgress = () => {
+            if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(() => {
+                ticking = false;
 
-            const rect = el.getBoundingClientRect();
-            const vh = window.innerHeight;
-            const total = rect.height - vh;
-            const scrolled = Math.max(0, -rect.top);
-            const p = total > 0 ? clamp01(scrolled / total) : 0;
+                const rect = el.getBoundingClientRect();
+                const vh = window.innerHeight;
+                const total = rect.height - vh;
+                const scrolled = Math.max(0, -rect.top);
+                const p = total > 0 ? clamp01(scrolled / total) : 0;
 
-            setProgress((prev) => {
-            if (Math.abs(prev - p) < 0.005) return prev;
-            return p;
+                if (Math.abs(p - lastProgress) > 0.01) {
+                setProgress(p);
+                lastProgress = p;
+                }
             });
-
-            raf = requestAnimationFrame(update);
+            }
         };
 
-        update();
-        window.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update, { passive: true });
+        const onScroll = () => updateProgress();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        const onResize = () => updateProgress();
+        window.addEventListener('resize', onResize, { passive: true });
+
+        updateProgress();
 
         return () => {
-            cancelAnimationFrame(raf);
-            window.removeEventListener('scroll', update);
-            window.removeEventListener('resize', update);
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onResize);
         };
     }, []);
 
