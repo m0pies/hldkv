@@ -38,7 +38,7 @@ export default function Home() {
             services.forEach((s) => {
             useGLTF.preload(s.glb);
             });
-        }, 4000);
+        }, 3000);
 
         return () => clearTimeout(timer);
     }, [showHero]);

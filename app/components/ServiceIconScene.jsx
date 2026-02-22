@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo, useLayoutEffect } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
@@ -106,7 +106,10 @@ function applyOpacity(root, value) {
         m.depthWrite = true;
         m.depthTest = true;
       }
-      m.needsUpdate = true;
+      if (m.opacity !== v) {
+        m.opacity = v;
+        m.needsUpdate = true;
+      }
     }
   });
 }
@@ -140,7 +143,7 @@ function GltfIcon({ url, rot = [0, 0, 0] }) {
     return m;
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!offset.current) return;
 
     offset.current.position.set(0, 0, 0);
@@ -305,26 +308,12 @@ function Scene({ progress }) {
 }
 
 export default function ServiceIconScene({ progress }) {
-//   const [shouldLoad, setShouldLoad] = useState(false);
-
-//   useEffect(() => {
-//     const loadWhenIdle = () => setShouldLoad(true);
-
-//     if ('requestIdleCallback' in window) {
-//       const handle = requestIdleCallback(loadWhenIdle, { timeout: 2000 });
-//       return () => cancelIdleCallback(handle);
-//     } else {
-//       const timer = setTimeout(loadWhenIdle, 800);
-//       return () => clearTimeout(timer);
-//     }
-//   }, []);
-
   return (
     <div className="w-full h-[clamp(280px,45vw,560px)]">
         <Canvas
           camera={{ position: [0, 0, 4.0], fov: 50, near: 0.1, far: 100 }}
-          frameloop="always"
-          dpr={[0.75, 1]}
+          frameloop="demand"
+          dpr={[1, 1.5]}
           gl={{ antialias: false }}
         >
           <color attach="background" args={["#0D0D0C"]} />
@@ -333,5 +322,3 @@ export default function ServiceIconScene({ progress }) {
     </div>
   );
 }
-
-// services.forEach((s) => useGLTF.preload(s.glb));
