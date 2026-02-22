@@ -32,33 +32,35 @@ export default function Home() {
 
 
     useEffect(() => {
-        if (!showHero) return;
+        if (!hideLoader) return;
 
-        const timer = setTimeout(() => {
+        const idle = () => {
             services.forEach((s) => {
             useGLTF.preload(s.glb);
             });
-        }, 3000);
+        };
 
-        return () => clearTimeout(timer);
-    }, [showHero]);
+        if ("requestIdleCallback" in window) {
+            requestIdleCallback(idle);
+        } else {
+            setTimeout(idle, 1000);
+        }
+    }, [hideLoader]);
 
 
     useEffect(() => {
         let value = 0;
 
         const interval = setInterval(() => {
-            value += 2;
+            value += 1;
+            setProgress(value);
 
             if (value >= 100) {
-            value = 100;
             clearInterval(interval);
             setShowHero(true);
-            setTimeout(() => setHideLoader(true), 400);
+            setTimeout(() => setHideLoader(true), 300);
             }
-
-            setProgress(value);
-        }, 25);
+        }, 16);
 
         return () => clearInterval(interval);
     }, []);
