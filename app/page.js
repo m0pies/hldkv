@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Services from "./components/Services"
+// import Services from "./components/Services"
 import { useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { services } from "./data/services";
@@ -10,6 +10,7 @@ import Work from "./components/Work";
 
 const Hero = dynamic(() => import("./components/Hero3d"), { ssr: false });          
 const About = dynamic(() => import("./components/About"), { ssr: false });
+const Services = dynamic(() => import("./components/Services"), { ssr: false }); // Lazy-load Services too
 
 
 
@@ -30,40 +31,82 @@ export default function Home() {
         };
     }, [hideLoader]);
 
-
     useEffect(() => {
-        if (!hideLoader) return;
+        // Start preloads immediately (async, non-blocking)
+        const preloadResources = async () => {
+            try {
+                // Critical: Hero-related (add your Model/BgText GLTFs here if separate)
+                await Promise.all([
+                    // e.g., useGLTF.preload('/path/to/hero-model.glb'),
+                    // Preload fonts/images if needed: new FontFace('Font', 'url(/font.woff2)').load(),
+                ]);
 
-        const idle = () => {
-            services.forEach((s) => {
-            useGLTF.preload(s.glb);
-            });
+                // Non-critical: Services GLTFs in idle (defer to after initial paint)
+                if ("requestIdleCallback" in window) {
+                    requestIdleCallback(() => {
+                        services.forEach((s) => useGLTF.preload(s.glb));
+                    });
+                } else {
+                    setTimeout(() => {
+                        services.forEach((s) => useGLTF.preload(s.glb));
+                    }, 1000); // Fallback
+                }
+            } catch (error) {
+                console.error('Preload failed:', error); // Silent fail to avoid blocking
+            }
         };
 
-        if ("requestIdleCallback" in window) {
-            requestIdleCallback(idle);
-        } else {
-            setTimeout(idle, 1000);
-        }
-    }, [hideLoader]);
+        preloadResources(); // Kick off on mount
 
-
-    useEffect(() => {
+        // Fixed timer (always ~1.6s)
         let value = 0;
-
         const interval = setInterval(() => {
             value += 1;
             setProgress(value);
-
             if (value >= 100) {
-            clearInterval(interval);
-            setShowHero(true);
-            setTimeout(() => setHideLoader(true), 300);
+                clearInterval(interval);
+                setShowHero(true);
+                setTimeout(() => setHideLoader(true), 300); // Hide after fixed time
             }
         }, 16);
 
         return () => clearInterval(interval);
     }, []);
+
+
+    // useEffect(() => {
+    //     if (!hideLoader) return;
+
+    //     const idle = () => {
+    //         services.forEach((s) => {
+    //         useGLTF.preload(s.glb);
+    //         });
+    //     };
+
+    //     if ("requestIdleCallback" in window) {
+    //         requestIdleCallback(idle);
+    //     } else {
+    //         setTimeout(idle, 1000);
+    //     }
+    // }, [hideLoader]);
+
+
+    // useEffect(() => {
+    //     let value = 0;
+
+    //     const interval = setInterval(() => {
+    //         value += 1;
+    //         setProgress(value);
+
+    //         if (value >= 100) {
+    //         clearInterval(interval);
+    //         setShowHero(true);
+    //         setTimeout(() => setHideLoader(true), 300);
+    //         }
+    //     }, 16);
+
+    //     return () => clearInterval(interval);
+    // }, []);
 
     return (
         <main>
