@@ -42,7 +42,7 @@ export default function ContactSection() {
             <div className="mx-auto max-w-[1200px] px-4 md:px-8 pt-8 pb-8 md:pt-48 md:pb-24">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col md:flex-row md:justify-between gap-4">
-                        <h2 className="text-2xl font-medium text-balance text-[#7d7d7d]">
+                        <h2 className="text-2xl font-medium text-balance text-white">
                             Reach out for collaborations, projects, or just to say hi.
                         </h2>
                         <EmailButton />

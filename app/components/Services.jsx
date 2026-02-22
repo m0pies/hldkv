@@ -97,16 +97,6 @@ export default function ServicesSection() {
     const a = services?.[textState.activeIndex];
     const b = services?.[textState.nextIndex];
 
-    if (!a || !b) {
-        return (
-            <section id="services" className="bg-[#0D0D0C] text-white h-screen">
-                <div className="mx-auto max-w-[1400px] px-4 md:px-8 py-24">
-                    <div className="text-[#7d7d7d]">Loading services…</div>
-                </div>
-            </section>
-        );
-    }
-
     const aOpacity = 1 - textState.mix;
     const bOpacity = textState.mix;
 
