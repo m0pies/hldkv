@@ -18,44 +18,6 @@ export default function Home() {
     const [hideLoader, setHideLoader] = useState(false);
     const [progress, setProgress] = useState(0);
 
-    useEffect(() => {
-        if (!hideLoader) {
-            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-
-            document.body.style.overflow = "hidden";
-            document.body.style.position = "fixed";
-            document.body.style.top = `-${scrollY}px`;
-            document.body.style.width = "100%";
-
-            const preventScroll = (e) => {
-            e.preventDefault();
-    };
-
-    document.addEventListener("touchmove", preventScroll, { passive: false });
-
-    document.addEventListener("wheel", preventScroll, { passive: false });
-
-    const preventKeys = (e) => {
-      if ([32, 33, 34, 37, 38, 39, 40].includes(e.keyCode)) {
-        e.preventDefault();
-      }
-    };
-    document.addEventListener("keydown", preventKeys);
-
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-
-      window.scrollTo(0, scrollY);
-
-      document.removeEventListener("touchmove", preventScroll);
-      document.removeEventListener("wheel", preventScroll);
-      document.removeEventListener("keydown", preventKeys);
-    };
-  }
-}, [hideLoader]);
 
     useEffect(() => {
         if (!showHero) return;
