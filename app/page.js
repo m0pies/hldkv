@@ -19,16 +19,16 @@ export default function Home() {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
-  if (!hideLoader) {
-    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        if (!hideLoader) {
+            const scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
-    document.body.style.overflow = "hidden";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
+            document.body.style.overflow = "hidden";
+            document.body.style.position = "fixed";
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = "100%";
 
-    const preventScroll = (e) => {
-      e.preventDefault();
+            const preventScroll = (e) => {
+            e.preventDefault();
     };
 
     document.addEventListener("touchmove", preventScroll, { passive: false });
@@ -58,24 +58,15 @@ export default function Home() {
 }, [hideLoader]);
 
     useEffect(() => {
-    if (!showHero) return;
+        if (!showHero) return;
 
-    const loadWhenIdle = () => {
-        services.forEach((s, i) => {
-            setTimeout(() => {
+        const timer = setTimeout(() => {
+            services.forEach((s) => {
             useGLTF.preload(s.glb);
-            }, i * 200);
-        });
-    };
+            });
+        }, 4000);
 
-
-    if ('requestIdleCallback' in window) {
-        const handle = requestIdleCallback(loadWhenIdle);
-        return () => cancelIdleCallback(handle);
-    } else {
-        const timer = setTimeout(loadWhenIdle, 2000);
         return () => clearTimeout(timer);
-    }
     }, [showHero]);
 
 
