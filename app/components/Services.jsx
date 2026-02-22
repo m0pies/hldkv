@@ -73,29 +73,43 @@ export default function ServicesSection() {
 
     useEffect(() => {
         let raf = 0;
+        let lastCall = 0;
+        const throttleMs = window.innerWidth < 768 ? 100 : 32;
 
         const update = () => {
+            const now = performance.now();
+            if (now - lastCall < throttleMs) {
+            raf = requestAnimationFrame(update);
+            return;
+            }
+            lastCall = now;
+
             const el = ref.current;
             if (!el) return;
 
             const rect = el.getBoundingClientRect();
             const vh = window.innerHeight;
-
             const total = rect.height - vh;
-            const scrolled = -rect.top;
+            const scrolled = Math.max(0, -rect.top);
             const p = total > 0 ? clamp01(scrolled / total) : 0;
 
             setProgress((prev) => {
-                if (Math.abs(prev - p) < 0.002) return prev;
-                return p;
+            if (Math.abs(prev - p) < 0.005) return prev;
+            return p;
             });
 
             raf = requestAnimationFrame(update);
         };
 
-        update(); // Force initial calculation immediately
-        raf = requestAnimationFrame(update);
-        return () => cancelAnimationFrame(raf);
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update, { passive: true });
+
+        return () => {
+            cancelAnimationFrame(raf);
+            window.removeEventListener('scroll', update);
+            window.removeEventListener('resize', update);
+        };
     }, []);
 
     const textState = useMemo(() => {
