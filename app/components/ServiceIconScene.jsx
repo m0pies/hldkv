@@ -313,7 +313,7 @@ export default function ServiceIconScene({ progress }) {
         <Canvas
           camera={{ position: [0, 0, 4.0], fov: 50, near: 0.1, far: 100 }}
           frameloop="demand"
-          dpr={[1, 1]}
+          dpr={[1, 1.5]}
           gl={{ antialias: false }}
         >
           <color attach="background" args={["#0D0D0C"]} />
