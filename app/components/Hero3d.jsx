@@ -20,7 +20,7 @@ export default function Hero3d() {
         <section
             ref={containerRef}
             id="hero"
-            className="relative h-[100dvh] min-h-[100svh] w-full"
+            className="relative h-[100vh] min-h-[100svh] w-full"
         >
             <Canvas
                 dpr={[1, 1.5]}
