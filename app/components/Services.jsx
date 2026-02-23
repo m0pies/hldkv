@@ -139,7 +139,7 @@ export default function ServicesSection() {
                 <div className="relative mx-auto h-full w-full max-w-[1200px] px-4 md:px-8 pt-16 md:pt-24 pb-32">
                     <div className="flex justify-center">
                         <h2 className="text-2xl font-medium text-[#7d7d7d]">
-                            Services
+                            What I Do
                         </h2>
                     </div>
 

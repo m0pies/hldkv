@@ -87,15 +87,15 @@ export default function BottomNav() {
           className="fixed bottom-8 left-0 right-0 z-[999]"
         >
           <div className="mx-auto w-full sm:w-fit max-w-[1200px] px-4 md:px-8 pointer-events-auto">
-            <div className="flex gap-4 justify-between rounded-full border border-white/5 bg-black/40 px-4 py-2 backdrop-blur">
-              <Link href="/" className="text-white/80 hover:text-white">
-                Home
-              </Link>
+            <div className="flex gap-4 justify-between rounded-full border border-white/5 bg-black/40 px-6 py-3 backdrop-blur">
               <Link href="/#works" className="text-white/80 hover:text-white">
-                Works
+                Work
               </Link>
               <Link href="/#services" className="text-white/80 hover:text-white">
                 Services
+              </Link>
+              <Link href="/#about" className="text-white/80 hover:text-white">
+                About
               </Link>
               <Link href="/#contact" className="text-white/80 hover:text-white">
                 Contact
