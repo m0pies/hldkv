@@ -29,6 +29,7 @@ export default function Hero3d() {
                     eventSource: containerRef,
                     eventPrefix: "client",
                 })}
+                resize={{ scroll: false }}
                 style={{ 
                     touchAction: "pan-y pinch-zoom",
                     height: "100%",
