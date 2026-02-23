@@ -20,7 +20,7 @@ export default function Hero3d() {
         <section
             ref={containerRef}
             id="hero"
-            className="relative h-screen w-full"
+            className="relative h-[100dvh] min-h-[100svh] w-full"
         >
             <Canvas
                 dpr={[1, 1.5]}
@@ -29,7 +29,11 @@ export default function Hero3d() {
                     eventSource: containerRef,
                     eventPrefix: "client",
                 })}
-                style={{ touchAction: "pan-y pinch-zoom" }}
+                style={{ 
+                    touchAction: "pan-y pinch-zoom",
+                    height: "100%",
+                    width: "100%"
+                }}
             >
                 <color attach="background" args={["#0D0D0C"]} />
                 <Environment preset="studio" background={false} />
