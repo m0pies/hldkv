@@ -5,6 +5,7 @@ import { Environment } from "@react-three/drei";
 import { Suspense, useRef, useEffect, useState } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
+import StatusBadge from "../components/StatusBadge";
 
 export default function Hero3d({ onReady }) {
 
@@ -14,6 +15,7 @@ export default function Hero3d({ onReady }) {
     
     const containerRef = useRef(null);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const [introDone, setIntroDone] = useState(false);
 
     useEffect(() => {
         const hasTouch =
@@ -27,6 +29,8 @@ export default function Hero3d({ onReady }) {
             id="hero"
             className="relative h-[100svh] w-full"
         >
+            <StatusBadge visible={introDone} />
+            
             <Canvas
                 dpr={[1, 1.5]}
                 camera={{ position: [0, 0, 5], fov: 50 }}
@@ -52,7 +56,7 @@ export default function Hero3d({ onReady }) {
 
                 <Suspense fallback={null}>
                     <Model />
-                    <BgText />
+                    <BgText onIntroEnd={() => setIntroDone(true)} />
                 </Suspense>
             </Canvas>
         </section>

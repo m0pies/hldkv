@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 
 export default function CopyEmailButton() {
-  const email = "hldkv.dsgn@gmail.com";
+  const email = "hello@hldkv.com";
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = (e) => {

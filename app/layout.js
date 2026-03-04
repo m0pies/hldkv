@@ -8,8 +8,32 @@ const geist = Geist({
 });
 
 export const metadata = {
-  title: "hldkv design",
-  description: "independent digital designer",
+  title: "HLDKV Design – Digital Product Designer ",
+  description: "Creative digital designer specializing in UI/UX, web design and frontend development. From idea to structure, from structure to product.",
+  keywords: ["web designer", "ui ux designer", "frontend developer", "digital product designer", "interactive websites"],
+
+  openGraph: {
+    title: "HLDKV Design",
+    description: "Digital Product Designer & Frontend Developer crafting modern interactive experiences.",
+    url: "https://www.hldkv.com/",
+    siteName: "HLDKV",
+    images: [
+      {
+        url: "https://www.hldkv.com/og.jpg",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "HLDKV Design",
+    description: "UI/UX Designer & Frontend Developer creating modern digital products.",
+    images: ["https://www.hldkv.com/og.png"],
+  },
 };
 
 export default function RootLayout({ children }) {

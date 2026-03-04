@@ -4,7 +4,7 @@ import React, { useMemo, useRef, useCallback } from "react";
 import { Text } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 
-export default function BgText() {
+export default function BgText({ onIntroEnd }) {
   const { size, viewport } = useThree();
 
   const groupRef = useRef();
@@ -12,14 +12,17 @@ export default function BgText() {
   const rightRef = useRef();
   const leftSubRef = useRef();
   const rightSubRef = useRef();
+  
 
   const layoutReady = useRef(false);
   const leftReady = useRef(false);
   const rightReady = useRef(false);
 
-  const hasPlayed = useRef(false);
-  const animating = useRef(true);
+  const introPlayed = useRef(false);
+  const animating = useRef(false);
   const t = useRef(0);
+
+  const subtitleDelay = useRef(0);
 
   const layout = useRef({
     finalLeftX: 0,
@@ -31,20 +34,27 @@ export default function BgText() {
   const leftSubMat = useRef();
   const rightSubMat = useRef();
 
-  const subtitleDelay = useRef(0);
-
-  const { fontSize, subtitleFontSize, z, gap, targetOpacity, offscreenX, subYMain, subYThat } = useMemo(() => {
+  const {
+    fontSize,
+    subtitleFontSize,
+    z,
+    gap,
+    targetOpacity,
+    offscreenX,
+    subYMain,
+    subYThat,
+  } = useMemo(() => {
     const pxToWorld = viewport.width / size.width;
     const MAX_PX = 1024;
     const usedPx = Math.min(size.width, MAX_PX);
     const worldWidth = usedPx * pxToWorld;
 
-    const mainCoef = size.width >= 1200 ? 0.25 : size.width >= 768 ? 0.205 : 0.2;
-    const subCoef = size.width >= 1200 ? 0.03 : size.width >= 768 ? 0.035 : 0.045;
+    const mainCoef =
+      size.width >= 1200 ? 0.25 : size.width >= 768 ? 0.205 : 0.2;
+    const subCoef =
+      size.width >= 1200 ? 0.03 : size.width >= 768 ? 0.035 : 0.045;
 
     const calculatedFontSize = worldWidth * mainCoef;
-    const subYMainVal = size.width < 768 ? calculatedFontSize * 0.9 : -calculatedFontSize * 0.5;
-    const subYThatVal = size.width < 768 ? -calculatedFontSize * 0.6 : -calculatedFontSize * 0.5;
 
     return {
       fontSize: calculatedFontSize,
@@ -53,8 +63,14 @@ export default function BgText() {
       gap: worldWidth * 0.05,
       targetOpacity: 1,
       offscreenX: viewport.width / 2 + worldWidth * 0.6,
-      subYMain: subYMainVal,
-      subYThat: subYThatVal,
+      subYMain:
+        size.width < 768
+          ? calculatedFontSize * 0.9
+          : -calculatedFontSize * 0.5,
+      subYThat:
+        size.width < 768
+          ? -calculatedFontSize * 0.6
+          : -calculatedFontSize * 0.5,
     };
   }, [size.width, viewport.width]);
 
@@ -75,44 +91,72 @@ export default function BgText() {
     const totalW = leftW + gap + rightW;
 
     layout.current.finalLeftX = -totalW / 2;
-    layout.current.finalRightX = layout.current.finalLeftX + leftW + gap;
+    layout.current.finalRightX =
+      layout.current.finalLeftX + leftW + gap;
 
-    layout.current.startLeftX = layout.current.finalLeftX - offscreenX;
-    layout.current.startRightX = layout.current.finalRightX + offscreenX;
+    layout.current.startLeftX =
+      layout.current.finalLeftX - offscreenX;
+    layout.current.startRightX =
+      layout.current.finalRightX + offscreenX;
 
-    if (groupRef.current) groupRef.current.position.set(0, 0, z);
-
-    L.position.x = layout.current.startLeftX;
-    R.position.x = layout.current.startRightX;
-    L.material.opacity = 0;
-    R.material.opacity = 0;
+    if (groupRef.current)
+      groupRef.current.position.set(0, 0, z);
 
     if (leftSubRef.current) {
-      leftSubRef.current.position.x = layout.current.finalLeftX;
-      leftSubMat.current = leftSubRef.current.material;
-      leftSubMat.current.opacity = 0;
+      leftSubRef.current.position.x =
+        layout.current.finalLeftX;
+      leftSubMat.current =
+        leftSubRef.current.material;
     }
+
     if (rightSubRef.current) {
-      rightSubRef.current.position.x = layout.current.finalRightX + rightW;
-      rightSubMat.current = rightSubRef.current.material;
-      rightSubMat.current.opacity = 0;
+      rightSubRef.current.position.x =
+        layout.current.finalRightX + rightW;
+      rightSubMat.current =
+        rightSubRef.current.material;
+    }
+
+    if (!introPlayed.current) {
+      L.position.x = layout.current.startLeftX;
+      R.position.x = layout.current.startRightX;
+      L.material.opacity = 0;
+      R.material.opacity = 0;
+
+      if (leftSubMat.current)
+        leftSubMat.current.opacity = 0;
+      if (rightSubMat.current)
+        rightSubMat.current.opacity = 0;
+
+      animating.current = true;
+      t.current = 0;
+      subtitleDelay.current = 0;
+    } else {
+      L.position.x = layout.current.finalLeftX;
+      R.position.x = layout.current.finalRightX;
+      L.material.opacity = targetOpacity;
+      R.material.opacity = targetOpacity;
+
+      if (leftSubMat.current)
+        leftSubMat.current.opacity = 0.78;
+      if (rightSubMat.current)
+        rightSubMat.current.opacity = 0.78;
+
+      animating.current = false;
     }
 
     layoutReady.current = true;
-    animating.current = true;
-    t.current = 0;
-    hasPlayed.current = false;
-    subtitleDelay.current = 0;
-  }, [gap, offscreenX, z]);
+  }, [gap, offscreenX, z, targetOpacity]);
 
   const onLeftSync = useCallback(() => {
     leftReady.current = true;
-    if (leftReady.current && rightReady.current) recomputeLayout();
+    if (leftReady.current && rightReady.current)
+      recomputeLayout();
   }, [recomputeLayout]);
 
   const onRightSync = useCallback(() => {
     rightReady.current = true;
-    if (leftReady.current && rightReady.current) recomputeLayout();
+    if (leftReady.current && rightReady.current)
+      recomputeLayout();
   }, [recomputeLayout]);
 
   useFrame((_, delta) => {
@@ -123,10 +167,20 @@ export default function BgText() {
     if (animating.current) {
       const DURATION = 2.5;
       t.current = Math.min(1, t.current + delta / DURATION);
-      const eased = 0.5 - 0.5 * Math.cos(Math.PI * t.current);
+      const eased =
+        0.5 - 0.5 * Math.cos(Math.PI * t.current);
 
-      L.position.x = layout.current.startLeftX + (layout.current.finalLeftX - layout.current.startLeftX) * eased;
-      R.position.x = layout.current.startRightX + (layout.current.finalRightX - layout.current.startRightX) * eased;
+      L.position.x =
+        layout.current.startLeftX +
+        (layout.current.finalLeftX -
+          layout.current.startLeftX) *
+          eased;
+
+      R.position.x =
+        layout.current.startRightX +
+        (layout.current.finalRightX -
+          layout.current.startRightX) *
+          eased;
 
       const op = targetOpacity * eased;
       L.material.opacity = op;
@@ -134,23 +188,42 @@ export default function BgText() {
 
       if (t.current >= 1) {
         animating.current = false;
-        hasPlayed.current = true;
+        introPlayed.current = true;
         subtitleDelay.current = 0;
+
+        onIntroEnd?.();
       }
       return;
     }
 
-    if (!hasPlayed.current) return;
+    if (!introPlayed.current) return;
+
     subtitleDelay.current += delta;
+
     if (subtitleDelay.current >= 0.2) {
       const speed = 2;
       const target = 0.78;
 
-      if (leftSubMat.current && leftSubMat.current.opacity < target - 0.001) {
-        leftSubMat.current.opacity += (target - leftSubMat.current.opacity) * speed * delta;
+      if (
+        leftSubMat.current &&
+        leftSubMat.current.opacity < target - 0.001
+      ) {
+        leftSubMat.current.opacity +=
+          (target -
+            leftSubMat.current.opacity) *
+          speed *
+          delta;
       }
-      if (rightSubMat.current && rightSubMat.current.opacity < target - 0.001) {
-        rightSubMat.current.opacity += (target - rightSubMat.current.opacity) * speed * delta;
+
+      if (
+        rightSubMat.current &&
+        rightSubMat.current.opacity < target - 0.001
+      ) {
+        rightSubMat.current.opacity +=
+          (target -
+            rightSubMat.current.opacity) *
+          speed *
+          delta;
       }
     }
   });

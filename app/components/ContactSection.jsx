@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import EmailButton from "./EmailButton";
+import { useRef } from "react";
 
 const socials = [
     { id: "instagram", name: "Instagram", href: "https://instagram.com/", icon: InstagramIcon },
@@ -37,8 +38,9 @@ const cardVariants = {
 };
 
 export default function ContactSection() {
+    const footerRef = useRef(null);
     return (
-        <section id="contact" className="relative bg-[#0D0D0C] text-white">
+        <section id="contact" className="relative bg-[#0D0D0C] text-white" ref={footerRef}>
             <div className="mx-auto max-w-[1200px] px-4 md:px-8 pt-8 pb-8 md:pt-48 md:pb-24">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col md:flex-row md:justify-between gap-4">

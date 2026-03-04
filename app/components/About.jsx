@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 
 function Word({ children, progress, range }) {
   const opacity = useTransform(progress, range, [0, 1]);
@@ -18,6 +18,11 @@ function Word({ children, progress, range }) {
 
 export default function About() {
   const targetRef = useRef(null);
+  const footerRef = useRef(null);
+
+  const isFooterFullyInView = useInView(footerRef, {
+    amount: 1,
+  });
 
   const text =
     "I approach design with structure and intention, starting from the problem and context before moving into visual direction, ensuring clarity and consistency in every project.";
@@ -42,7 +47,10 @@ export default function About() {
       <div ref={targetRef} className="relative z-0 h-[220vh] md:h-[200vh]">
         <motion.div
           className="sticky top-0 mx-auto flex h-screen max-w-[1200px] items-center px-4 md:px-8"
+          animate={{ opacity: isFooterFullyInView ? 0 : 1 }}
           style={{ opacity: fadeProgress }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+
         >
           <p className="flex flex-wrap text-3xl leading-[1.2] font-semibold text-[#7d7d7d] md:text-4xl lg:text-6xl text-balance">
             {words.map((word, i) => {
