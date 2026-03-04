@@ -51,8 +51,7 @@ export default function Home() {
     return (
         <main>
 
-            {showHero && <Hero />}
-
+            <Hero start={hideLoader} />
             <Work />
             <Services />
             <About />

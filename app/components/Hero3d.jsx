@@ -6,7 +6,7 @@ import { Suspense, useRef, useEffect, useState } from "react";
 import Model from "../Model";
 import BgText from "../BgText";
 
-export default function Hero3d() {
+export default function Hero3d({ start }) {
     const containerRef = useRef(null);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
 
@@ -22,6 +22,7 @@ export default function Hero3d() {
             id="hero"
             className="relative h-[100svh] w-full"
         >
+            {start && (
             <Canvas
                 dpr={[1, 1.5]}
                 camera={{ position: [0, 0, 5], fov: 50 }}
@@ -50,6 +51,7 @@ export default function Hero3d() {
                     <BgText />
                 </Suspense>
             </Canvas>
+            )}
         </section>
     );
 }
