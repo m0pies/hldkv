@@ -21,7 +21,7 @@ export default function About() {
   const footerRef = useRef(null);
 
   const isFooterFullyInView = useInView(footerRef, {
-    amount: 1,
+    amount: 0.9,
   });
 
   const text =
