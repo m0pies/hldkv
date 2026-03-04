@@ -1,20 +1,18 @@
 "use client";
 
 import dynamic from "next/dynamic";
-// import Services from "./components/Services"
 import { useState, useEffect } from "react";
-import { useGLTF } from "@react-three/drei";
-import { services } from "./data/services";
 import Contact from "./components/ContactSection";
 import Work from "./components/Work";
 
 const Hero = dynamic(() => import("./components/Hero3d"), { ssr: false });          
 const About = dynamic(() => import("./components/About"), { ssr: false });
-const Services = dynamic(() => import("./components/Services"), { ssr: false }); // Lazy-load Services too
+const Services = dynamic(() => import("./components/Services"), { ssr: false });
 
 
 
 export default function Home() {
+    const [heroReady, setHeroReady] = useState(false);
     const [showHero, setShowHero] = useState(false);
     const [hideLoader, setHideLoader] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -41,17 +39,25 @@ export default function Home() {
             if (value >= 100) {
             clearInterval(interval);
             setShowHero(true);
-            setTimeout(() => setHideLoader(true), 300);
             }
         }, 16);
 
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        if (heroReady) {
+            setHideLoader(true);
+        }
+    }, [heroReady]);
+
     return (
         <main>
 
-            <Hero start={hideLoader} />
+            
+            {showHero && (
+                <Hero onReady={() => setHeroReady(true)} />
+            )}
             <Work />
             <Services />
             <About />
