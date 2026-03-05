@@ -8,7 +8,7 @@ const socials = [
     { id: "instagram", name: "Instagram", href: "https://instagram.com/itshldkv", icon: InstagramIcon },
     { id: "linkedin", name: "LinkedIn", href: "https://linkedin.com/in/", icon: LinkedInIcon },
     { id: "twitter", name: "Twitter", href: "https://x.com/itshldkv", icon: XIcon },
-    { id: "threads", name: "Threads", href: "https://threads.com/", icon: ThreadsIcon},
+    { id: "threads", name: "Threads", href: "https://threads.com/itshldkv", icon: ThreadsIcon},
     { id: "tg", name: "Telegram", href: "https://t.me/m0pies", icon: TelegramIcon },
 ];
 
