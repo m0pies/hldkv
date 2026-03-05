@@ -3,12 +3,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import EmailButton from "./EmailButton";
-import { useRef } from "react";
 
 const socials = [
-    { id: "instagram", name: "Instagram", href: "https://instagram.com/", icon: InstagramIcon },
+    { id: "instagram", name: "Instagram", href: "https://instagram.com/itshldkv", icon: InstagramIcon },
     { id: "linkedin", name: "LinkedIn", href: "https://linkedin.com/in/", icon: LinkedInIcon },
-    { id: "twitter", name: "Twitter", href: "https://x.com/", icon: XIcon },
+    { id: "twitter", name: "Twitter", href: "https://x.com/itshldkv", icon: XIcon },
     { id: "threads", name: "Threads", href: "https://threads.com/", icon: ThreadsIcon},
     { id: "tg", name: "Telegram", href: "https://t.me/m0pies", icon: TelegramIcon },
 ];
@@ -38,9 +37,8 @@ const cardVariants = {
 };
 
 export default function ContactSection() {
-    const footerRef = useRef(null);
     return (
-        <section id="contact" className="relative bg-[#0D0D0C] text-white" ref={footerRef}>
+        <section id="contact" className="relative bg-[#0D0D0C] text-white">
             <div className="mx-auto max-w-[1200px] px-4 md:px-8 pt-8 pb-8 md:pt-48 md:pb-24">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col md:flex-row md:justify-between gap-4">

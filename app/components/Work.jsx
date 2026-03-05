@@ -1,19 +1,19 @@
 const works = [
   {
     title: "Project One",
-    description: "Short description of the project one",
+    description: "Full case-study coming soon",
   },
   {
     title: "Project Two",
-    description: "Short description of the project two",
+    description: "Full case-study coming soon",
   },
   {
     title: "Project Three",
-    description: "Short description of the project three",
+    description: "Full case-study coming soon",
   },
   {
     title: "Project Four",
-    description: "Short description of the project four",
+    description: "Full case-study coming soon",
   },
 ];
 
