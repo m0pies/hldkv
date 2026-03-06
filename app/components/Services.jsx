@@ -132,11 +132,11 @@ export default function ServicesSection() {
         <section
             id="services"
             ref={ref}
-            className="bg-[#0D0D0C] text-white min-h-[100dvh]"
+            className="bg-[#0D0D0C] text-white min-h-[100vh]"
             style={{ height: `${services.length * 100}vh` }}
         >
             <div className="sticky top-0 h-screen">
-                <div className="relative mx-auto h-full w-full max-w-[1200px] px-4 md:px-8 pt-16 md:pt-24 pb-32">
+                <div className="relative mx-auto h-full w-full max-w-[1200px] px-4 md:px-8 pt-24 pb-32">
                     <div className="flex justify-center">
                         <h2 className="text-2xl font-medium text-[#7d7d7d]">
                             What I Do
