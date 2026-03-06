@@ -39,7 +39,7 @@ export default function About() {
 
   return (
     <section id="about" className="bg-[#0D0D0C] text-white">
-      <div ref={targetRef} className="relative z-0 h-[220vh] md:h-[200vh]">
+      <div ref={targetRef} className="relative z-0 h-[220dvh] md:h-[200dvh]">
         <motion.div
           className="sticky top-0 mx-auto flex h-screen max-w-[1200px] items-center px-4 md:px-8"
           style={{ opacity: fadeProgress }}
