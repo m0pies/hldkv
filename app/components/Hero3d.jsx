@@ -9,10 +9,6 @@ import StatusBadge from "../components/StatusBadge";
 
 export default function Hero3d({ onReady }) {
 
-    useEffect(() => {
-        onReady?.();
-    }, []);
-    
     const containerRef = useRef(null);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
     const [introDone, setIntroDone] = useState(false);
@@ -34,6 +30,7 @@ export default function Hero3d({ onReady }) {
             <Canvas
                 dpr={[1, 1.5]}
                 camera={{ position: [0, 0, 5], fov: 50 }}
+                onCreated={() => onReady?.()}
                 {...(!isTouchDevice && {
                     eventSource: containerRef,
                     eventPrefix: "client",

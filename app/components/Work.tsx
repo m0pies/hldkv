@@ -183,15 +183,17 @@ export default function Work() {
                 `}
               >
                 <div className="p-4 md:p-6 xl:w-[400px] flex flex-col h-fit">
+                  
                   <h3 className="text-lg md:text-2xl lg:text-3xl font-medium">{w.title}</h3>
                   <p className="mt-1 md:mt-2 text-sm md:text-base leading-relaxed text-white/60 text-balance">{w.description}</p>
-                  <div className="mt-4 flex flex-wrap gap-2">
+                  <div className="mt-2 md:mt-4 flex flex-wrap gap-2">
                     {w.tags?.map((tag, t) => (
                       <span key={t} className="text-xs md:text-sm px-3 py-1 rounded-full border border-white/20 text-white/70">
                         {tag}
                       </span>
                     ))}
                   </div>
+                  <span className="mt-2 md:mt-4 text-xs tracking-wide text-neutral-600"> Case-study coming soon</span>
                 </div>
                 <div className="w-full xl:h-[495] h-full">
                   <Image src={w.img} alt={w.alt} width={1280} height={720} className="w-full object-cover" />
