@@ -6,7 +6,7 @@ import EmailButton from "./EmailButton";
 
 const socials = [
     { id: "instagram", name: "Instagram", href: "https://instagram.com/itshldkv", icon: InstagramIcon },
-    { id: "linkedin", name: "LinkedIn", href: "https://linkedin.com/in/", icon: LinkedInIcon },
+    { id: "linkedin", name: "LinkedIn", href: "https://www.linkedin.com/in/egor-holodkov-4a754a3b5", icon: LinkedInIcon },
     { id: "twitter", name: "Twitter", href: "https://x.com/itshldkv", icon: XIcon },
     { id: "threads", name: "Threads", href: "https://threads.com/itshldkv", icon: ThreadsIcon},
     { id: "tg", name: "Telegram", href: "https://t.me/m0pies", icon: TelegramIcon },
