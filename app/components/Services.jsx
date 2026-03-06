@@ -132,7 +132,7 @@ export default function ServicesSection() {
         <section
             id="services"
             ref={ref}
-            className="bg-[#0D0D0C] text-white min-h-[100vh]"
+            className="bg-[#0D0D0C] text-white min-h-[100dvh]"
             style={{ height: `${services.length * 100}vh` }}
         >
             <div className="sticky top-0 h-screen">
