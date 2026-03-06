@@ -58,6 +58,7 @@ export default function Home() {
             {showHero && (
                 <Hero onReady={() => setHeroReady(true)} />
             )}
+            
             <Work />
             <Services />
             <About />

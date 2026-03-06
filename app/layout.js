@@ -3,6 +3,8 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/BottomNav";  
 
+<link rel="preload" href="/_next/static/chunks/app/components/Hero3d.js" as="script" />
+
 const geist = Geist({
   subsets: ["latin"],
 });

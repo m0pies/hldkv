@@ -33,7 +33,7 @@ export default function Work() {
   const isAnimating = useRef(false);
   const isAdjusting = useRef(false);
 
-  const GAP = 32;
+  const GAP = 24;
   const CLONES = works.length;
   const slides = [...works.slice(-CLONES), ...works, ...works.slice(0, CLONES)];
 
