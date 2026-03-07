@@ -4,8 +4,8 @@ import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import Contact from "./components/ContactSection";
 
-const Hero = dynamic(() => import("./components/Hero3d"), { ssr: false });          
-const Work = dynamic(() => import("./components/Work"), { ssr: false });          
+const Hero = dynamic(() => import("./components/Hero3d"), { ssr: false, loading: () => null });          
+const Work = dynamic(() => import("./components/Work"), { ssr: false, loading: () => null });          
 const About = dynamic(() => import("./components/About"), { ssr: false });
 const Services = dynamic(() => import("./components/Services"), { ssr: false });
 
