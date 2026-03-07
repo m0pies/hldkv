@@ -9,7 +9,7 @@ const socials = [
     { id: "linkedin", name: "LinkedIn", href: "https://www.linkedin.com/in/egor-holodkov-4a754a3b5", icon: LinkedInIcon },
     { id: "twitter", name: "Twitter", href: "https://x.com/itshldkv", icon: XIcon },
     { id: "threads", name: "Threads", href: "https://threads.com/itshldkv", icon: ThreadsIcon},
-    { id: "tg", name: "Telegram", href: "https://t.me/m0pies", icon: TelegramIcon },
+    { id: "tg", name: "Telegram", href: "https://t.me/itshldkv", icon: TelegramIcon },
 ];
 
 const SOFT_EASE = [0.16, 1, 0.3, 1];
