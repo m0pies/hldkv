@@ -158,7 +158,7 @@ export default function Work() {
   const realIndex = (index - CLONES + works.length) % works.length;
 
   return (
-    <section className="bg-[#0D0D0C] text-white pt-16 md:pt-24 pb-32 overflow-hidden" id="work">
+    <section className="bg-[#0D0D0C] text-white pt-16 md:pt-24 pb-32 overflow-hidden" id="works">
       <div className="mx-auto max-w-[1200px] px-4 md:px-8 xl:px-0 pb-8">
         <h2 className="text-2xl font-medium text-[#7d7d7d]">Selected works</h2>
       </div>
