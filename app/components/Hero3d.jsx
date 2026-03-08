@@ -30,6 +30,7 @@ export default function Hero3d({ onReady }) {
             <Canvas
                 dpr={[1, 1.5]}
                 camera={{ position: [0, 0, 5], fov: 50 }}
+                onCreated={() => onReady?.()}
                 {...(!isTouchDevice && {
                     eventSource: containerRef,
                     eventPrefix: "client",
@@ -52,9 +53,7 @@ export default function Hero3d({ onReady }) {
 
                 <Suspense fallback={null}>
                     <Model />
-                    <BgText onIntroEnd={() => {
-                        onReady?.();
-                    }} />
+                    <BgText onIntroEnd={() => setIntroDone(true)} />
                 </Suspense>
             </Canvas>
         </section>
