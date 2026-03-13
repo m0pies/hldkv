@@ -2,7 +2,17 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/BottomNav";  
+import Navbar from "./components/BottomNav";
+import clarity from '@microsoft/clarity';
+
+export default function ClarityInit() {
+  useEffect(() => {
+    clarity.init("vv97icb553")
+  }, [])
+
+  return null
+}
+
 
 const geist = Geist({
   subsets: ["latin"],
