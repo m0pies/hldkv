@@ -3,15 +3,11 @@ import { Analytics } from "@vercel/analytics/next"
 import { Geist } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/BottomNav";
-import clarity from '@microsoft/clarity';
+import Clarity from '@microsoft/clarity';
 
-export default function ClarityInit() {
-  useEffect(() => {
-    clarity.init("vv97icb553")
-  }, [])
+const projectId = "vv97icb553"
 
-  return null
-}
+Clarity.init(projectId);
 
 
 const geist = Geist({
