@@ -5,10 +5,10 @@ import { motion } from "framer-motion";
 import EmailButton from "./EmailButton";
 
 const socials = [
-    { id: "instagram", name: "Instagram", href: "https://instagram.com/itshldkv", icon: InstagramIcon },
+    { id: "instagram", name: "Instagram", href: "https://instagram.com/egor.dsgn", icon: InstagramIcon },
     { id: "linkedin", name: "LinkedIn", href: "https://www.linkedin.com/in/egor-holodkov-4a754a3b5", icon: LinkedInIcon },
     { id: "twitter", name: "Twitter", href: "https://x.com/itshldkv", icon: XIcon },
-    { id: "threads", name: "Threads", href: "https://threads.com/itshldkv", icon: ThreadsIcon},
+    { id: "threads", name: "Threads", href: "https://threads.com/@egor.dsgn", icon: ThreadsIcon},
     { id: "tg", name: "Telegram", href: "https://t.me/itshldkv", icon: TelegramIcon },
 ];
 
