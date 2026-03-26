@@ -1,29 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0d0d0c;
-  --foreground: #171717;
+  --color-text-primary: #0e0e0b;
+  --color-text-secondary: #545245 ;
+  --color-bg-primary: #f4f3f1;
+  --color-bg-secondary: #fdfdfc;
+  --color-bg-outer: #EDEBE8;
+  --frame-line-width: 1px;
+  --frame-line-color: rgb(82 82 69 / 0.25);
+  --frame-dash-length: 4px;
+  --frame-dash-gap: 4px;
+  --frame-outer-x: 16px;
+  --frame-inner-x: 16px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #0d0d0c;
-  }
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-bg-primary: var(--color-bg-primary);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-bg-outer: var(--color-bg-outer);
 }
 
 html {
-    scroll-behavior: smooth;
-    overflow-y: auto;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  overscroll-behavior-y: none;
+  background: var(--color-bg-outer);
 }
 
-canvas {
-  touch-action: pan-y !important;
+body {
+  margin: 0;
+  min-height: 100vh;
+  overscroll-behavior-y: none;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.section-frame {
+  padding-left: var(--frame-outer-x);
+  padding-right: var(--frame-outer-x);
+  background: var(--color-bg-outer);
+}
+
+.section-shell {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--frame-inner-x);
+  padding-right: var(--frame-inner-x);
+  background-color: var(--color-bg-primary);
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      var(--frame-line-color) 0 var(--frame-dash-length),
+      transparent var(--frame-dash-length) calc(var(--frame-dash-length) + var(--frame-dash-gap))
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--frame-line-color) 0 var(--frame-dash-length),
+      transparent var(--frame-dash-length) calc(var(--frame-dash-length) + var(--frame-dash-gap))
+    );
+  background-size:
+    var(--frame-line-width) 100%,
+    var(--frame-line-width) 100%;
+  background-position:
+    left top,
+    right top;
+  background-repeat: no-repeat;
+}
+
+.section-content {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --frame-outer-x: 32px;
+    --frame-inner-x: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --frame-outer-x: 48px;
+    --frame-inner-x: 48px;
+  }
 }

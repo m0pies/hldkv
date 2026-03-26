@@ -1,113 +1,64 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import EmailButton from "./EmailButton";
+import { FadeIn, Stagger } from "./Motion";
 
 const socials = [
-    { id: "instagram", name: "Instagram", href: "https://instagram.com/egor.dsgn", icon: InstagramIcon },
-    { id: "linkedin", name: "LinkedIn", href: "https://www.linkedin.com/in/egor-holodkov-4a754a3b5", icon: LinkedInIcon },
-    { id: "twitter", name: "Twitter", href: "https://x.com/itshldkv", icon: XIcon },
-    { id: "threads", name: "Threads", href: "https://threads.com/@egor.dsgn", icon: ThreadsIcon},
+    { id: "whatsapp", name: "WhatsApp", href: "https://wa.me/79132050935", icon: WhatsAppIcon },
     { id: "tg", name: "Telegram", href: "https://t.me/itshldkv", icon: TelegramIcon },
+    { id: "instagram", name: "Instagram", href: "https://instagram.com/egor.dsgn", icon: InstagramIcon },
+    { id: "threads", name: "Threads", href: "https://threads.com/@egor.dsgn", icon: ThreadsIcon},
 ];
-
-const SOFT_EASE = [0.16, 1, 0.3, 1];
-
-const gridVariants = {
-    hidden: {},
-    show: {
-        transition: {
-            delayChildren: 0.12,
-            staggerChildren: 0.16,
-        },
-    },
-};
-
-const cardVariants = {
-    hidden: { opacity: 0, y: 14 },
-    show: {
-        opacity: 1,
-        y: 0,
-        transition: {
-            duration: 2.0,
-            ease: SOFT_EASE,
-        },
-    },
-};
 
 export default function ContactSection() {
     return (
-        <section id="contact" className="relative bg-[#0D0D0C] text-white">
-            <div className="mx-auto max-w-[1200px] px-4 md:px-8 pt-8 pb-8 md:pt-48 md:pb-24">
-                <div className="flex flex-col gap-8">
-                    <div className="flex flex-col md:flex-row md:justify-between gap-4">
-                        <motion.h2
-                            className="text-2xl font-medium text-balance"
-                            initial={{ filter: "brightness(0.6)" }}
-                            whileInView={{ filter: "brightness(1)" }}
-                            viewport={{ once: true, amount: 0.55 }}
-                            transition={{
-                                duration: 3.2,
-                                ease: [0.25, 0.46, 0.45, 0.94],
-                                delay: 0.7,
-                            }}
-                            style={{
-                                color: "white",
-                                textShadow: "0 0 20px rgba(255,255,255,0.15)",
-                            }}
+        <section id="contact" className="section-frame relative text-text-primary">
+            <div className="section-shell">
+            <div className="section-content pt-16 pb-4 sm:pt-20 sm:pb-8 lg:pt-24 lg:pb-12">
+                <Stagger className="flex flex-col gap-4 sm:gap-6 lg:gap-8">
+                    <FadeIn className="flex flex-col gap-4 md:flex-row md:justify-between" inView={false}>
+                        <FadeIn
+                            as="h2"
+                            className="text-2xl font-medium text-balance text-text-primary"
+                            inView={false}
                         >
-                            Reach out for collaborations, projects, or just to say hi.
-                        </motion.h2>
-                        <EmailButton />
-                    </div>
-                    <motion.div
-                        className="grid grid-cols-5 gap-4"
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{
-                            once: true,
-                            amount: 0.6,
-                            margin: "0px 0px -5% 0px",
-                        }}
+                            Напишите, если хотите обсудить проект
+                        </FadeIn>
+                        <FadeIn inView={false}>
+                          <EmailButton />
+                        </FadeIn>
+                    </FadeIn>
+                    <Stagger
+                        className="grid grid-cols-4 gap-2 sm:gap-3 lg:gap-4"
+                        inView={false}
                     >
-                        {socials.map((s, i) => {
+                        {socials.map((s) => {
                             const Icon = s.icon;
 
                             return (
-                                <motion.a
+                                <FadeIn
+                                    as="a"
                                     key={s.id}
                                     href={s.href}
                                     target="_blank"
                                     rel="noreferrer"
                                     aria-label={s.name}
                                     className="group block"
-                                    custom={i}
-                                    variants={{
-                                        hidden: { opacity: 0, y: 18 },
-                                        show: (index) => ({
-                                            opacity: 1,
-                                            y: 0,
-                                            transition: {
-                                                duration: 1.35,
-                                                ease: [0.16, 1, 0.3, 1],
-                                                delay: 0.12 + index * 0.14,
-                                            },
-                                        }),
-                                    }}
-                                    style={{ willChange: "transform, opacity" }}
+                                    inView={false}
                                 >
-                                    <div className="flex flex-col items-center justify-center relative aspect-square w-full rounded-lg sm:rounded-2xl overflow-hidden bg-black/10 ring-1 ring-white/10 group-hover:ring-white/20 group-hover:text-white transition-all duration-1000 ease-out">
-                                        <div className="pointer-events-none absolute inset-0  ring-1 ring-white/15" />
-                                        <Icon className="h-7 w-7 sm:h-10 sm:w-10 md:h-12 md:w-12 lg:h-16 md:w-16 text-[#7d7d7d] group-hover:text-white duration-500 ease-out" />
-                                        <span className="hidden absolute bottom-3 lg:bottom-4 left-4 right-4 text-s mlg:text-base text-center font-regular text-[#7d7d7d] group-hover:text-white duration-1000 ease-out">{s.name}</span>
+                                    <div className="flex flex-col items-center justify-center relative aspect-square w-full rounded-lg sm:rounded-2xl overflow-hidden border border-black/10 bg-bg-secondary group-hover:border-black/20 group-hover:text-text-primary transition-all duration-1000 ease-out">
+                                        <div className="pointer-events-none absolute inset-0 ring-1 ring-black/5" />
+                                        <Icon className="h-8 w-8 sm:h-12 sm:w-12 lg:h-16 md:w-16 text-text-secondary group-hover:text-text-primary duration-500 ease-out" />
+                                        <span className="hidden absolute bottom-3 lg:bottom-4 left-4 right-4 text-s mlg:text-base text-center font-regular text-text-secondary group-hover:text-text-primary duration-1000 ease-out">{s.name}</span>
                                     </div>
-                                </motion.a>
+                                </FadeIn>
                             );
                         })}
-                    </motion.div>
+                    </Stagger>
 
-                </div>
+                </Stagger>
+            </div>
             </div>
             
         </section>
@@ -122,18 +73,10 @@ function InstagramIcon({ className = "" }) {
     );
 }
 
-function LinkedInIcon({ className = "" }) {
+function WhatsAppIcon({ className = "" }) {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="currentColor" className={className} viewBox="0 0 16 16">
-            <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" />
-        </svg>
-    );
-}
-
-function XIcon({ className = "" }) {
-    return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" fill="currentColor" className={className} viewBox="0 0 16 16">
-            <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
+            <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
         </svg>
     );
 }

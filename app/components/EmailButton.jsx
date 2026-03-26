@@ -20,7 +20,7 @@ export default function CopyEmailButton() {
       onClick={() => window.location.href = `mailto:${email}`}
       className="
         group inline-flex items-center gap-2
-        text-[#7d7d7d] 
+        text-text-secondary
         transition-colors duration-200
         cursor-pointer font-medium
       "
@@ -28,8 +28,8 @@ export default function CopyEmailButton() {
       <div
         onClick={copyToClipboard}
         className="
-          text-[#7d7d7d] 
-          hover:text-white
+          text-text-secondary
+          hover:text-text-primary
           transition-colors duration-200
           cursor-pointer py-2
         "
@@ -37,7 +37,7 @@ export default function CopyEmailButton() {
         {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
       </div>
 
-      <span className="group-hover:text-white transition-colors duration-200">
+      <span className="group-hover:text-text-primary transition-colors duration-200">
         {email}
       </span>
     </button>

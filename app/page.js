@@ -1,85 +1,21 @@
-"use client";
-
-import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
-import Contact from "./components/ContactSection";
-
-const Hero = dynamic(() => import("./components/Hero3d"), {
-  ssr: false,
-  loading: () => (
-    <div 
-      className="w-full bg-[#0D0D0C]" 
-      style={{ height: "100svh" }} 
-      aria-hidden="true"
-    />
-  ),
-});          
-const Work = dynamic(() => import("./components/Work"), { ssr: false, loading: () => null });          
-const About = dynamic(() => import("./components/About"), { ssr: false });
-const Services = dynamic(() => import("./components/Services"), { ssr: false });
-
-
+import HeroSection from "./components/HeroSection";
+import ServicesSection from "./components/ServicesSection";
+import WhyMeSection from "./components/WhyMeSection";
+import ProcessSection from "./components/ProcessSection";
+import FaqSection from "./components/FaqSection";
+import ContactSection from "./components/ContactSection";
+import FloatingCTA from "./components/FloatingCTA";
 
 export default function Home() {
-    const [heroReady, setHeroReady] = useState(false);
-    const [showHero, setShowHero] = useState(false);
-    const [hideLoader, setHideLoader] = useState(false);
-    const [progress, setProgress] = useState(0);
-
-    useEffect(() => {
-        if (!hideLoader) {
-            document.documentElement.style.overflow = "hidden";
-        } else {
-            document.documentElement.style.overflow = "";
-        }
-
-        return () => {
-            document.documentElement.style.overflow = "";
-        };
-    }, [hideLoader]);
-
-    useEffect(() => {
-        let value = 0;
-
-        const interval = setInterval(() => {
-            value += 1;
-            setProgress(value);
-
-            if (value >= 100) {
-            clearInterval(interval);
-            setShowHero(true);
-            }
-        }, 16);
-
-        return () => clearInterval(interval);
-    }, []);
-
-    useEffect(() => {
-        if (heroReady) {
-            setHideLoader(true);
-        }
-    }, [heroReady]);
-
-    return (
-        <main>
-
-            
-            {showHero && (
-                <Hero onReady={() => setHeroReady(true)} />
-            )}
-            
-            <Work />
-            <Services />
-            <About />
-            <Contact />
-
-            {!hideLoader && (
-                <div className="fixed inset-0 z-[999] flex items-center justify-center bg-[#0D0D0C]">
-                    <div className="text-white/50 text-sm">
-                        {progress}%
-                    </div>
-                </div>
-            )}
-        </main>
-    );
+  return (
+    <main>
+      <HeroSection />
+      <FloatingCTA />
+      <ServicesSection />
+      <WhyMeSection />
+      <ProcessSection />
+      <FaqSection />
+      <ContactSection />
+    </main>
+  );
 }
