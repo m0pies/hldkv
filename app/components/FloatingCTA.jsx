@@ -7,27 +7,21 @@ import Button from "./Button";
 const floatingVariants = {
   hidden: {
     opacity: 0,
-    y: 18,
-    scale: 0.96,
-    filter: "blur(6px)",
+    y: 96,
   },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.28,
+      duration: 0.34,
       ease: [0.16, 1, 0.3, 1],
     },
   },
   exit: {
     opacity: 0,
-    y: 14,
-    scale: 0.98,
-    filter: "blur(4px)",
+    y: 96,
     transition: {
-      duration: 0.22,
+      duration: 0.26,
       ease: [0.4, 0, 1, 1],
     },
   },
@@ -74,7 +68,7 @@ export default function FloatingCTA() {
           animate="show"
           exit="exit"
         >
-          <div className="mx-auto flex w-full max-w-[1024px] justify-end">
+          <div className="mx-auto flex w-full max-w-[1024px] justify-end lg:justify-center">
             <Button
               href="https://t.me/itshldkv"
               target="_blank"
