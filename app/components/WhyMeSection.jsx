@@ -107,7 +107,7 @@ export default function WhyMeSection() {
               Подход к работе
             </h2>
             <p className="mt-2 sm:mt-3 lg:mt-4 max-w-2xl text-balance text-base leading-relaxed text-text-secondary sm:text-lg lg:text-xl">
-              Подход который упрощает процесс и даёт понятный результат
+              Подход, который упрощает процесс и даёт понятный результат
             </p>
           </FadeIn>
 

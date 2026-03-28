@@ -47,10 +47,10 @@ export default function ContactSection() {
                                     className="group block"
                                     inView={false}
                                 >
-                                    <div className="flex flex-col items-center justify-center relative aspect-square w-full rounded-lg sm:rounded-2xl overflow-hidden border border-black/10 bg-bg-secondary group-hover:border-black/20 group-hover:text-text-primary transition-all duration-1000 ease-out">
+                                    <div className="flex flex-col items-center justify-center relative aspect-square w-full rounded-lg sm:rounded-2xl overflow-hidden border border-black/10 bg-bg-secondary transition-colors duration-300 ease-out group-hover:border-black/20 group-hover:bg-[#faf9f6] group-hover:text-text-primary">
                                         <div className="pointer-events-none absolute inset-0 ring-1 ring-black/5" />
-                                        <Icon className="h-8 w-8 sm:h-12 sm:w-12 lg:h-16 md:w-16 text-text-secondary group-hover:text-text-primary duration-500 ease-out" />
-                                        <span className="hidden absolute bottom-3 lg:bottom-4 left-4 right-4 text-s mlg:text-base text-center font-regular text-text-secondary group-hover:text-text-primary duration-1000 ease-out">{s.name}</span>
+                                        <Icon className="h-8 w-8 sm:h-12 sm:w-12 lg:h-16 md:w-16 text-text-secondary transition-colors duration-300 ease-out group-hover:text-text-primary" />
+                                        <span className="hidden absolute bottom-3 lg:bottom-4 left-4 right-4 text-s mlg:text-base text-center font-regular text-text-secondary transition-colors duration-300 ease-out group-hover:text-text-primary">{s.name}</span>
                                     </div>
                                 </FadeIn>
                             );

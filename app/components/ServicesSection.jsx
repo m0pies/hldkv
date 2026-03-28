@@ -80,7 +80,7 @@ export default function ServicesSection() {
                   <FadeIn
                     as="article"
                     key={service.title}
-                    className="group rounded-2xl border border-black/10 bg-bg-secondary transition-colors duration-300 ease-out hover:border-black/20 hover:bg-[#f8f7f4]"
+                    className="group rounded-2xl border border-black/10 bg-bg-secondary transition-colors duration-300 ease-out hover:border-black/20 hover:bg-[#faf9f6]"
                     inView={false}
                   >
                     <button

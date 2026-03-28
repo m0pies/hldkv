@@ -46,7 +46,7 @@ export default function ProcessSection() {
                 Этапы работы
               </h2>
               <p className="mt-2 sm:mt-3 lg:mt-4 max-w-2xl text-balance text-base leading-relaxed text-text-secondary sm:text-lg lg:text-xl">
-                Работаю по понятным этапам: от обсуждения задачи и структуры до финальной сборки и запуска сайта.
+                Работаю по понятным этапам: от обсуждения задачи и структуры до финальной сборки и запуска сайта
               </p>
             </FadeIn>
 
