@@ -4,15 +4,15 @@ import "./globals.css";
 import ClarityInit from "./clarity-init";
 
 export const metadata = {
-  title: "Egor Design",
-  description: "Дизайн и разработка сайтов: лендинги, многостраничные сайты и цифровые интерфейсы с понятной структурой.",
+  title: "Егор Холодков | Веб-дизайнер",
+  description: "Делаю сайты для бизнеса с фокусом на результат",
   keywords: ["веб-дизайнер", "дизайн сайтов", "лендинг", "многостраничный сайт", "frontend разработка"],
 
   openGraph: {
-    title: "Egor Design",
-    description: "Дизайн и разработка сайтов с акцентом на структуру, подачу и удобство.",
+    title: "Егор Холодков | Веб-дизайнер",
+    description: "Делаю сайты для бизнеса с фокусом на результат",
     url: "https://www.hldkv.com/",
-    siteName: "Egor Design",
+    siteName: "Егор Холодков | Веб-дизайнер",
     images: [
       {
         url: "https://www.hldkv.com/og.png",
@@ -26,8 +26,8 @@ export const metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Egor Design",
-    description: "Дизайн и разработка сайтов с акцентом на структуру и удобство.",
+    title: "Егор Холодков | Веб-дизайнер",
+    description: "Делаю сайты для бизнеса с фокусом на результат",
     images: ["https://www.hldkv.com/og.png"],
   },
 };
