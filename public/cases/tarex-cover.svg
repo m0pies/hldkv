@@ -1,0 +1,48 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" rx="48" fill="#F5F1E8"/>
+  <rect x="52" y="52" width="1096" height="796" rx="36" fill="#FCFBF8" stroke="#D9D3C7"/>
+  <path d="M0 698C132 654 238 633 360 630C481 627 580 689 687 689C807 689 855 617 985 617C1065 617 1136 640 1200 664V900H0V698Z" fill="#E9E1D1"/>
+  <rect x="106" y="112" width="390" height="602" rx="28" fill="#FBF9F4" stroke="#DDD5C9"/>
+  <rect x="548" y="112" width="546" height="322" rx="32" fill="#F4EFE5" stroke="#DDD5C9"/>
+  <rect x="548" y="470" width="262" height="244" rx="28" fill="#FBF9F4" stroke="#DDD5C9"/>
+  <rect x="832" y="470" width="262" height="244" rx="28" fill="#FBF9F4" stroke="#DDD5C9"/>
+  <rect x="142" y="148" width="84" height="26" rx="13" fill="#E9E1D1"/>
+  <rect x="240" y="148" width="68" height="26" rx="13" fill="#D7C39A"/>
+  <rect x="142" y="204" width="246" height="22" rx="11" fill="#181716"/>
+  <rect x="142" y="242" width="292" height="14" rx="7" fill="#918D83"/>
+  <rect x="142" y="274" width="268" height="14" rx="7" fill="#B5B0A5"/>
+  <rect x="142" y="334" width="318" height="220" rx="24" fill="url(#paint0_linear_211_10)"/>
+  <rect x="170" y="590" width="134" height="18" rx="9" fill="#181716"/>
+  <rect x="170" y="624" width="260" height="14" rx="7" fill="#918D83"/>
+  <rect x="582" y="146" width="138" height="28" rx="14" fill="#E9E1D1"/>
+  <rect x="582" y="198" width="270" height="24" rx="12" fill="#181716"/>
+  <rect x="582" y="238" width="354" height="14" rx="7" fill="#918D83"/>
+  <rect x="582" y="272" width="318" height="14" rx="7" fill="#B5B0A5"/>
+  <rect x="582" y="322" width="164" height="46" rx="23" fill="#181716"/>
+  <rect x="584" y="498" width="88" height="20" rx="10" fill="#E9E1D1"/>
+  <rect x="584" y="540" width="150" height="18" rx="9" fill="#181716"/>
+  <rect x="584" y="572" width="188" height="14" rx="7" fill="#918D83"/>
+  <rect x="868" y="498" width="94" height="20" rx="10" fill="#E9E1D1"/>
+  <rect x="868" y="540" width="156" height="18" rx="9" fill="#181716"/>
+  <rect x="868" y="572" width="172" height="14" rx="7" fill="#918D83"/>
+  <rect x="604" y="344" width="455" height="60" rx="24" fill="white" fill-opacity="0.56"/>
+  <rect x="624" y="360" width="208" height="14" rx="7" fill="#8B867B"/>
+  <rect x="624" y="384" width="174" height="10" rx="5" fill="#B5B0A5"/>
+  <rect x="928" y="360" width="108" height="28" rx="14" fill="#D7C39A"/>
+  <path d="M757 364L839 276L920 364H757Z" fill="#C7B391"/>
+  <circle cx="838" cy="248" r="34" fill="#DCCBA7"/>
+  <path d="M232 418L309 346L388 418V520H232V418Z" fill="#F9F6EE"/>
+  <path d="M260 418L309 374L360 418V520H260V418Z" fill="#E7DDCB"/>
+  <rect x="288" y="454" width="40" height="66" rx="10" fill="#D1C0A1"/>
+  <path d="M908 638L960 564L1014 638V714H908V638Z" fill="#F7F2E7"/>
+  <path d="M928 638L960 604L994 638V714H928V638Z" fill="#DDCEB2"/>
+  <rect x="948" y="666" width="24" height="48" rx="8" fill="#CBB38C"/>
+  <text x="142" y="800" fill="#181716" font-family="Arial, sans-serif" font-size="54" font-weight="700">TAREX</text>
+  <text x="142" y="842" fill="#6D685F" font-family="Arial, sans-serif" font-size="24">Dubai property search platform case</text>
+  <defs>
+    <linearGradient id="paint0_linear_211_10" x1="142" y1="334" x2="460" y2="554" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E9DCC3"/>
+      <stop offset="1" stop-color="#D6C1A0"/>
+    </linearGradient>
+  </defs>
+</svg>
