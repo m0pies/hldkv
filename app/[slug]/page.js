@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import InstantScrollTop from "../components/InstantScrollTop";
+import Button from "../components/Button";
+import RestoreScrollBehavior from "../components/RestoreScrollBehavior";
 import { getCaseBySlug, cases } from "../data/cases";
 
 export function generateStaticParams() {
@@ -45,7 +46,7 @@ export default async function CasePage({ params }) {
 
   return (
     <main className="section-frame">
-      <InstantScrollTop />
+      <RestoreScrollBehavior />
       <div className="section-shell">
         <article className="section-content py-12 sm:py-16 lg:py-24">
           <header className="max-w-4xl">
@@ -103,6 +104,17 @@ export default async function CasePage({ params }) {
                 </div>
               </section>
             ))}
+          </div>
+
+          <div className="mt-12 flex justify-center sm:mt-14 lg:mt-16">
+            <Button
+              href="https://t.me/itshldkv"
+              target="_blank"
+              rel="noreferrer"
+              className="w-fit"
+            >
+              Обсудить проект
+            </Button>
           </div>
         </article>
       </div>

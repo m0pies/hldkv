@@ -13,6 +13,11 @@ export default function CasesSection() {
     return null;
   }
 
+  function handleCaseNavigation() {
+    document.documentElement.style.scrollBehavior = "auto";
+    window.sessionStorage.setItem("restore-scroll-behavior", "true");
+  }
+
   return (
     <section className="section-frame">
       <div className="section-shell">
@@ -20,7 +25,7 @@ export default function CasesSection() {
           <FadeIn inView={false}>
             <Link
               href={`/${featuredCase.slug}`}
-              scroll={false}
+              onClick={handleCaseNavigation}
               className="group block overflow-hidden rounded-[28px] border border-black/10 bg-bg-secondary transition-colors duration-300 ease-out hover:border-black/20 hover:bg-[#faf9f6]"
             >
               <div className="grid gap-8 p-5 sm:p-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.9fr)] lg:items-center lg:gap-12 lg:p-10">
