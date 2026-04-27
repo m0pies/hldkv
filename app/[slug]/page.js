@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import InstantScrollTop from "../components/InstantScrollTop";
 import { getCaseBySlug, cases } from "../data/cases";
 
 export function generateStaticParams() {
@@ -44,6 +45,7 @@ export default async function CasePage({ params }) {
 
   return (
     <main className="section-frame">
+      <InstantScrollTop />
       <div className="section-shell">
         <article className="section-content py-12 sm:py-16 lg:py-24">
           <header className="max-w-4xl">
@@ -71,14 +73,14 @@ export default async function CasePage({ params }) {
             </div>
           </header>
 
-          <div className="mt-10 overflow-hidden rounded-[28px] border border-black/10 bg-[linear-gradient(135deg,#f8f6f2_0%,#ebe6db_100%)] p-3 shadow-[0_24px_64px_rgba(17,17,17,0.08)] sm:mt-12 sm:p-4 lg:mt-14 lg:p-5">
+          <div className="mt-10 overflow-hidden rounded-[28px] border border-black/10 bg-bg-secondary p-3 sm:mt-12 sm:p-4 lg:mt-14 lg:p-5">
             <Image
               src={caseItem.coverImage}
               alt={caseItem.coverAlt}
               width={1200}
               height={900}
               priority
-              className="h-auto w-full rounded-[20px] border border-black/6"
+              className="h-auto w-full rounded-[20px] border border-black/10"
             />
           </div>
 
