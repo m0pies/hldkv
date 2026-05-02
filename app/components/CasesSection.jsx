@@ -40,14 +40,12 @@ export default function CasesSection() {
             >
               <div className="grid gap-6 p-4 sm:p-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.9fr)] lg:items-start lg:gap-8 lg:p-6">
                 <div className="max-w-2xl">
-                  <h2 className="text-balance text-2xl font-semibold text-text-primary sm:text-3xl lg:text-4xl">
+                  <h2 className="text-balance text-lg font-medium text-text-primary sm:text-xl lg:text-2xl">
                     {featuredCase.title}
                   </h2>
 
                   <p className="mt-3 max-w-xl text-balance text-base leading-relaxed text-text-secondary sm:text-lg lg:text-xl">
-                    Сайт для поиска недвижимости в Дубае. Открой кейс и посмотри,
-                    как можно подать такой продукт через структуру, визуал и
-                    акценты
+                    Сайт для поиска недвижимости в Дубае
                   </p>
 
                   <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6">
