@@ -1,9 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronLeft } from "lucide-react";
 
 const heroEase = [0.16, 1, 0.3, 1];
 
@@ -79,22 +77,8 @@ export default function CaseHero({ caseItem }) {
         initial="hidden"
         animate="show"
       >
-        <motion.div
-          className="flex w-full justify-start"
-          variants={heroItemVariants}
-          transition={{ delay: 0.14 }}
-        >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-bg-secondary px-3 py-1.5 text-sm font-medium text-text-primary transition-colors duration-300 hover:border-black/20 hover:bg-[#faf9f6] sm:text-base"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Назад
-          </Link>
-        </motion.div>
-
         <motion.h1
-          className="mt-8 text-balance text-4xl font-semibold text-text-primary sm:mt-10 sm:text-5xl lg:mt-12 lg:text-6xl [perspective:1000px]"
+          className="text-balance text-4xl font-semibold text-text-primary sm:text-5xl lg:text-6xl [perspective:1000px]"
           variants={textRevealVariants}
           aria-label={caseItem.title}
         >
@@ -143,7 +127,7 @@ export default function CaseHero({ caseItem }) {
       </motion.header>
 
       <motion.div
-        className="mt-10 overflow-hidden rounded-[28px] border border-black/10 bg-bg-secondary p-3 sm:mx-auto sm:mt-12 sm:max-w-5xl sm:p-4 lg:mt-14 lg:p-5"
+        className="mt-10 overflow-hidden rounded-[22px] border border-black/10 bg-bg-secondary p-2 sm:mx-auto sm:mt-12 sm:max-w-5xl sm:p-3 lg:mt-14 lg:p-4"
         variants={heroItemVariants}
         initial="hidden"
         animate="show"
@@ -155,7 +139,7 @@ export default function CaseHero({ caseItem }) {
           width={1200}
           height={900}
           priority
-          className="h-auto w-full rounded-[20px] border border-black/10"
+          className="h-auto w-full rounded-[14px] border border-black/10"
         />
       </motion.div>
     </>

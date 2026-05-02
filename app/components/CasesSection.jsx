@@ -38,7 +38,7 @@ export default function CasesSection() {
               onClick={handleCaseNavigation}
               className="group block overflow-hidden rounded-[28px] border border-black/10 bg-bg-secondary transition-colors duration-300 ease-out hover:border-black/20 hover:bg-[#faf9f6]"
             >
-              <div className="grid gap-6 p-4 sm:p-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.9fr)] lg:items-center lg:gap-8 lg:p-6">
+              <div className="grid gap-6 p-4 sm:p-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.9fr)] lg:items-start lg:gap-8 lg:p-6">
                 <div className="max-w-2xl">
                   <h2 className="text-balance text-2xl font-semibold text-text-primary sm:text-3xl lg:text-4xl">
                     {featuredCase.title}
@@ -69,7 +69,7 @@ export default function CasesSection() {
 
                 <div className="relative overflow-hidden rounded-[22px] border border-black/10 bg-bg-primary p-2">
                   <div className="pointer-events-none absolute inset-2 z-10 flex items-center justify-center rounded-[14px] bg-black/28 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
-                    <span className="rounded-full border border-white/20 bg-white/12 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm sm:text-base">
+                    <span className="text-base font-medium text-white sm:text-lg">
                       Посмотреть кейс
                     </span>
                   </div>
@@ -78,7 +78,7 @@ export default function CasesSection() {
                     alt={featuredCase.coverAlt}
                     width={1200}
                     height={900}
-                    className="h-auto w-full rounded-[14px] border border-black/10 object-cover transition duration-300 ease-out group-hover:scale-[1.01] group-hover:blur-[3px]"
+                    className="h-auto w-full rounded-[14px] border border-black/10 object-cover transition duration-300 ease-out group-hover:scale-[1.01]"
                   />
                 </div>
               </div>
