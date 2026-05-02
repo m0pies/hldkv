@@ -127,7 +127,7 @@ export default function CaseHero({ caseItem }) {
       </motion.header>
 
       <motion.div
-        className="mt-10 overflow-hidden rounded-[22px] border border-black/10 bg-bg-secondary p-2 sm:mx-auto sm:mt-12 sm:max-w-5xl sm:p-3 lg:mt-14 lg:p-4"
+        className="mt-10 overflow-hidden rounded-[22px] border border-black/10 bg-bg-secondary p-2 sm:mx-auto sm:mt-12 sm:max-w-5xl lg:mt-14"
         variants={heroItemVariants}
         initial="hidden"
         animate="show"
