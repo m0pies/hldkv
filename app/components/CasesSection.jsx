@@ -68,7 +68,7 @@ export default function CasesSection() {
                 </div>
 
                 <div className="relative overflow-hidden rounded-[22px] border border-black/10 bg-bg-primary p-2">
-                  <div className="pointer-events-none absolute inset-2 z-10 flex items-center justify-center rounded-[14px] bg-black/28 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
+                  <div className="pointer-events-none absolute inset-2 z-10 flex items-center justify-center rounded-[14px] bg-black/42 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
                     <span className="text-base font-medium text-white sm:text-lg">
                       Посмотреть кейс
                     </span>
@@ -78,7 +78,7 @@ export default function CasesSection() {
                     alt={featuredCase.coverAlt}
                     width={1200}
                     height={900}
-                    className="h-auto w-full rounded-[14px] border border-black/10 object-cover transition duration-300 ease-out group-hover:scale-[1.01]"
+                    className="h-auto w-full rounded-[14px] border border-black/10 object-cover"
                   />
                 </div>
               </div>
