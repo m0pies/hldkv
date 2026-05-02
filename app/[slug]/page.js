@@ -55,7 +55,7 @@ export default async function CasePage({ params }) {
           <div className="mx-auto mt-12 grid max-w-[680px] gap-10 sm:mt-14 lg:mt-16">
             {caseItem.body.map((section) => (
               <section key={section.heading} className="text-left">
-                <h2 className="text-2xl font-semibold text-text-primary sm:text-3xl lg:text-4xl">
+                <h2 className="text-2xl font-medium text-text-primary">
                   {section.heading}
                 </h2>
 
@@ -63,7 +63,7 @@ export default async function CasePage({ params }) {
                   {section.paragraphs.map((paragraph) => (
                     <p
                       key={paragraph}
-                      className="text-base leading-relaxed text-text-secondary sm:text-lg lg:text-xl"
+                      className="text-[18px] leading-relaxed text-text-secondary"
                     >
                       {paragraph}
                     </p>

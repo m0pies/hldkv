@@ -18,6 +18,12 @@ export default function CasesSection() {
     window.sessionStorage.setItem("restore-scroll-behavior", "true");
   }
 
+  const firstTagRow = featuredCase.tags.slice(
+    0,
+    Math.ceil(featuredCase.tags.length / 2),
+  );
+  const secondTagRow = featuredCase.tags.slice(Math.ceil(featuredCase.tags.length / 2));
+
   return (
     <section className="section-frame">
       <div className="section-shell">
@@ -48,18 +54,31 @@ export default function CasesSection() {
                     Сайт для поиска недвижимости в Дубае
                   </p>
 
-                  <div className="mt-5 flex flex-wrap gap-2.5 sm:mt-6">
-                    {featuredCase.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-black/10 bg-bg-secondary px-3 py-1.5 text-sm text-text-secondary sm:text-base"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                  <div className="mt-5 grid gap-2.5 sm:mt-6">
+                    <div className="flex flex-wrap gap-2.5">
+                      {firstTagRow.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-black/10 bg-bg-secondary px-3 py-1.5 text-sm text-text-secondary sm:text-base"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap gap-2.5">
+                      {secondTagRow.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-black/10 bg-bg-secondary px-3 py-1.5 text-sm text-text-secondary sm:text-base"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <div className="mt-6 inline-flex items-center gap-2 text-base font-medium text-text-primary sm:mt-8 sm:text-lg lg:text-xl">
+                  <div className="mt-6 inline-flex items-center gap-2 text-base font-medium text-text-primary sm:mt-8">
                     Смотреть кейс
                     <ChevronRight className="h-5 w-5 transition-transform duration-300 ease-out group-hover:translate-x-1" />
                   </div>

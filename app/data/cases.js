@@ -9,6 +9,7 @@ export const cases = [
       "разработка",
       "веб-дизайн",
       "анализ рынка",
+      "ia",
     ],
     coverImage: "/cases/tarex-hero.webp",
     coverAlt: "Главный экран сайта Tarex с ночной панорамой Дубая и поиском недвижимости",
