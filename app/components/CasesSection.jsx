@@ -22,7 +22,17 @@ export default function CasesSection() {
     <section className="section-frame">
       <div className="section-shell">
         <div className="section-content py-16 sm:py-24 lg:py-32">
-          <FadeIn inView={false}>
+          <FadeIn className="max-w-2xl" inView={false}>
+            <h2 className="text-balance text-3xl font-semibold text-text-primary sm:text-4xl lg:text-5xl">
+              Проекты
+            </h2>
+            <p className="mt-2 max-w-2xl text-balance text-base leading-relaxed text-text-secondary sm:mt-3 sm:text-lg lg:mt-4 lg:text-xl">
+              Здесь можно посмотреть, как я собираю структуру, визуал и подачу
+              под конкретную задачу бизнеса.
+            </p>
+          </FadeIn>
+
+          <FadeIn className="mt-8 sm:mt-10 lg:mt-12" inView={false}>
             <Link
               href={`/${featuredCase.slug}`}
               onClick={handleCaseNavigation}

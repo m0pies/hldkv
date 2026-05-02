@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import Button from "../components/Button";
+import FloatingCTA from "../components/FloatingCTA";
 import RestoreScrollBehavior from "../components/RestoreScrollBehavior";
 import { getCaseBySlug, cases } from "../data/cases";
 
@@ -47,14 +47,14 @@ export default async function CasePage({ params }) {
   return (
     <main className="section-frame">
       <RestoreScrollBehavior />
+      <FloatingCTA heroId="case-hero" contactId="" maxWidthClassName="max-w-[680px]" />
       <div className="section-shell">
         <article className="section-content py-12 sm:py-16 lg:py-24">
-          <header className="max-w-4xl">
-            <span className="inline-flex rounded-full border border-black/10 bg-bg-secondary px-3 py-1 text-xs font-medium uppercase tracking-[0.18em] text-text-secondary sm:text-sm">
-              Кейс
-            </span>
-
-            <h1 className="mt-4 text-balance text-4xl font-semibold text-text-primary sm:text-5xl lg:text-6xl">
+          <header
+            id="case-hero"
+            className="mx-auto flex max-w-4xl flex-col items-center text-center"
+          >
+            <h1 className="text-balance text-4xl font-semibold text-text-primary sm:text-5xl lg:text-6xl">
               {caseItem.title}
             </h1>
 
@@ -62,7 +62,7 @@ export default async function CasePage({ params }) {
               {caseItem.description}
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-2.5">
+            <div className="mt-6 flex flex-wrap justify-center gap-2.5">
               {caseItem.tags.map((tag) => (
                 <span
                   key={tag}
@@ -74,7 +74,7 @@ export default async function CasePage({ params }) {
             </div>
           </header>
 
-          <div className="mt-10 overflow-hidden rounded-[28px] border border-black/10 bg-bg-secondary p-3 sm:mt-12 sm:p-4 lg:mt-14 lg:p-5">
+          <div className="mt-10 overflow-hidden rounded-[28px] border border-black/10 bg-bg-secondary p-3 sm:mx-auto sm:mt-12 sm:max-w-5xl sm:p-4 lg:mt-14 lg:p-5">
             <Image
               src={caseItem.coverImage}
               alt={caseItem.coverAlt}
@@ -85,9 +85,9 @@ export default async function CasePage({ params }) {
             />
           </div>
 
-          <div className="mt-12 grid gap-10 sm:mt-14 lg:mt-16">
+          <div className="mx-auto mt-12 grid max-w-[680px] gap-10 sm:mt-14 lg:mt-16">
             {caseItem.body.map((section) => (
-              <section key={section.heading} className="max-w-3xl">
+              <section key={section.heading} className="text-center">
                 <h2 className="text-2xl font-semibold text-text-primary sm:text-3xl lg:text-4xl">
                   {section.heading}
                 </h2>
@@ -106,16 +106,7 @@ export default async function CasePage({ params }) {
             ))}
           </div>
 
-          <div className="mt-12 flex justify-center sm:mt-14 lg:mt-16">
-            <Button
-              href="https://t.me/itshldkv"
-              target="_blank"
-              rel="noreferrer"
-              className="w-fit"
-            >
-              Обсудить проект
-            </Button>
-          </div>
+          <div id="case-contact" className="mt-12 h-px sm:mt-14 lg:mt-16" />
         </article>
       </div>
     </main>

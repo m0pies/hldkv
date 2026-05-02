@@ -27,23 +27,28 @@ const floatingVariants = {
   },
 };
 
-export default function FloatingCTA() {
+export default function FloatingCTA({
+  heroId = "hero",
+  contactId = "contact",
+  maxWidthClassName = "max-w-[1024px]",
+}) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const updateVisibility = () => {
-      const hero = document.getElementById("hero");
-      const contact = document.getElementById("contact");
+      const hero = document.getElementById(heroId);
+      const contact = contactId ? document.getElementById(contactId) : null;
 
-      if (!hero || !contact) {
+      if (!hero) {
         setIsVisible(false);
         return;
       }
 
       const heroRect = hero.getBoundingClientRect();
-      const contactRect = contact.getBoundingClientRect();
       const heroPassed = heroRect.bottom <= 0;
-      const contactReached = contactRect.top <= window.innerHeight * 0.9;
+      const contactReached = contact
+        ? contact.getBoundingClientRect().top <= window.innerHeight * 0.9
+        : false;
 
       setIsVisible(heroPassed && !contactReached);
     };
@@ -56,7 +61,7 @@ export default function FloatingCTA() {
       window.removeEventListener("scroll", updateVisibility);
       window.removeEventListener("resize", updateVisibility);
     };
-  }, []);
+  }, [contactId, heroId]);
 
   return (
     <AnimatePresence>
@@ -68,7 +73,9 @@ export default function FloatingCTA() {
           animate="show"
           exit="exit"
         >
-          <div className="mx-auto flex w-full max-w-[1024px] justify-end lg:justify-center">
+          <div
+            className={`mx-auto flex w-full ${maxWidthClassName} justify-end lg:justify-center`}
+          >
             <Button
               href="https://t.me/itshldkv"
               target="_blank"
