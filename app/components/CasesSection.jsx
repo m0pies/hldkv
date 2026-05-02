@@ -44,7 +44,7 @@ export default function CasesSection() {
               onClick={handleCaseNavigation}
               className="group block overflow-hidden rounded-[28px] border border-black/10 bg-bg-secondary transition-colors duration-300 ease-out hover:border-black/20 hover:bg-[#faf9f6]"
             >
-              <div className="grid gap-6 p-4 sm:p-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.9fr)] lg:items-start lg:gap-8 lg:p-6">
+              <div className="grid gap-6 p-4 sm:p-5 lg:grid-cols-[minmax(0,0.95fr)_minmax(320px,0.9fr)] lg:items-center lg:gap-8 lg:p-6">
                 <div className="max-w-2xl">
                   <h2 className="text-balance text-lg font-medium text-text-primary sm:text-xl lg:text-2xl">
                     {featuredCase.title}
@@ -86,7 +86,7 @@ export default function CasesSection() {
 
                 <div className="relative overflow-hidden rounded-[22px] border border-black/10 bg-bg-primary p-2">
                   <div className="pointer-events-none absolute inset-2 z-10 flex items-center justify-center rounded-[14px] bg-black/58 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100">
-                    <span className="text-base font-medium text-white sm:text-lg">
+                    <span className="text-sm font-normal text-white sm:text-base">
                       Посмотреть кейс
                     </span>
                   </div>
