@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
+import CaseImageFrame from "./CaseImageFrame";
 
 const heroEase = [0.16, 1, 0.3, 1];
 
@@ -127,19 +127,18 @@ export default function CaseHero({ caseItem }) {
       </motion.header>
 
       <motion.div
-        className="mt-10 overflow-hidden rounded-[22px] border border-black/10 bg-bg-secondary p-2 sm:mx-auto sm:mt-12 sm:max-w-5xl lg:mt-14"
+        className="mt-10 sm:mx-auto sm:mt-12 sm:max-w-5xl lg:mt-14"
         variants={heroItemVariants}
         initial="hidden"
         animate="show"
         transition={{ delay: 1.1 }}
       >
-        <Image
+        <CaseImageFrame
           src={caseItem.coverImage}
           alt={caseItem.coverAlt}
           width={1200}
           height={900}
-          priority
-          className="h-auto w-full rounded-[14px] border border-black/10"
+          sizes="(min-width: 1024px) 960px, 100vw"
         />
       </motion.div>
     </>

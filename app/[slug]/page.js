@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import CaseHero from "../components/CaseHero";
+import CaseImageFrame from "../components/CaseImageFrame";
 import FloatingCTA from "../components/FloatingCTA";
 import RestoreScrollBehavior from "../components/RestoreScrollBehavior";
 import { getCaseBySlug, cases } from "../data/cases";
@@ -72,6 +73,28 @@ export default async function CasePage({ params }) {
               </section>
             ))}
           </div>
+
+          {caseItem.media?.length ? (
+            <div className="mx-auto mt-12 grid max-w-5xl gap-12 sm:mt-14 lg:mt-16 lg:gap-16">
+              {caseItem.media.map((item) => (
+                <section key={item.image} className="grid gap-5">
+                  <CaseImageFrame
+                    src={item.image}
+                    alt={item.alt}
+                    width={1600}
+                    height={1000}
+                    sizes="(min-width: 1024px) 960px, 100vw"
+                  />
+
+                  <div className="mx-auto max-w-[680px] text-left">
+                    <p className="text-[18px] leading-relaxed text-text-secondary">
+                      {item.description}
+                    </p>
+                  </div>
+                </section>
+              ))}
+            </div>
+          ) : null}
 
           <div id="case-contact" className="mt-12 h-px sm:mt-14 lg:mt-16" />
         </article>

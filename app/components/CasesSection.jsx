@@ -95,6 +95,8 @@ export default function CasesSection() {
                     alt={featuredCase.coverAlt}
                     width={1200}
                     height={900}
+                    loading="lazy"
+                    sizes="(min-width: 1024px) 480px, 100vw"
                     className="h-auto w-full rounded-[14px] border border-black/10 object-cover"
                   />
                 </div>
