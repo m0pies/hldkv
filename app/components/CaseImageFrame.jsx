@@ -7,10 +7,30 @@ export default function CaseImageFrame({
   alt,
   width = 1600,
   height = 1000,
+  plain = false,
   frameClassName = "",
   imageClassName = "",
   sizes = "100vw",
 }) {
+  if (plain) {
+    return (
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading="lazy"
+        sizes={sizes}
+        className={[
+          "h-auto w-full rounded-2xl border border-black/5",
+          imageClassName,
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      />
+    );
+  }
+
   return (
     <div
       className={[

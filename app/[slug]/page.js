@@ -75,7 +75,7 @@ export default async function CasePage({ params }) {
           </div>
 
           {caseItem.media?.length ? (
-            <div className="mx-auto mt-12 grid max-w-5xl gap-12 sm:mt-14 lg:mt-16 lg:gap-16">
+            <div className="mx-auto mt-12 grid max-w-[680px] gap-12 sm:mt-14 lg:mt-16 lg:gap-16">
               {caseItem.media.map((item) => (
                 <section key={item.image} className="grid gap-5">
                   <CaseImageFrame
@@ -83,11 +83,15 @@ export default async function CasePage({ params }) {
                     alt={item.alt}
                     width={1600}
                     height={1000}
-                    sizes="(min-width: 1024px) 960px, 100vw"
+                    plain
+                    sizes="(min-width: 1024px) 680px, 100vw"
                   />
 
-                  <div className="mx-auto max-w-[680px] text-left">
-                    <p className="text-[18px] leading-relaxed text-text-secondary">
+                  <div className="text-left">
+                    <h3 className="text-2xl font-medium text-text-primary">
+                      {item.title}
+                    </h3>
+                    <p className="mt-3 text-[18px] leading-relaxed text-text-secondary">
                       {item.description}
                     </p>
                   </div>
